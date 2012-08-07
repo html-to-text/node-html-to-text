@@ -1,11 +1,26 @@
 {
-  "name": "node-html-to-text",
+  "name": "html-to-text",
   "version": "0.0.1",
   "description": "Simple html to text converter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    
   },
   "author": "Malte Legenhausen",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+  	"htmlparser": "1.x.x",
+  	"underscore": "1.x.x",
+  	"underscore.string": "2.x.x"
+  },
+  "keywords": [
+  	"html",
+  	"node",
+  	"text",
+  	"mail",
+  	"converter"
+  ],
+  "engines": { 
+  	"node": "*" 
+  }
 }
