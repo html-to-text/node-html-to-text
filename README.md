@@ -35,12 +35,10 @@ or directly from a string:
 ```
 var htmlToText = require('html-to-text');
 
-htmlToText.fromString('<h1>Hello World</h1>', {
+var text = htmlToText.fromString('<h1>Hello World</h1>', {
 	wordwrap: 130
-}, function(err, text) {
-	if (err) return console.error(err);
-	console.log(text);
 });
+console.log(text);
 ```
 
 ### Options:

@@ -1,1 +1,1 @@
-exports = require('./lib/html-to-text');
+module.exports = require('./lib/html-to-text');
