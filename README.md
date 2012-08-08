@@ -188,9 +188,9 @@ voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
 sea takimata sanctus est Lorem ipsum dolor sit amet. 
 
 ARTICLE                  PRICE   TAXES             AMOUNT   TOTAL   
-Product 1                6,99€   7%                1   6,99€   
+Product 1                6,99€   7%                1        6,99€   
 Contains: 1x Product 1                                   
-Shipment costs           3,25€   7%                1   3,25€   
+Shipment costs           3,25€   7%                1        3,25€   
                                  to pay: 10,24€    
                                  Taxes 7%: 0,72€         
 
