@@ -10,6 +10,47 @@ A simple converter that parses HTML and returns beautiful text. It was mainly de
  * Automatic extraction of href information from links.
  * `<br>` conversion to `\n`
 
+## Installation
+
+```
+npm install html-to-text
+```
+
+## Usage
+You can read from a file via:
+
+```
+var htmlToText = require('html-to-text');
+
+htmlToText.fromFile(path.join(__dirname, 'test.html'), {
+	tables: ['invoice', 'address']
+}, function(err, text) {
+	if (err) return console.error(err);
+	console.log(text);
+});
+```
+
+or directly from a string:
+
+```
+var htmlToText = require('html-to-text');
+
+htmlToText.fromString('<h1>Hello World</h1>', {
+	wordwrap: 130
+}, function(err, text) {
+	if (err) return console.error(err);
+	console.log(text);
+});
+```
+
+### Options:
+
+You can configure the behaviour of html-to-text with the following options:
+
+ * `tables` allows to select certain tables by the `class` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. So you have to define which tables should be treaded as `table`. All other tables are ignored.
+ * `wordwrap` defines after how many chars a line break should follow in `p` elements.
+ 
+
 ## Example
 
 ```
@@ -188,40 +229,6 @@ voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
 sea takimata sanctus est Lorem ipsum dolor sit amet.
 ```
 
-## Usage
-You can read from a file via:
-
-```
-var htmlToText = require('html-to-text');
-
-htmlToText.fromFile(path.join(__dirname, 'test.html'), {
-	tables: ['invoice', 'address']
-}, function(err, text) {
-	if (err) return console.error(err);
-	console.log(text);
-});
-```
-
-or directly from a string:
-
-```
-var htmlToText = require('html-to-text');
-
-htmlToText.fromString('<h1>Hello World</h1>', {
-	wordwrap: 130
-}, function(err, text) {
-	if (err) return console.error(err);
-	console.log(text);
-});
-```
-
-### Options:
-
-You can configure the behaviour of html-to-text with the following options:
-
- * `tables` allows to select certain tables by the `class` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. So you have to define which tables should be treaded as `table`. All other tables are ignored.
- * `wordwrap` defines after how many chars a line break should follow in `p` elements.
- 
 ## License 
 
 (The MIT License)
