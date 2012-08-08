@@ -106,7 +106,7 @@ You can configure the behaviour of html-to-text with the following options:
 						<tr>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td>to pay: 10,24€</td>
+							<td colspan="3">to pay: 10,24€</td>
 						</tr>
 						<tr>
 							<td></td>
