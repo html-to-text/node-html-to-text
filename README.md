@@ -45,7 +45,7 @@ console.log(text);
 
 You can configure the behaviour of html-to-text with the following options:
 
- * `tables` allows to select certain tables by the `class` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. So you have to define which tables should be treaded as `table`. All other tables are ignored. Default: `[]`
+ * `tables` allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored. You can assign `true` to this attribute to select all tables. Default: `[]`
  * `wordwrap` defines after how many chars a line break should follow in `p` elements. Default: `80`
 
 ## Command Line Interface
@@ -61,7 +61,7 @@ cat examples/test.html | html-to-text > test.txt
 There also all options available as described above. You can use them like this:
 
 ```
-cat examples/test.html | html-to-text --tables=invoice,address --wordwrap=100 > test.txt
+cat examples/test.html | html-to-text --tables=#invoice,.address --wordwrap=100 > test.txt
 ```
 
 The `tables` option has to be declared as comma separated list without whitespaces.
@@ -93,7 +93,7 @@ The `tables` option has to be declared as comma separated list without whitespac
 			</tr>
 			<tr>
 				<td>
-					<table>
+					<table id="invoice">
 						<tr>
 							<th>Article</th>
 							<th>Price</th>
@@ -108,7 +108,7 @@ The `tables` option has to be declared as comma separated list without whitespac
 									<span style="font-size:0.8em">Contains: 1x Product 1</span>
 								</p>
 							</td>
-							<td align="right" valign="top">6,99€</td>
+							<td align="right" valign="top">6,99&euro;</td>
 							<td align="right" valign="top">7%</td>
 							<td align="right" valign="top">1</td>
 							<td align="right" valign="top">6,99€</td>
@@ -138,7 +138,7 @@ The `tables` option has to be declared as comma separated list without whitespac
 			<tr>
 				<td>
 					<hr />
-					<table>
+					<table class="address">
 						<tr>
 							<th align="left">Invoice Address</th>
 							<th align="left">Shipment Address</th>
@@ -206,10 +206,12 @@ sea takimata sanctus est Lorem ipsum dolor sit amet.
 
 ARTICLE                  PRICE   TAXES             AMOUNT   TOTAL   
 Product 1                6,99€   7%                1        6,99€   
-Contains: 1x Product 1                                   
+Contains: 1x Product 1                                              
 Shipment costs           3,25€   7%                1        3,25€   
-                                 to pay: 10,24€    
-                                 Taxes 7%: 0,72€         
+                                 to pay: 10,24€                     
+                                 Taxes 7%: 0,72€                    
+
+--------------------------------------------------------------------------------
 
 INVOICE ADDRESS          SHIPMENT ADDRESS         
 Mr.                      Mr.                      
@@ -217,12 +219,16 @@ John Doe                 John Doe
 Featherstone Street 49   Featherstone Street 49   
 28199 Bremen             28199 Bremen             
 
+--------------------------------------------------------------------------------
+
 LAW OF REVOCATION
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
 takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
 diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
 voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
 sea takimata sanctus est Lorem ipsum dolor sit amet. 
+
+--------------------------------------------------------------------------------
 
 TERMS OF CONDITION
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
