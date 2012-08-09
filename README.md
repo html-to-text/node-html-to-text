@@ -23,7 +23,7 @@ You can read from a file via:
 var htmlToText = require('html-to-text');
 
 htmlToText.fromFile(path.join(__dirname, 'test.html'), {
-	tables: ['invoice', 'address']
+	tables: ['#invoice', '.address']
 }, function(err, text) {
 	if (err) return console.error(err);
 	console.log(text);
