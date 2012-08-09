@@ -45,9 +45,26 @@ console.log(text);
 
 You can configure the behaviour of html-to-text with the following options:
 
- * `tables` allows to select certain tables by the `class` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. So you have to define which tables should be treaded as `table`. All other tables are ignored.
- * `wordwrap` defines after how many chars a line break should follow in `p` elements.
- 
+ * `tables` allows to select certain tables by the `class` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. So you have to define which tables should be treaded as `table`. All other tables are ignored. Default: `[]`
+ * `wordwrap` defines after how many chars a line break should follow in `p` elements. Default: `80`
+
+## Command Line Interface
+
+It is possible to use html-to-text as command line interface. This allows an easy validation of your generated text and the integration in other systems that does not run on node.js.
+
+`html-to-text` uses `stdin` and `stdout` for data in and output. So you can use `html-to-html` the following way:
+
+```
+cat examples/test.html | html-to-text > test.txt
+```
+
+There also all options available as described above. You can use them like this:
+
+```
+cat examples/test.html | html-to-text --tables=invoice,address --wordwrap=100 > test.txt
+```
+
+The `tables` option has to be declared as comma separated list without whitespaces.
 
 ## Example
 
