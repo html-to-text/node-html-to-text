@@ -77,13 +77,8 @@ The `tables` option has to be declared as comma separated list without whitespac
 	<body>
 		<table cellpadding="0" cellspacing="0" border="0">
 			<tr>
-				<td width="100%" valign="bottom">
-					<h1>Dear John Doe,</h1>
-				</td>
-				<td><img src="logo.png" /></td>
-			</tr>
-			<tr>
 				<td>
+					<h2>Paragraphs</h2>
 					<p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <a href="www.github.com">Github</a>
 					</p>
 					<p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
@@ -93,6 +88,8 @@ The `tables` option has to be declared as comma separated list without whitespac
 			</tr>
 			<tr>
 				<td>
+					<hr/>
+					<h2>Pretty printed table</h2>
 					<table id="invoice">
 						<tr>
 							<th>Article</th>
@@ -137,7 +134,22 @@ The `tables` option has to be declared as comma separated list without whitespac
 			</tr>
 			<tr>
 				<td>
+					<hr/>
+					<h2>Lists</h2>
+					<ul>
+						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+					</ul>
+					<ol>
+						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+					</ol>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<hr />
+					<h2>Column Layout with tables</h2>
 					<table class="address">
 						<tr>
 							<th align="left">Invoice Address</th>
@@ -167,21 +179,15 @@ The `tables` option has to be declared as comma separated list without whitespac
 			</tr>
 			<tr>
 				<td>
-					<hr />
-					<h2>Law of Revocation</h2>
-					<p class="normal-space small">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+					<hr/>
+					<h2>Mailto formating</h2>
+					<p class="normal-space small">
+						Some Company<br />
+						Some Street 42<br />
+						Somewhere<br />
+						E-Mail: <a href="mailto:test@example.com">Click here</a>
+					</p>
 				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>
-					<hr />
-					<h2>Terms of Condition</h2>
-					<p class="normal-space small">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-					<p class="normal-space small">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-					<p class="normal-space small">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
-				</td>
-				<td></td>
 			</tr>
 		</table>
 	</body>
@@ -191,19 +197,24 @@ The `tables` option has to be declared as comma separated list without whitespac
 Gets converted to:
 
 ```
-DEAR JOHN DOE,
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet. www.github.com
+PARAGRAPHS
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
+et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+takimata sanctus est Lorem ipsum dolor sit amet.www.github.com
 
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet. 
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
+et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+takimata sanctus est Lorem ipsum dolor sit amet.
 
+--------------------------------------------------------------------------------
+
+PRETTY PRINTED TABLE
 ARTICLE                  PRICE   TAXES             AMOUNT   TOTAL   
 Product 1                6,99€   7%                1        6,99€   
 Contains: 1x Product 1                                              
@@ -213,6 +224,20 @@ Shipment costs           3,25€   7%                1        3,25€
 
 --------------------------------------------------------------------------------
 
+LISTS
+ * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+ * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+ 1. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+ 2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+--------------------------------------------------------------------------------
+
+COLUMN LAYOUT WITH TABLES
 INVOICE ADDRESS          SHIPMENT ADDRESS         
 Mr.                      Mr.                      
 John Doe                 John Doe                 
@@ -221,33 +246,66 @@ Featherstone Street 49   Featherstone Street 49
 
 --------------------------------------------------------------------------------
 
-LAW OF REVOCATION
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet. 
+MAILTO FORMATING
+Some Company
+Come Street 42
+Somewhere
+E-Mail:test@example.com
+~/github/node-html-to-text (master) $ cat example/test.html | html-to-text --tables=#invoice,.address
+PARAGRAPHS
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
+et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+takimata sanctus est Lorem ipsum dolor sit amet.www.github.com
+
+At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
+dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
+invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
+et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
+takimata sanctus est Lorem ipsum dolor sit amet.
 
 --------------------------------------------------------------------------------
 
-TERMS OF CONDITION
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet. 
+PRETTY PRINTED TABLE
+ARTICLE                  PRICE   TAXES             AMOUNT   TOTAL   
+Product 1                6,99€   7%                1        6,99€   
+Contains: 1x Product 1                                              
+Shipment costs           3,25€   7%                1        3,25€   
+                                 to pay: 10,24€                     
+                                 Taxes 7%: 0,72€                    
 
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet. 
+--------------------------------------------------------------------------------
 
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd  no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,    
-diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed 
-voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita   
-sea takimata sanctus est Lorem ipsum dolor sit amet.
+LISTS
+ * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+ * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+ 1. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+ 2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
+    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
+--------------------------------------------------------------------------------
+
+COLUMN LAYOUT WITH TABLES
+INVOICE ADDRESS          SHIPMENT ADDRESS         
+Mr.                      Mr.                      
+John Doe                 John Doe                 
+Featherstone Street 49   Featherstone Street 49   
+28199 Bremen             28199 Bremen             
+
+--------------------------------------------------------------------------------
+
+MAILTO FORMATING
+Some Company
+Some Street 42
+Somewhere
+E-Mail:test@example.com
 ```
 
 ## License 
