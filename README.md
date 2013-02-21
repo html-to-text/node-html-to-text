@@ -16,6 +16,12 @@ A simple converter that parses HTML and returns beautiful text. It was mainly de
 npm install html-to-text
 ```
 
+Or when you want to use it as command line interface it is recommended to install it globally via
+
+```
+npm install html-to-text -g
+```
+
 ## Usage
 You can read from a file via:
 
@@ -55,13 +61,13 @@ It is possible to use html-to-text as command line interface. This allows an eas
 `html-to-text` uses `stdin` and `stdout` for data in and output. So you can use `html-to-html` the following way:
 
 ```
-cat examples/test.html | html-to-text > test.txt
+cat example/test.html | html-to-text > test.txt
 ```
 
 There also all options available as described above. You can use them like this:
 
 ```
-cat examples/test.html | html-to-text --tables=#invoice,.address --wordwrap=100 > test.txt
+cat example/test.html | html-to-text --tables=#invoice,.address --wordwrap=100 > test.txt
 ```
 
 The `tables` option has to be declared as comma separated list without whitespaces.

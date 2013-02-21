@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Simple html to plain text converter",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
   	"converter"
   ],
   "engines": { 
-  	"node": "*" 
+  	"node": "~0.8.0" 
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
