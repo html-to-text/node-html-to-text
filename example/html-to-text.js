@@ -11,7 +11,7 @@ console.log();
 
 console.log('fromFile:');
 htmlToText.fromFile(path.join(__dirname, 'test.html'), {
-	tables: ['#invoice', '.address']
+	tables: ['#invoice', '.address', '.replacements']
 }, function(err, text) {
 	if (err) return console.error(err);
 	console.log(text);
