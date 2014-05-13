@@ -3,27 +3,28 @@
   "version": "0.0.8",
   "description": "Simple html to plain text converter",
   "main": "index.js",
-  "scripts": {
-    
+  "scripts": {    
   },
   "author": "Malte Legenhausen",
   "license": "MIT",
+  "repository": "git@github.com:werk85/node-html-to-text.git",
+  "bugs": { "url": "https://github.com/werk85/node-html-to-text/issues" },
   "dependencies": {
-  	"htmlparser": "1.x.x",
-  	"underscore": "1.x.x",
-  	"underscore.string": "2.x.x",
+    "htmlparser": "1.x.x",
+    "underscore": "1.x.x",
+    "underscore.string": "2.x.x",
     "optimist": "0.x.x" 
   },
   "keywords": [
     "html",
-  	"node",
-  	"text",
-  	"mail",
+    "node",
+    "text",
+    "mail",
     "plain",
-  	"converter"
+    "converter"
   ],
   "engines": { 
-  	"node": "~0.8.0" 
+    "node": "~0.8.0" 
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
