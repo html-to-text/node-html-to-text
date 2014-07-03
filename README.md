@@ -209,7 +209,7 @@ gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
 dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
 invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-takimata sanctus est Lorem ipsum dolor sit amet.www.github.com
+takimata sanctus est Lorem ipsum dolor sit amet. Github [www.github.com]
 
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
 gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
@@ -256,7 +256,7 @@ MAILTO FORMATING
 Some Company
 Some Street 42
 Somewhere
-E-Mail:test@example.com
+E-Mail: Click here [test@example.com]
 ```
 
 ## License 
