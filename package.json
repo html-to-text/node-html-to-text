@@ -1,14 +1,28 @@
 {
   "name": "html-to-text",
-  "version": "0.0.8",
-  "description": "Simple html to plain text converter",
+  "version": "0.1.0",
+  "description": "Advanced html to plain text converter",
   "main": "index.js",
-  "scripts": {    
+  "scripts": {
   },
-  "author": "Malte Legenhausen",
-  "license": "MIT",
-  "repository": "git@github.com:werk85/node-html-to-text.git",
-  "bugs": { "url": "https://github.com/werk85/node-html-to-text/issues" },
+  "author": {
+    "name": "Malte Legenhausen",
+    "email": "legenhausen@werk85.de"
+  },
+  "homepage": "https://github.com/werk85/node-html-to-text",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/werk85/node-html-to-text/blob/master/LICENSE-MIT"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/werk85/node-html-to-text.git"
+  },
+  "bugs": {
+    "url": "https://github.com/werk85/node-html-to-text/issues"
+  },
   "dependencies": {
     "htmlparser": "1.x.x",
     "underscore": "1.x.x",
