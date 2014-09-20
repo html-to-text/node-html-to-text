@@ -37,8 +37,8 @@
     "plain",
     "converter"
   ],
-  "engines": { 
-    "node": "~0.8.0" 
+  "engines": {
+    "node": ">= 0.8.0 <0.12"
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
