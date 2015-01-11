@@ -53,6 +53,8 @@ You can configure the behaviour of html-to-text with the following options:
 
  * `tables` allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored. You can assign `true` to this attribute to select all tables. Default: `[]`
  * `wordwrap` defines after how many chars a line break should follow in `p` elements. Default: `80`
+ * `linkHrefBaseUrl` allows you to specify the server host for href attributes, where the links start at the root (`/`). For example, `linkHrefBaseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`. Keep in mind that `linkHrefBaseUrl` shouldn't end with a `/`.
+ * `hideLinkHrefIfSameAsText` by default links are translated the following `<a href='link'>text</a>` => becomes => `text [link]`. If this option is set to true and `link` and `text` are the same, `[link]` will be hidden and only `text` visible.
 
 ## Command Line Interface
 
