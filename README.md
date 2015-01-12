@@ -52,7 +52,7 @@ console.log(text);
 You can configure the behaviour of html-to-text with the following options:
 
  * `tables` allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored. You can assign `true` to this attribute to select all tables. Default: `[]`
- * `wordwrap` defines after how many chars a line break should follow in `p` elements. Default: `80`
+ * `wordwrap` defines after how many chars a line break should follow in `p` elements. Set to `null` or `false` to disable word-wrapping. Default: `80`
 
 ## Command Line Interface
 
