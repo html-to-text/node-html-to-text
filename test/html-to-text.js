@@ -1,5 +1,7 @@
 var expect = require('chai').expect;
 var htmlToText = require('..');
+var path = require('path');
+var fs = require('fs');
 
 
 describe('html-to-text', function() {
@@ -31,6 +33,26 @@ describe('html-to-text', function() {
 
       it('should not wordwrap when given false', function() {
         expect(htmlToText.fromString(longStr, { wordwrap: false })).to.equal(longStr);
+      });
+
+    });
+  });
+
+  describe('.fromFile()', function() {
+    it('should convert file at given path', function(done) {
+
+      var htmlFile = path.join(__dirname, 'test.html'),
+        txtFile = path.join(__dirname, 'test.txt');
+
+      fs.readFile(txtFile, 'utf8', function(err, expectedTxt) {
+        expect(err).to.be.null();
+
+        htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
+          expect(err).to.be.null();
+          expect(text).to.equal(expectedTxt);
+          done()
+        });
+
       });
 
     });
