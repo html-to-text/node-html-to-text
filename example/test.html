@@ -131,5 +131,16 @@
 				</td>
 			</tr>
 		</table>
+
+		<hr />
+		<h2>Pretty printed Source Code</h2>
+		<pre>
+htmlToText.fromFile(path.join(__dirname, 'test.html'), {
+	tables: ['#invoice', '.address']
+}, function(err, text) {
+	if (err) return console.error(err);
+	console.log(text);
+});
+		</pre>
 	</body>
 </html>
