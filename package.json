@@ -4,6 +4,7 @@
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
+    "test": "node_modules/.bin/mocha"
   },
   "author": {
     "name": "Malte Legenhausen",
@@ -27,7 +28,7 @@
     "htmlparser": "1.x.x",
     "underscore": "1.x.x",
     "underscore.string": "2.x.x",
-    "optimist": "0.x.x" 
+    "optimist": "0.x.x"
   },
   "keywords": [
     "html",
@@ -42,5 +43,10 @@
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "install": "^0.1.8",
+    "mocha": "^2.1.0"
   }
 }
