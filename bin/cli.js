@@ -3,7 +3,14 @@ var optimist = require('optimist');
 
 var htmlToText = require('../lib/html-to-text');
 
-var argv = optimist.default('tables', '').default('wordwrap', 80).argv;
+var argv = optimist
+	.default('tables', '')
+	.default('wordwrap', 80)
+	.default('ignore-href', false)
+	.default('ignore-image', false)
+	.argv;
+
+console.log(argv);
 var text = '';
 
 process.title = 'html-to-text';
@@ -17,7 +24,9 @@ process.stdin.on('data', function data(data) {
 process.stdin.on('end', function end() {
 	text = htmlToText.fromString(text, {
 		tables: argv.tables.split(','),
-		wordwrap: argv.wordwrap
+		wordwrap: argv.wordwrap,
+		ignoreHref: argv['ignore-href'],
+		ignoreImage: argv['ignore-image']
 	});
 	process.stdout.write(text + '\n', 'utf-8');
 });
