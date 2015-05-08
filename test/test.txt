@@ -52,3 +52,5 @@ Some Company
 Some Street 42
 Somewhere
 E-Mail: Click here [test@example.com]
+
+We appreciate your business. And we hope you'll check out our new products [http://example.com/]!
