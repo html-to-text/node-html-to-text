@@ -58,4 +58,19 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('li', function () {
+    it('doesnt wrap li if wordwrap isnt', function () {
+      var html = 'Good morning Jacob, \
+        <p>Lorem ipsum dolor sit amet</p> \
+        <p><strong>Lorem ipsum dolor sit amet.</strong></p> \
+        <ul> \
+          <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
+        </ul> \
+      ';
+      var resultExpected = 'Good morning Jacob,Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
+      var result = htmlToText.fromString(html, { wordwrap: false });
+      expect(result).to.equal(resultExpected);
+    });
+  });
+
 });
