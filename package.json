@@ -34,7 +34,7 @@
     "converter"
   ],
   "engines": {
-    "node": ">= 0.8.0 <=0.12 || <=1.4.0"
+    "node": ">= 0.8.0 <=0.12 || <3"
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
