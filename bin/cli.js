@@ -10,7 +10,6 @@ var argv = optimist
 	.default('ignore-image', false)
 	.argv;
 
-console.log(argv);
 var text = '';
 
 process.title = 'html-to-text';
