@@ -13,6 +13,7 @@ invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
 takimata sanctus est Lorem ipsum dolor sit amet.
 
+
 --------------------------------------------------------------------------------
 
 PRETTY PRINTED TABLE
@@ -22,6 +23,7 @@ Contains: 1x Product 1
 Shipment costs           3,25€   7%                1        3,25€   
                                  to pay: 10,24€                     
                                  Taxes 7%: 0,72€                    
+
 
 --------------------------------------------------------------------------------
 
@@ -36,6 +38,7 @@ LISTS
  2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
     gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
+
 --------------------------------------------------------------------------------
 
 COLUMN LAYOUT WITH TABLES
@@ -45,6 +48,7 @@ John Doe                 John Doe
 Featherstone Street 49   Featherstone Street 49   
 28199 Bremen             28199 Bremen             
 
+
 --------------------------------------------------------------------------------
 
 MAILTO FORMATING
@@ -53,4 +57,4 @@ Some Street 42
 Somewhere
 E-Mail: Click here [test@example.com]
 
-We appreciate your business. And we hope you'll check out our new products [http://example.com/]!
+We appreciate your business. And we hope you'll check out our new products [http://example.com/] !
