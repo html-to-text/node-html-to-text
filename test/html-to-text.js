@@ -44,17 +44,12 @@ describe('html-to-text', function() {
       var htmlFile = path.join(__dirname, 'test.html'),
         txtFile = path.join(__dirname, 'test.txt');
 
-      fs.readFile(txtFile, 'utf8', function(err, expectedTxt) {
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
         expect(err).to.be.null();
-
-        htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
-          expect(err).to.be.null();
-          expect(text).to.equal(expectedTxt);
-          done()
-        });
-
+        expect(text).to.equal(expectedTxt);
+        done()
       });
-
     });
   });
 
