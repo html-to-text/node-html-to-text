@@ -73,4 +73,23 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('tables', function () {
+    it('does not process tables with uppercase tags / does not process tables with center tag', function () {
+      var html = 'Good morning Jacob, \
+        <TABLE> \
+        <CENTER> \
+        <TBODY> \
+        <TR> \
+        <TD>Lorem ipsum dolor sit amet.</TD> \
+        </TR> \
+        </CENTER> \
+        </TBODY> \
+        </TABLE> \
+      ';
+      var resultExpected = 'Good morning Jacob,Lorem ipsum dolor sit amet.';
+      var result = htmlToText.fromString(html, { tables: true });
+      expect(result).to.equal(resultExpected);
+    });
+  });
+
 });
