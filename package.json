@@ -4,7 +4,8 @@
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "node_modules/.bin/mocha",
+    "example": "node ./example/html-to-text.js"
   },
   "author": {
     "name": "Malte Legenhausen",
