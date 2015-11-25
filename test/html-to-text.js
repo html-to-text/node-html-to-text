@@ -87,4 +87,13 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('entities', function () {
+    it('does not insert null bytes', function () {
+      var html = '<a href="some-url?a=b&amp;b=c">Testing &amp; Done</a>'
+
+      var result = htmlToText.fromString(html)
+      expect(result).to.equal('Testing & Done [some-url?a=b&b=c]')
+    })
+  })
+
 });
