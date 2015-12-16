@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.5.1
+
+ * Support for h5 and h6 tags added #74
+
 ## Version 1.5.0
 
  * Entity regex is now less greedy #69 #70
