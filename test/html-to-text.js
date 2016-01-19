@@ -34,7 +34,27 @@ describe('html-to-text', function() {
       it('should not wordwrap when given false', function() {
         expect(htmlToText.fromString(longStr, { wordwrap: false })).to.equal(longStr);
       });
+    });
+    describe('preserveNewlines option', function() {
 
+      var newlineStr;
+
+      beforeEach(function() {
+        newlineStr = '<p\n>One\nTwo\nThree</p>';
+      });
+
+      it('should not preserve newlines by default', function() {
+        expect(htmlToText.fromString(newlineStr)).to.not.contain('\n');
+      });
+
+      it('should preserve newlines when provided with a truthy value', function() {
+        expect(htmlToText.fromString(newlineStr, { preserveNewlines: true })).to.contain('\n');
+      });
+
+      it('should not preserve newlines in the tags themselves', function() {
+        var output_text = htmlToText.fromString(newlineStr, { preserveNewlines: true });
+        expect(output_text.slice(0,1)).to.equal("O");
+      });
     });
   });
 
