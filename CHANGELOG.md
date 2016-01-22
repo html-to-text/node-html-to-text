@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.6.0
+
+ * Preserve newlines in text feature added #75
+
 ## Version 1.5.1
 
  * Support for h5 and h6 tags added #74
