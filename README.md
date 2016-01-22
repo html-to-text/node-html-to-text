@@ -57,6 +57,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `hideLinkHrefIfSameAsText` by default links are translated the following `<a href='link'>text</a>` => becomes => `text [link]`. If this option is set to true and `link` and `text` are the same, `[link]` will be hidden and only `text` visible.
  * `ignoreHref` ignore all document links if `true`.
  * `ignoreImage` ignore all document images if `true`.
+ * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
 
 ## Command Line Interface
 
