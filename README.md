@@ -63,7 +63,7 @@ You can configure the behaviour of html-to-text with the following options:
 
 It is possible to use html-to-text as command line interface. This allows an easy validation of your generated text and the integration in other systems that does not run on node.js.
 
-`html-to-text` uses `stdin` and `stdout` for data in and output. So you can use `html-to-html` the following way:
+`html-to-text` uses `stdin` and `stdout` for data in and output. So you can use `html-to-text` the following way:
 
 ```
 cat example/test.html | html-to-text > test.txt
