@@ -4,7 +4,7 @@ var optimist = require('optimist');
 var htmlToText = require('../lib/html-to-text');
 
 var argv = optimist
-	.default('tables', '')
+	.string('tables')
 	.default('wordwrap', 80)
 	.default('ignore-href', false)
 	.default('ignore-image', false)
@@ -22,10 +22,17 @@ process.stdin.on('data', function data(data) {
 
 process.stdin.on('end', function end() {
 	text = htmlToText.fromString(text, {
-		tables: argv.tables.split(','),
+		tables: interpretTables(argv.tables),
 		wordwrap: argv.wordwrap,
 		ignoreHref: argv['ignore-href'],
 		ignoreImage: argv['ignore-image']
 	});
 	process.stdout.write(text + '\n', 'utf-8');
 });
+
+function interpretTables(tables) {
+	if (!tables || tables === '' || tables === 'false') {
+		return [];
+	}
+	return tables === 'true' || tables.split(',');
+}
