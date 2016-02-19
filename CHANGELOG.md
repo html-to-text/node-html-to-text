@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.6.2
+
+ * Fixed: correctly handle HTML entities for images #82
+
 ## Version 1.6.1
 
  * Fixed: using --tables=true doesn't produce the expected results. #80
