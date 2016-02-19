@@ -114,6 +114,13 @@ describe('html-to-text', function() {
       var result = htmlToText.fromString(html)
       expect(result).to.equal('Testing & Done [some-url?a=b&b=c]')
     })
+
+    it('should replace entities inside `alt` attributes of images', function () {
+      var html = '<img src="test.png" alt="&quot;Awesome&quot;">'
+
+      var result = htmlToText.fromString(html)
+      expect(result).to.equal('"Awesome" [test.png]')
+    })
   })
 
 });
