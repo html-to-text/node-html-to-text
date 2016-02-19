@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.6.1
+
+ * Fixed: using --tables=true doesn't produce the expected results. #80
+
 ## Version 1.6.0
 
  * Preserve newlines in text feature added #75

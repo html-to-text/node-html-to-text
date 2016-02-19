@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
