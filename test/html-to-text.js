@@ -66,7 +66,7 @@ describe('html-to-text', function() {
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
-        expect(err).to.be.null();
+        expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
         done()
       });
@@ -113,14 +113,20 @@ describe('html-to-text', function() {
 
       var result = htmlToText.fromString(html)
       expect(result).to.equal('Testing & Done [some-url?a=b&b=c]')
-    })
+    });
 
     it('should replace entities inside `alt` attributes of images', function () {
       var html = '<img src="test.png" alt="&quot;Awesome&quot;">'
 
       var result = htmlToText.fromString(html)
       expect(result).to.equal('"Awesome" [test.png]')
-    })
-  })
+    });
+  });
 
+  describe('unicode support', function () {
+    it('should decode &#128514; to 😂', function () {
+      var result = htmlToText.fromString('&#128514;');
+      expect(result).to.equal('😂');
+    });
+  });
 });

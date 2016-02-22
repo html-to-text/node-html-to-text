@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "1.6.2",
+  "version": "2.0.0",
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
@@ -21,10 +21,11 @@
     "url": "https://github.com/werk85/node-html-to-text/issues"
   },
   "dependencies": {
-    "htmlparser": "1.x.x",
-    "underscore": "1.x.x",
-    "underscore.string": "2.x.x",
-    "optimist": "0.x.x"
+    "he": "^0.5.0",
+    "htmlparser": "^1.7.7",
+    "optimist": "^0.6.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.2.3"
   },
   "keywords": [
     "html",
@@ -35,14 +36,13 @@
     "converter"
   ],
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.10.0"
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
-    "install": "^0.1.8",
-    "mocha": "^2.1.0"
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
   }
 }

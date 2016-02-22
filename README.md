@@ -1,5 +1,7 @@
 # node-html-to-text
 
+[![Build Status](https://travis-ci.org/werk85/node-html-to-text.svg?branch=master)](https://travis-ci.org/werk85/node-html-to-text)
+
 An advanced converter that parses HTML and returns beautiful text. It was mainly designed to transform HTML E-Mail templates to a text representation. So it is currently optimized for table layouts.
 
 ### Features:
@@ -58,6 +60,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `ignoreHref` ignore all document links if `true`.
  * `ignoreImage` ignore all document images if `true`.
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
+ * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
 
 ## Command Line Interface
 

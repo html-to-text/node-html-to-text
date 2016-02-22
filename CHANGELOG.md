@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 2.0.0
+
+ * Unicode support added. #81
+ * New option `decodeOptions` added.
+ * Dependencies updated.
+
+Breaking Changes:
+
+ * Minimum node version increased to >=0.10.0
+
 ## Version 1.6.2
 
  * Fixed: correctly handle HTML entities for images #82
