@@ -8,9 +8,10 @@ An advanced converter that parses HTML and returns beautiful text. It was mainly
 
  * Transform headlines to uppercase text.
  * Convert tables to an appropiate text representation with rows and columns.
- * Word wrapping for paragraphs (default 80 chars)
+ * Word wrapping for paragraphs (default 80 chars).
  * Automatic extraction of href information from links.
- * `<br>` conversion to `\n`
+ * `<br>` conversion to `\n`.
+ * Unicode support.
 
 ## Installation
 
