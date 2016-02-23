@@ -62,6 +62,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `ignoreImage` ignore all document images if `true`.
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
  * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
+ * `baseElement` defines the base element of the document to capture from.  This command allows the user to select an element using a single tag with css class and id parameters e.g. `p.class1.class2#id1#id2`  .  Default: `body` 
 
 ## Command Line Interface
 
@@ -274,7 +275,7 @@ Somewhere
 E-Mail: Click here [test@example.com]
 ```
 
-## License 
+## License
 
 (The MIT License)
 
