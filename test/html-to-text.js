@@ -129,4 +129,69 @@ describe('html-to-text', function() {
       expect(result).to.equal('😂');
     });
   });
+
+  describe('Base element', function () {
+    it('should retrieve and convert the entire document under `body` by default', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['#invoice', '.address']
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done()
+      });
+    });
+
+    it('should only retrieve and convert content under the specified base element if found', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test-address.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['.address'],
+        baseElement: 'table.address'
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done()
+      });
+    });
+
+    it('should retrieve and convert the entire document by default if no base element is found', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['#invoice', '.address'],
+        baseElement: 'table.notthere'
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done()
+      });
+    });
+
+    it('should return null if the base element isn\'t found and we\'re not returning the DOM by default', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html');
+
+      var expectedTxt = '';
+      var options = {
+        tables: ['#invoice', '.address'],
+        baseElement: 'table.notthere',
+        returnDomByDefault: false
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done()
+      });
+    });
+  });
 });
