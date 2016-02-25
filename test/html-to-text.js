@@ -34,7 +34,23 @@ describe('html-to-text', function() {
       it('should not wordwrap when given false', function() {
         expect(htmlToText.fromString(longStr, { wordwrap: false })).to.equal(longStr);
       });
+
+      it('should not exceed the line width when processing embedded format tags', function() {
+        var testString = '<p><strong>This text isn\'t counted</strong> when calculating where to break a string for 80 character line lengths.</p>';
+        expect(htmlToText.fromString(testString, {} )).to.equal('This text isn\'t counted when calculating where to break a string for 80\ncharacter line lengths.');
+      });
+
+      it('should not wrongly truncate lines when processing embedded format tags', function() {
+        var testString = '<p><strong>This text isn\'t counted</strong> when calculating where to break a string for 80 character line lengths.  However it can affect where the next line breaks and this could lead to having an early line break</p>';
+        expect(htmlToText.fromString(testString, {} )).to.equal('This text isn\'t counted when calculating where to break a string for 80\ncharacter line lengths. However it can affect where the next line breaks and\nthis could lead to having an early line break');
+      });
+
+      it('should not exceed the line width when processing anchor tags', function() {
+        var testString = "<p>We appreciate your business. And we hope you'll check out our <a href=\"http://example.com/\">new products</a>!</p>";
+        expect(htmlToText.fromString(testString, {} )).to.equal('We appreciate your business. And we hope you\'ll check out our new products\n[http://example.com/] !');
+      })
     });
+
     describe('preserveNewlines option', function() {
 
       var newlineStr;
