@@ -40,6 +40,11 @@ describe('html-to-text', function() {
         expect(htmlToText.fromString(testString, {} )).to.equal('This text isn\'t counted when calculating where to break a string for 80\ncharacter line lengths.');
       });
 
+      it('should work with a long string containing line feeds', function() {
+        var testString = '<p>If a word with a line feed exists over the line feed boundary then\nyou\nmust\nrespect it.</p>';
+        expect(htmlToText.fromString(testString, {} )).to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
+      });
+
       it('should not wrongly truncate lines when processing embedded format tags', function() {
         var testString = '<p><strong>This text isn\'t counted</strong> when calculating where to break a string for 80 character line lengths.  However it can affect where the next line breaks and this could lead to having an early line break</p>';
         expect(htmlToText.fromString(testString, {} )).to.equal('This text isn\'t counted when calculating where to break a string for 80\ncharacter line lengths. However it can affect where the next line breaks and\nthis could lead to having an early line break');
@@ -48,7 +53,19 @@ describe('html-to-text', function() {
       it('should not exceed the line width when processing anchor tags', function() {
         var testString = "<p>We appreciate your business. And we hope you'll check out our <a href=\"http://example.com/\">new products</a>!</p>";
         expect(htmlToText.fromString(testString, {} )).to.equal('We appreciate your business. And we hope you\'ll check out our new products\n[http://example.com/] !');
-      })
+      });
+
+      it('should honour line feeds from a long word across the wrap, where the line feed is before the wrap', function() {
+        var testString = '<p>This string is meant to test if a string is split properly across a\nnewlineandlongword with following text.</p>';
+        expect(htmlToText.fromString(testString, {} ))
+            .to.equal('This string is meant to test if a string is split properly across a\nnewlineandlongword with following text.');
+      });
+
+      it('should remove line feeds from a long word across the wrap, where the line feed is after the wrap', function() {
+        var testString = '<p>This string is meant to test if a string is split properly across anewlineandlong\nword with following text.</p>';
+        expect(htmlToText.fromString(testString, {} ))
+            .to.equal('This string is meant to test if a string is split properly across\nanewlineandlong word with following text.');
+      });
     });
 
     describe('preserveNewlines option', function() {
@@ -70,6 +87,36 @@ describe('html-to-text', function() {
       it('should not preserve newlines in the tags themselves', function() {
         var output_text = htmlToText.fromString(newlineStr, { preserveNewlines: true });
         expect(output_text.slice(0,1)).to.equal("O");
+      });
+
+      it('should preserve line feeds in a long wrapping string containing line feeds', function() {
+        var testString = '<p>If a word with a line feed exists over the line feed boundary then\nyou\nmust\nrespect it.</p>';
+        expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+            .to.equal('If a word with a line feed exists over the line feed boundary then\nyou\nmust\nrespect it.');
+      });
+
+      it('should preserve line feeds in a long string containing line feeds across the wrap', function() {
+        var testString = '<p>If a word with a line feed exists over the line feed boundary then\nyou must respect it.</p>';
+        expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+            .to.equal('If a word with a line feed exists over the line feed boundary then\nyou must respect it.');
+      });
+
+      it('should preserve line feeds in a long string containing line feeds across the wrap with a line feed before 80 chars', function() {
+        var testString = '<p>This string is meant to test if a string is split properly across a\nnewlineandlongword with following text.</p>';
+        expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+            .to.equal('This string is meant to test if a string is split properly across a\nnewlineandlongword with following text.');
+      });
+
+      it('should preserve line feeds in a long string containing line feeds across the wrap with a line feed after 80 chars', function() {
+        var testString = '<p>This string is meant to test if a string is split properly across anewlineandlong\nword with following text.</p>';
+        expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+            .to.equal('This string is meant to test if a string is split properly across\nanewlineandlong\nword with following text.');
+      });
+
+      it('should split long lines', function() {
+        var testString = '<p>If a word with a line feed exists over the line feed boundary then you must respect it.</p>';
+        expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+            .to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
       });
     });
   });
