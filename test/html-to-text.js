@@ -257,4 +257,90 @@ describe('html-to-text', function() {
       });
     });
   });
+
+  describe('Long words', function() {
+    it('should split long words if forceWrapOnLimit is set, existing linefeeds converted to space', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: true }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlo\nng word_with_following_text.');
+    });
+
+    it('should not wrap a string if not wrapCharacters are found and forceWrapOnLimit is not set', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
+    });
+
+    it('should wrap on the last instance of a wrap character before the wordwrap limit.', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_\nanewlineandlong word_with_following_text.');
+    });
+
+    it('should wrap on the last instance of a wrap character before the wordwrap limit. Content of wrapCharacters shouldn\'t matter.', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/','-', '_'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_\nanewlineandlong word_with_following_text.');
+    });
+
+    it('should wrap on the last instance of a wrap character before the wordwrap limit. Order of wrapCharacters shouldn\'t matter.', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['_', '/'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_\nanewlineandlong word_with_following_text.');
+    });
+
+    it('should wrap on the last instance of a wrap character before the wordwrap limit. Should preference wrapCharacters in order', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split-properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['-', '_', '/'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split-\nproperly_across_anewlineandlong word_with_following_text.');
+    });
+
+    it('should not wrap a string that is too short', function() {
+      var testString = '<p>https://github.com/werk85/node-html-to-text/blob/master/lib/html-to-text.js</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/', '-'], forceWrapOnLimit: false }} ))
+          .to.equal('https://github.com/werk85/node-html-to-text/blob/master/lib/html-to-text.js');
+    });
+
+    it('should wrap a url string using \'/\'', function() {
+      var testString = '<p>https://github.com/AndrewFinlay/node-html-to-text/commit/64836a5bd97294a672b24c26cb8a3ccdace41001</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/', '-'], forceWrapOnLimit: false }} ))
+          .to.equal('https://github.com/AndrewFinlay/node-html-to-text/commit/\n64836a5bd97294a672b24c26cb8a3ccdace41001');
+    });
+
+    it('should wrap very long url strings using \'/\'', function() {
+      var testString = '<p>https://github.com/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/html-to-text.js</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/', '-'], forceWrapOnLimit: false }} ))
+          .to.equal('https://github.com/werk85/node-html-to-text/blob/master/lib/werk85/\nnode-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/\nwerk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/\nlib/html-to-text.js');
+    });
+
+    it('should wrap very long url strings using limit', function() {
+      var testString = '<p>https://github.com/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/html-to-text.js</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: [], forceWrapOnLimit: true }} ))
+          .to.equal('https://github.com/werk85/node-html-to-text/blob/master/lib/werk85/node-html-to-\ntext/blob/master/lib/werk85/node-html-to-text/blob/master/lib/werk85/node-html-t\no-text/blob/master/lib/werk85/node-html-to-text/blob/master/lib/html-to-text.js');
+    });
+
+    it('should honour preserveNewlines and split long words', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { preserveNewlines: true, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_\nanewlineandlong\nword_with_following_text.');
+    });
+
+    it('should not put in extra linefeeds if the end of the untouched long string coincides with a preserved line feed', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { preserveNewlines: true } ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
+    });
+
+    it('should split long strings buried in links and hide the href', function() {
+      var testString = '<a href="http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/">http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/</a>';
+      expect(htmlToText.fromString(testString, { hideLinkHrefIfSameAsText: true, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
+          .to.equal('http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/');
+    });
+
+    it('should split long strings buried in links and show the href', function() {
+      var testString = '<a href="http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/">http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/</a>';
+      expect(htmlToText.fromString(testString, { hideLinkHrefIfSameAsText: false, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
+          .to.equal('http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/\n[http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/]');
+    });
+  })
 });

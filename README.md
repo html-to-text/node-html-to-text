@@ -64,6 +64,9 @@ You can configure the behaviour of html-to-text with the following options:
  * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
  * `baseElement` defines the base element of the document.  All content captured will be captured below the baseElement.  This option allows the user to select an element using a single tag with css class and id parameters e.g. `p.class1.class2#id1#id2`  .  Default: `body`
  * `returnDomByDefault` convert the entire document if we don't find the tag we're looking for if `true`.
+ * `longWordSplit` describes how to wrap long words, has the following parameters:
+   * `wrapCharacters` is an array containing the characters that may be wrapped on, these are used in order
+   * `forceWrapOnLimit` defines whether to break long words on the limit if `true`.
 
 ## Command Line Interface
 
