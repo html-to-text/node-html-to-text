@@ -131,7 +131,7 @@ describe('html-to-text', function() {
       htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
         expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
-        done()
+        done();
       });
     });
   });
@@ -172,17 +172,17 @@ describe('html-to-text', function() {
 
   describe('entities', function () {
     it('does not insert null bytes', function () {
-      var html = '<a href="some-url?a=b&amp;b=c">Testing &amp; Done</a>'
+      var html = '<a href="some-url?a=b&amp;b=c">Testing &amp; Done</a>';
 
-      var result = htmlToText.fromString(html)
-      expect(result).to.equal('Testing & Done [some-url?a=b&b=c]')
+      var result = htmlToText.fromString(html);
+      expect(result).to.equal('Testing & Done [some-url?a=b&b=c]');
     });
 
     it('should replace entities inside `alt` attributes of images', function () {
-      var html = '<img src="test.png" alt="&quot;Awesome&quot;">'
+      var html = '<img src="test.png" alt="&quot;Awesome&quot;">';
 
-      var result = htmlToText.fromString(html)
-      expect(result).to.equal('"Awesome" [test.png]')
+      var result = htmlToText.fromString(html);
+      expect(result).to.equal('"Awesome" [test.png]');
     });
   });
 
@@ -205,7 +205,7 @@ describe('html-to-text', function() {
       htmlToText.fromFile(htmlFile, options, function(err, text) {
         expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
-        done()
+        done();
       });
     });
 
@@ -221,7 +221,7 @@ describe('html-to-text', function() {
       htmlToText.fromFile(htmlFile, options, function(err, text) {
         expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
-        done()
+        done();
       });
     });
 
@@ -237,7 +237,7 @@ describe('html-to-text', function() {
       htmlToText.fromFile(htmlFile, options, function(err, text) {
         expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
-        done()
+        done();
       });
     });
 
@@ -253,7 +253,7 @@ describe('html-to-text', function() {
       htmlToText.fromFile(htmlFile, options, function(err, text) {
         expect(err).to.be.a('null');
         expect(text).to.equal(expectedTxt);
-        done()
+        done();
       });
     });
   });
