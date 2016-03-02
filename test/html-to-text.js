@@ -225,6 +225,38 @@ describe('html-to-text', function() {
       });
     });
 
+    it('should retrieve and convert content under multiple base elements', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test-address-dup.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['.address'],
+        baseElement: ['table.address', 'table.address']
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done();
+      });
+    });
+
+    it('should retrieve and convert content under multiple base elements in any order', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test-any-order.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['.address'],
+        baseElement: ['table.address', 'p.normal-space', 'table.address']
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done();
+      });
+    });
+
     it('should process the first base element found when multiple exist', function(done) {
       var htmlFile = path.join(__dirname, 'test.html'),
           txtFile = path.join(__dirname, 'test-first-element.txt');
