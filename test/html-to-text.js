@@ -225,6 +225,22 @@ describe('html-to-text', function() {
       });
     });
 
+    it('should process the first base element found when multiple exist', function(done) {
+      var htmlFile = path.join(__dirname, 'test.html'),
+          txtFile = path.join(__dirname, 'test-first-element.txt');
+
+      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
+      var options = {
+        tables: ['.address'],
+        baseElement: 'p.normal-space'
+      };
+      htmlToText.fromFile(htmlFile, options, function(err, text) {
+        expect(err).to.be.a('null');
+        expect(text).to.equal(expectedTxt);
+        done();
+      });
+    });
+
     it('should retrieve and convert the entire document by default if no base element is found', function(done) {
       var htmlFile = path.join(__dirname, 'test.html'),
           txtFile = path.join(__dirname, 'test.txt');
