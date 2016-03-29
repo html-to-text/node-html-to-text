@@ -62,6 +62,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `ignoreImage` ignore all document images if `true`.
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
  * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
+ * `uppercaseHeadings` by default, headings (`<h1>`, `<h2>`, etc) are uppercased. Set to `false` to leave headings as they are.
 
 ## Command Line Interface
 
@@ -274,7 +275,7 @@ Somewhere
 E-Mail: Click here [test@example.com]
 ```
 
-## License 
+## License
 
 (The MIT License)
 

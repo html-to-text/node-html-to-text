@@ -129,4 +129,16 @@ describe('html-to-text', function() {
       expect(result).to.equal('😂');
     });
   });
+
+  describe('disable uppercaseHeadings', function () {
+    [1, 2, 3, 4, 5, 6].forEach(function (i) {
+      it('should return h' + i + ' in lowercase', function () {
+        var result = htmlToText.fromString('<h' + i + '>test</h' + i + '>', {
+          uppercaseHeadings: false
+        });
+        expect(result).to.equal('test');
+      });
+    });
+    
+  });
 });
