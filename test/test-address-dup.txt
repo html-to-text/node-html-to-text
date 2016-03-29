@@ -1,0 +1,11 @@
+INVOICE ADDRESS          SHIPMENT ADDRESS         
+Mr.                      Mr.                      
+John Doe                 John Doe                 
+Featherstone Street 49   Featherstone Street 49   
+28199 Bremen             28199 Bremen             
+
+INVOICE ADDRESS          SHIPMENT ADDRESS         
+Mr.                      Mr.                      
+John Doe                 John Doe                 
+Featherstone Street 49   Featherstone Street 49   
+28199 Bremen             28199 Bremen
