@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 2.1.0
+
+ * New option to disable `uppercaseHeadings` added. #86
+ * Starting point of html to text conversion can now be defined in the options via the `baseElement` option. #83
+ * Support for long words added. The behaviour can be configured via the `longWordSplit` option. #83
+
 ## Version 2.0.0
 
  * Unicode support added. #81
