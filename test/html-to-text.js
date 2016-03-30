@@ -325,9 +325,21 @@ describe('html-to-text', function() {
           .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlo\nng word_with_following_text.');
     });
 
+    it('should not wrap a string if longWordSplit is not set', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlongword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, {} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlongword_with_following_text.');
+    });
+ 
     it('should not wrap a string if not wrapCharacters are found and forceWrapOnLimit is not set', function() {
       var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
       expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: false }} ))
+          .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
+    });
+
+    it('should not wrap a string if no wrapCharacters are set and forceWrapOnLimit is not set', function() {
+      var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
+      expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: [], forceWrapOnLimit: false }} ))
           .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
     });
 
