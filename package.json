@@ -21,7 +21,7 @@
     "url": "https://github.com/werk85/node-html-to-text/issues"
   },
   "dependencies": {
-    "he": "^0.5.0",
+    "he": "^1.0.0",
     "htmlparser": "^1.7.7",
     "optimist": "^0.6.1",
     "underscore": "^1.8.3",
