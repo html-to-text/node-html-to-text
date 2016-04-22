@@ -28,12 +28,12 @@ npm install html-to-text -g
 ## Usage
 You can read from a file via:
 
-```
+```javascript
 var htmlToText = require('html-to-text');
 
 htmlToText.fromFile(path.join(__dirname, 'test.html'), {
 	tables: ['#invoice', '.address']
-}, function(err, text) {
+}, (err, text) => {
 	if (err) return console.error(err);
 	console.log(text);
 });
@@ -41,7 +41,7 @@ htmlToText.fromFile(path.join(__dirname, 'test.html'), {
 
 or directly from a string:
 
-```
+```javascript
 var htmlToText = require('html-to-text');
 
 var text = htmlToText.fromString('<h1>Hello World</h1>', {
@@ -89,7 +89,7 @@ The `tables` option has to be declared as comma separated list without whitespac
 
 ## Example
 
-```
+```html
 <html>
 	<head>
 		<meta charset="utf-8">
