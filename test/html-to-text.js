@@ -52,7 +52,7 @@ describe('html-to-text', function() {
 
       it('should not exceed the line width when processing anchor tags', function() {
         var testString = "<p>We appreciate your business. And we hope you'll check out our <a href=\"http://example.com/\">new products</a>!</p>";
-        expect(htmlToText.fromString(testString, {} )).to.equal('We appreciate your business. And we hope you\'ll check out our new products\n[http://example.com/] !');
+        expect(htmlToText.fromString(testString, {} )).to.equal('We appreciate your business. And we hope you\'ll check out our new products\n[http://example.com/]!');
       });
 
       it('should honour line feeds from a long word across the wrap, where the line feed is before the wrap', function() {
@@ -145,7 +145,7 @@ describe('html-to-text', function() {
           <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
         </ul> \
       ';
-      var resultExpected = 'Good morning Jacob,Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
+      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
       var result = htmlToText.fromString(html, { wordwrap: false });
       expect(result).to.equal(resultExpected);
     });
@@ -164,7 +164,7 @@ describe('html-to-text', function() {
         </TBODY> \
         </TABLE> \
       ';
-      var resultExpected = 'Good morning Jacob,Lorem ipsum dolor sit amet.';
+      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet.';
       var result = htmlToText.fromString(html, { tables: true });
       expect(result).to.equal(resultExpected);
     });
