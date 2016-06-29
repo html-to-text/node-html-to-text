@@ -414,5 +414,12 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, { hideLinkHrefIfSameAsText: false, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
           .to.equal('http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/\n[http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/]');
     });
-  })
+  });
+
+  describe('whitespace', function() {
+    it('should not be ignored inside a whitespace-only node', function() {
+      var testString = 'foo<span> </span>bar';
+      expect(htmlToText.fromString(testString)).to.equal('foo bar');
+    });
+  });
 });
