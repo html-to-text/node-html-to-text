@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.1.1
+
+ * Extra space ploblem fixed. #88
+
 ## Version 2.1.0
 
  * New option to disable `uppercaseHeadings` added. #86
