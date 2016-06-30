@@ -170,6 +170,18 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('lists', function() {
+    it('should handle empty unordered lists', function() {
+      var testString = '<ul></ul>';
+      expect(htmlToText.fromString(testString)).to.equal('');
+    });
+
+    it('should handle empty ordered lists', function() {
+      var testString = '<ol></ol>';
+      expect(htmlToText.fromString(testString)).to.equal('');
+    });
+  });
+
   describe('entities', function () {
     it('does not insert null bytes', function () {
       var html = '<a href="some-url?a=b&amp;b=c">Testing &amp; Done</a>';
