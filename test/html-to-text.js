@@ -170,6 +170,18 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('lists', function() {
+    it('should handle empty unordered lists', function() {
+      var testString = '<ul></ul>';
+      expect(htmlToText.fromString(testString)).to.equal('');
+    });
+
+    it('should handle empty ordered lists', function() {
+      var testString = '<ol></ol>';
+      expect(htmlToText.fromString(testString)).to.equal('');
+    });
+  });
+
   describe('entities', function () {
     it('does not insert null bytes', function () {
       var html = '<a href="some-url?a=b&amp;b=c">Testing &amp; Done</a>';
@@ -414,5 +426,12 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, { hideLinkHrefIfSameAsText: false, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }} ))
           .to.equal('http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/\n[http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/]');
     });
-  })
+  });
+
+  describe('whitespace', function() {
+    it('should not be ignored inside a whitespace-only node', function() {
+      var testString = 'foo<span> </span>bar';
+      expect(htmlToText.fromString(testString)).to.equal('foo bar');
+    });
+  });
 });
