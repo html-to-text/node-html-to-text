@@ -142,5 +142,19 @@ htmlToText.fromFile(path.join(__dirname, 'test.html'), {
 	console.log(text);
 });
 		</pre>
+
+		<hr />
+		<h2>Img tag</h2>
+		<img src="http://example.com/image" />
+
+		<hr />
+		<h2>Video tag (src attribute)</h2>
+		<video src="http://example.com/video-with-src-attribute"></video>
+
+		<hr />
+		<h2>Video tag (source tag)</h2>
+		<video>
+			<source src="http://example.com/video-with-source-tag">
+		</video>
 	</body>
 </html>
