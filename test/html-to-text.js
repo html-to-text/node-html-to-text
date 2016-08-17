@@ -168,6 +168,23 @@ describe('html-to-text', function() {
       var result = htmlToText.fromString(html, { tables: true });
       expect(result).to.equal(resultExpected);
     });
+
+    it('does handle non-integer colspan on td element gracefully', function () {
+      var html = 'Good morning Jacob, \
+        <TABLE> \
+        <CENTER> \
+        <TBODY> \
+        <TR> \
+        <TD colspan="abc">Lorem ipsum dolor sit amet.</TD> \
+        </TR> \
+        </CENTER> \
+        </TBODY> \
+        </TABLE> \
+      ';
+      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet.';
+      var result = htmlToText.fromString(html, { tables: true });
+      expect(result).to.equal(resultExpected);
+    });
   });
 
   describe('lists', function() {
