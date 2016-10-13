@@ -119,6 +119,27 @@ describe('html-to-text', function() {
             .to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
       });
     });
+
+    describe('single line paragraph option', function() {
+
+      var paragraphsString;
+
+      beforeEach(function() {
+        paragraphsString = '<p>First</p><p>Second</p>';
+      });
+
+      it('should not use single new line when given null', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: null } )).to.equal('First\n\nSecond');
+      });
+
+      it('should not use single new line when given false', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: false } )).to.equal('First\n\nSecond');
+      });
+
+      it('should use single new line when given true', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: true } )).to.equal('First\nSecond');
+      });
+    });
   });
 
   describe('.fromFile()', function() {
