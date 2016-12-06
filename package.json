@@ -25,8 +25,7 @@
     "htmlparser": "^1.7.7",
     "optimist": "^0.6.1",
     "underscore": "^1.8.3",
-    "underscore.string": "^3.2.3",
-    "html-to-text": "git://github.com/duanefields/node-html-to-text"
+    "underscore.string": "^3.2.3"
   },
   "keywords": [
     "html",
