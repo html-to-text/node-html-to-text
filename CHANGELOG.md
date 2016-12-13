@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 3.0.0
+
+ * Switched from `htmlparser` to `htmlparser2` #113
+ * Treat non-numeric colspans as zero and handle them gracefully #105
+
 ## Version 2.1.1
 
  * Extra space ploblem fixed. #88
