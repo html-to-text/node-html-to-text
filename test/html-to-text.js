@@ -231,7 +231,7 @@ describe('html-to-text', function() {
         expect(result).to.equal('test');
       });
     });
-    
+
   });
 
   describe('Base element', function () {
@@ -359,7 +359,7 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, {} ))
           .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlongword_with_following_text.');
     });
- 
+
     it('should not wrap a string if not wrapCharacters are found and forceWrapOnLimit is not set', function() {
       var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
       expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: false }} ))
@@ -451,4 +451,20 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString)).to.equal('foo bar');
     });
   });
+
+  describe('wbr', function() {
+    it('should handle a large number of wbr tags w/o stack overflow', function() {
+      var testString = "<!DOCTYPE html><html><head></head><body>\n";
+      var expectedResult = "";
+      for (var i = 0; i < 1000; i++){
+        if (i !== 0 && i % 80 === 0) {
+          expectedResult += "\n";
+        }
+        expectedResult += "n";
+        testString += "<wbr>n";
+      }
+      testString += "</body></html>";
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    });
+  })
 });
