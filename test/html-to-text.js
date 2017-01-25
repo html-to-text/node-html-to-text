@@ -218,6 +218,11 @@ describe('html-to-text', function() {
       var testString = '<ol></ol>';
       expect(htmlToText.fromString(testString)).to.equal('');
     });
+
+    it('should support the ordered list start attribute', function() {
+      var testString = '<ol start="2"><li>foo</li></ol>';
+      expect(htmlToText.fromString(testString)).to.equal('2. foo');
+    });
   });
 
   describe('entities', function () {
