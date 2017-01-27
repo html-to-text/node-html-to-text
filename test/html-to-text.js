@@ -255,6 +255,15 @@ describe('html-to-text', function() {
 
   });
 
+  describe('no Link bracktes option', function () {
+    it('should return link without bracktes', function () {
+      var result = htmlToText.fromString('<a href="http://my.link">test</a>', {
+        noLinkBrackets: true
+      });
+      expect(result).to.equal('test http://my.link');
+    });
+  });
+
   describe('Base element', function () {
     it('should retrieve and convert the entire document under `body` by default', function(done) {
       var htmlFile = path.join(__dirname, 'test.html'),
