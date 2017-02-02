@@ -192,6 +192,20 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('a', function () {
+    it('should return link with brackets', function () {
+      var result = htmlToText.fromString('<a href="http://my.link">test</a>');
+      expect(result).to.equal('test [http://my.link]');
+    });
+
+    it('should return link without brackets', function () {
+      var result = htmlToText.fromString('<a href="http://my.link">test</a>', {
+        noLinkBrackets: true
+      });
+      expect(result).to.equal('test http://my.link');
+    });
+  });
+
   describe('lists', function() {
     describe('ul', function() {
       it('should handle empty unordered lists', function() {
@@ -267,16 +281,6 @@ describe('html-to-text', function() {
         });
         expect(result).to.equal('test');
       });
-    });
-
-  });
-
-  describe('no Link bracktes option', function () {
-    it('should return link without bracktes', function () {
-      var result = htmlToText.fromString('<a href="http://my.link">test</a>', {
-        noLinkBrackets: true
-      });
-      expect(result).to.equal('test http://my.link');
     });
   });
 
