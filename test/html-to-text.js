@@ -1,3 +1,5 @@
+/* eslint max-len: "off" */
+
 var expect = require('chai').expect;
 var htmlToText = require('..');
 var path = require('path');
@@ -286,8 +288,8 @@ describe('html-to-text', function() {
 
   describe('Base element', function () {
     it('should retrieve and convert the entire document under `body` by default', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -301,8 +303,8 @@ describe('html-to-text', function() {
     });
 
     it('should only retrieve and convert content under the specified base element if found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-address.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-address.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -317,8 +319,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert content under multiple base elements', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-address-dup.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-address-dup.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -333,8 +335,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert content under multiple base elements in any order', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-any-order.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-any-order.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -349,8 +351,8 @@ describe('html-to-text', function() {
     });
 
     it('should process the first base element found when multiple exist', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-first-element.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-first-element.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -365,8 +367,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert the entire document by default if no base element is found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {

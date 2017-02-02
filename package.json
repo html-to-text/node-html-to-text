@@ -4,8 +4,9 @@
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha",
-    "example": "node ./example/html-to-text.js"
+    "test": "istanbul cover _mocha && eslint .",
+    "example": "node ./example/html-to-text.js",
+    "lint": "eslint ."
   },
   "author": {
     "name": "Malte Legenhausen",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.14.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.0"
   }
