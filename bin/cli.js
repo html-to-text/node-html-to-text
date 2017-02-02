@@ -8,6 +8,7 @@ var argv = optimist
 	.default('wordwrap', 80)
 	.default('ignore-href', false)
 	.default('ignore-image', false)
+	.default('noLinkBrackets', false)
 	.argv;
 
 var text = '';
@@ -25,7 +26,8 @@ process.stdin.on('end', function end() {
 		tables: interpretTables(argv.tables),
 		wordwrap: argv.wordwrap,
 		ignoreHref: argv['ignore-href'],
-		ignoreImage: argv['ignore-image']
+		ignoreImage: argv['ignore-image'],
+		noLinkBrackets: argv['noLinkBrackets']
 	});
 	process.stdout.write(text + '\n', 'utf-8');
 });
