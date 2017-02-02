@@ -3,7 +3,6 @@ var htmlToText = require('..');
 var path = require('path');
 var fs = require('fs');
 
-
 describe('html-to-text', function() {
   describe('.fromString()', function() {
     describe('wordwrap option', function() {
@@ -119,6 +118,27 @@ describe('html-to-text', function() {
             .to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
       });
     });
+
+    describe('single line paragraph option', function() {
+
+      var paragraphsString;
+
+      beforeEach(function() {
+        paragraphsString = '<p>First</p><p>Second</p>';
+      });
+
+      it('should not use single new line when given null', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: null } )).to.equal('First\n\nSecond');
+      });
+
+      it('should not use single new line when given false', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: false } )).to.equal('First\n\nSecond');
+      });
+
+      it('should use single new line when given true', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: true } )).to.equal('First\nSecond');
+      });
+    });
   });
 
   describe('.fromFile()', function() {
@@ -133,21 +153,6 @@ describe('html-to-text', function() {
         expect(text).to.equal(expectedTxt);
         done();
       });
-    });
-  });
-
-  describe('li', function () {
-    it('doesnt wrap li if wordwrap isnt', function () {
-      var html = 'Good morning Jacob, \
-        <p>Lorem ipsum dolor sit amet</p> \
-        <p><strong>Lorem ipsum dolor sit amet.</strong></p> \
-        <ul> \
-          <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
-        </ul> \
-      ';
-      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
-      var result = htmlToText.fromString(html, { wordwrap: false });
-      expect(result).to.equal(resultExpected);
     });
   });
 
@@ -188,14 +193,46 @@ describe('html-to-text', function() {
   });
 
   describe('lists', function() {
-    it('should handle empty unordered lists', function() {
-      var testString = '<ul></ul>';
-      expect(htmlToText.fromString(testString)).to.equal('');
+    describe('ul', function() {
+      it('should handle empty unordered lists', function() {
+        var testString = '<ul></ul>';
+        expect(htmlToText.fromString(testString)).to.equal('');
+      });
+
+      it('should handle an unordered list with multiple elements', function() {
+        var testString = '<ul><li>foo</li><li>bar</li></ul>';
+        expect(htmlToText.fromString(testString)).to.equal('* foo\n * bar');
+      });
     });
 
-    it('should handle empty ordered lists', function() {
-      var testString = '<ol></ol>';
-      expect(htmlToText.fromString(testString)).to.equal('');
+    describe('ol', function() {
+      it('should handle empty ordered lists', function() {
+        var testString = '<ol></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('');
+      });
+
+      it('should handle an ordered list with multiple elements', function() {
+        var testString = '<ol><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list start attribute', function() {
+        var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('2. foo\n 3. bar');
+      });
+    });
+
+    it('doesnt wrap li if wordwrap isnt', function () {
+      var html = 'Good morning Jacob, \
+        <p>Lorem ipsum dolor sit amet</p> \
+        <p><strong>Lorem ipsum dolor sit amet.</strong></p> \
+        <ul> \
+          <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
+        </ul> \
+      ';
+      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
+      var result = htmlToText.fromString(html, { wordwrap: false });
+      expect(result).to.equal(resultExpected);
     });
   });
 
