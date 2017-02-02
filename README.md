@@ -58,6 +58,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `wordwrap` defines after how many chars a line break should follow in `p` elements. Set to `null` or `false` to disable word-wrapping. Default: `80`
  * `linkHrefBaseUrl` allows you to specify the server host for href attributes, where the links start at the root (`/`). For example, `linkHrefBaseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`. Keep in mind that `linkHrefBaseUrl` shouldn't end with a `/`.
  * `hideLinkHrefIfSameAsText` by default links are translated the following `<a href='link'>text</a>` => becomes => `text [link]`. If this option is set to true and `link` and `text` are the same, `[link]` will be hidden and only `text` visible.
+ * `noLinkBrackets` dont print brackets around the link if `true`.
  * `ignoreHref` ignore all document links if `true`.
  * `ignoreImage` ignore all document images if `true`.
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
