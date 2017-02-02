@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 3.1.0
+
+ * Support for the ordered list start attribute added #117
+ * Option to format paragraph with single new line #112
+ * `noLinksBrackets` options added #119
+
 ## Version 3.0.0
 
  * Switched from `htmlparser` to `htmlparser2` #113

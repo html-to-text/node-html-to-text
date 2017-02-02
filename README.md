@@ -1,4 +1,4 @@
-# node-html-to-text
+# html-to-text
 
 [![Build Status](https://travis-ci.org/werk85/node-html-to-text.svg?branch=master)](https://travis-ci.org/werk85/node-html-to-text)
 
@@ -286,7 +286,7 @@ E-Mail: Click here [test@example.com]
 
 (The MIT License)
 
-Copyright (c) 2016 werk85 &lt;legenhausen@werk85.de&gt;
+Copyright (c) 2017 werk85 &lt;legenhausen@werk85.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
