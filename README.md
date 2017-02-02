@@ -63,6 +63,7 @@ You can configure the behaviour of html-to-text with the following options:
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
  * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
  * `uppercaseHeadings` by default, headings (`<h1>`, `<h2>`, etc) are uppercased. Set to `false` to leave headings as they are.
+ * `singleNewLineParagraphs` by default, paragraphs are converted with two newlines (`\n\n`). Set to `true` to convert to a single newline.
  * `baseElement` defines the tags whose text content will be captured from the html.  All content will be captured below the baseElement tags and added to the resulting text output.  This option allows the user to specify an array of elements as base elements using a single tag with css class and id parameters e.g. [`p.class1.class2#id1#id2`, `p.class1.class2#id1#id2`]  .  Default: `body`
  * `returnDomByDefault` convert the entire document if we don't find the tag we're looking for if `true`.
  * `longWordSplit` describes how to wrap long words, has the following parameters:
