@@ -1,6 +1,6 @@
 addons:
   code_climate:
-    repo_token: 80ee54c8d9fa3b9fe30944f953500a9b89426cd0
+    repo_token: HsqXZ6bo2kpMsdUgXj9MxApO2AZcbvwRn6mBtOggIwZRWd2Gy7M4Rdqbg9URqtZ9p5pA9hhQ+qzkxPm9T0AFEO81gA7daK6juxK+E3IaQWcBueEldD6Zcr/mnw6ywMF13oaIKufs5PJjszR8tsKpipAzvHEJlnzTQXpRYuRvyVI=
 
 after_success:
   - npm install -g codeclimate-test-reporter
