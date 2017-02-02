@@ -4,7 +4,7 @@
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha",
+    "test": "istanbul cover _mocha",
     "example": "node ./example/html-to-text.js"
   },
   "author": {
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.0"
   }
 }
