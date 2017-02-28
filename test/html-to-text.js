@@ -232,6 +232,16 @@ describe('html-to-text', function() {
         expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
       });
 
+      it('should support the ordered list type="a" attribute', function() {
+        var testString = '<ol type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('a. foo\nb. bar');
+      });
+
+      it('should support the ordered list type="A" attribute', function() {
+        var testString = '<ol type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('A. foo\nB. bar');
+      });
+
       it('should support the ordered list start attribute', function() {
         var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
         expect(htmlToText.fromString(testString)).to.equal('2. foo\n 3. bar');
