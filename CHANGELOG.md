@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 3.2.0
+
+ * Basic support for alpha ordered list types added #122
+  * This includes support for the `ol` type values `1`, `a` and `A`
+
 ## Version 3.1.0
 
  * Support for the ordered list start attribute added #117
