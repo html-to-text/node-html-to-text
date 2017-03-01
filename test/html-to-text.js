@@ -232,10 +232,40 @@ describe('html-to-text', function() {
         expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
       });
 
+      it('should support the ordered list type="1" attribute', function() {
+        var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list type="a" attribute', function() {
+        var testString = '<ol type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('a. foo\nb. bar');
+      });
+
+      it('should support the ordered list type="A" attribute', function() {
+        var testString = '<ol type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('A. foo\nB. bar');
+      });
+
       it('should support the ordered list start attribute', function() {
         var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
         expect(htmlToText.fromString(testString)).to.equal('2. foo\n 3. bar');
       });
+
+      /*
+       * Currently failing tests for continuing to fill out the specification
+       *  Spec: https://html.spec.whatwg.org/multipage/semantics.html#the-ol-element
+       *
+      it('should support the ordered list type="a" attribute past 26 characters', function() {
+        var testString = '<ol start="26" type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('z. foo\naa. bar');
+      });
+
+      it('should support the ordered list type="A" attribute past 26 characters', function() {
+        var testString = '<ol start="26" type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('Z. foo\nAA. bar');
+      });
+      */
     });
 
     it('doesnt wrap li if wordwrap isnt', function () {
