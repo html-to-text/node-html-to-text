@@ -237,6 +237,11 @@ describe('html-to-text', function() {
         expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
       });
 
+      it('should fallback to type="!" behavior if type attribute is invalid', function() {
+        var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+      });
+
       it('should support the ordered list type="a" attribute', function() {
         var testString = '<ol type="a"><li>foo</li><li>bar</li></ol>';
         expect(htmlToText.fromString(testString)).to.equal('a. foo\n b. bar');
