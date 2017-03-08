@@ -206,6 +206,20 @@ describe('html-to-text', function() {
       });
       expect(result).to.equal('test http://my.link');
     });
+
+    it('should not return link for anchor if noAnchorUrl is set to true', function () {
+      var result = htmlToText.fromString('<a href="#link">test</a>', {
+        noAnchorUrl: true
+      });
+      expect(result).to.equal('test');
+    });
+
+    it('should return link for anchor if noAnchorUrl is set to false', function () {
+      var result = htmlToText.fromString('<a href="#link">test</a>', {
+        noAnchorUrl: false
+      });
+      expect(result).to.equal('test [#link]');
+    });
   });
 
   describe('lists', function() {
