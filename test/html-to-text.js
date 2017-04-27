@@ -316,6 +316,20 @@ describe('html-to-text', function() {
     });
   });
 
+  describe('custom formatting', function () {
+    it('should allow to pass custom formatting functions', function () {
+      var result = htmlToText.fromString('<h1>TeSt</h1>', {
+        format: {
+          heading: function (elem, fn, options) {
+            var h = fn(elem.children, options);
+            return '====\n' + h.toLowerCase() + '\n====';
+          }
+        }
+      });
+      expect(result).to.equal('====\ntest\n====');
+    })
+  });
+
   describe('Base element', function () {
     it('should retrieve and convert the entire document under `body` by default', function(done) {
       var htmlFile = path.join(__dirname, 'test.html');
