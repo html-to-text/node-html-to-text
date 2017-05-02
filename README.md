@@ -71,6 +71,28 @@ You can configure the behaviour of html-to-text with the following options:
  * `longWordSplit` describes how to wrap long words, has the following parameters:
    * `wrapCharacters` is an array containing the characters that may be wrapped on, these are used in order
    * `forceWrapOnLimit` defines whether to break long words on the limit if `true`.
+ * `format` pass an object to enable custom formatting for specific elements (see below)
+
+### Override formatting for specific elements
+
+By using the `format` option, you can specify formatting for these elements: `text`, `image`, `lineBreak`, `paragraph`, `anchor`, `heading`, `table`, `orderedList`, `unorderedList`, `listItem`, `horizontalLine`.
+
+Each key must be a function which eventually receive `node` (the current node), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
+
+```js
+var htmlToText = require('html-to-text');
+
+var text = htmlToText.fromString('<h1>Hello World</h1>', {
+	format: {
+		heading: function (node, fn, options) {
+			var h = fn(elem.children, options);
+			return '====\n' + h.toUpperCase() + '\n====';
+		}
+	}
+});
+
+console.log(text);
+```
 
 ## Command Line Interface
 
