@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 3.3.0
+
+* Ability to pass custom formatting via the `format` option #128
+* Enhanced support for alpha ordered list types added #123
+
 ## Version 3.2.0
 
 * Basic support for alpha ordered list types added #122
