@@ -75,7 +75,7 @@ You can configure the behaviour of html-to-text with the following options:
 
 ### Override formatting for specific elements
 
-By using the `format` option, you can specify formatting for these elements: `text`, `image`, `lineBreak`, `paragraph`, `anchor`, `heading`, `table`, `orderedList`, `unorderedList`, `listItem`, `horizontalLine`.
+By using the `format` option, you can specify formatting for these elements: `text`, `image`, `lineBreak`, `paragraph`, `anchor`, `heading`, `table`, `orderedList`, `unorderedList`, `listItem`, `horizontalLine`, `div`.
 
 Each key must be a function which eventually receive `node` (the current node), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
 
