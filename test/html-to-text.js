@@ -231,7 +231,13 @@ describe('html-to-text', function() {
 
       it('should handle an unordered list with multiple elements', function() {
         var testString = '<ul><li>foo</li><li>bar</li></ul>';
-        expect(htmlToText.fromString(testString)).to.equal('* foo\n * bar');
+        expect(htmlToText.fromString(testString)).to.equal(' * foo\n * bar');
+      });
+
+      it('should handle an unordered list prefix option', function() {
+        var testString = '<ul><li>foo</li><li>bar</li></ul>';
+        var options = {unorderedListItemPrefix: ' test '};
+        expect(htmlToText.fromString(testString, options)).to.equal(' test foo\n test bar');
       });
     });
 
@@ -243,46 +249,46 @@ describe('html-to-text', function() {
 
       it('should handle an ordered list with multiple elements', function() {
         var testString = '<ol><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
       it('should support the ordered list type="1" attribute', function() {
         var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
       it('should fallback to type="!" behavior if type attribute is invalid', function() {
         var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
       it('should support the ordered list type="a" attribute', function() {
         var testString = '<ol type="a"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('a. foo\n b. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' a. foo\n b. bar');
       });
 
       it('should support the ordered list type="A" attribute', function() {
         var testString = '<ol type="A"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('A. foo\n B. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' A. foo\n B. bar');
       });
 
       it('should support the ordered list type="i" attribute by falling back to type="1"', function() {
         var testString = '<ol type="i"><li>foo</li><li>bar</li></ol>';
         // TODO Implement lowercase roman numerals
         // expect(htmlToText.fromString(testString)).to.equal('i. foo\nii. bar');
-        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
       it('should support the ordered list type="I" attribute by falling back to type="1"', function() {
         var testString = '<ol type="I"><li>foo</li><li>bar</li></ol>';
         // TODO Implement uppercase roman numerals
         // expect(htmlToText.fromString(testString)).to.equal('I. foo\nII. bar');
-        expect(htmlToText.fromString(testString)).to.equal('1. foo\n 2. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
       it('should support the ordered list start attribute', function() {
         var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText.fromString(testString)).to.equal('2. foo\n 3. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 2. foo\n 3. bar');
       });
 
       /*
