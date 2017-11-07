@@ -329,6 +329,20 @@ describe('html-to-text', function() {
       var result = htmlToText.fromString(html);
       expect(result).to.equal('"Awesome" [test.png]');
     });
+
+    it('should update relatively sourced entities with linkHrefBaseUrl', function () {
+      var html1 = '<img src="/test.png">';
+      var html2 = '<a href="/test.html">';
+
+      var result = htmlToText.fromString(html1, {
+        linkHrefBaseUrl: "http://www.domain.com"
+      });
+      expect(result).to.equal('[http://www.domain.com/test.png]');
+      result = htmlToText.fromString(html2, {
+        linkHrefBaseUrl: "http://www.domain.com"
+      });
+      expect(result).to.equal('[http://www.domain.com/test.html]');
+    });
   });
 
   describe('unicode support', function () {
