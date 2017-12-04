@@ -370,7 +370,7 @@ describe('html-to-text', function() {
         }
       });
       expect(result).to.equal('====\ntest\n====');
-    })
+    });
   });
 
   describe('Base element', function () {
@@ -605,5 +605,5 @@ describe('html-to-text', function() {
       testString += "</body></html>";
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
     });
-  })
+  });
 });
