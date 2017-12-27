@@ -24,8 +24,8 @@
   "dependencies": {
     "he": "^1.0.0",
     "htmlparser2": "^3.9.2",
+    "lodash": "^4.17.4",
     "optimist": "^0.6.1",
-    "underscore": "^1.8.3",
     "underscore.string": "^3.2.3"
   },
   "keywords": [
