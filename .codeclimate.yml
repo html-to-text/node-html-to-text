@@ -4,7 +4,7 @@ engines:
     config:
       languages:
       - javascript
-  eslint:
+  eslint-4:
     enabled: true
   fixme:
     enabled: true
