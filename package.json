@@ -6,7 +6,8 @@
   "scripts": {
     "test": "istanbul cover _mocha && eslint .",
     "example": "node ./example/html-to-text.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepublish": "npm test"
   },
   "author": {
     "name": "Malte Legenhausen",
