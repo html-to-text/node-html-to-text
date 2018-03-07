@@ -4,6 +4,7 @@
 
 * Support dropped for node version < 4.
 * New option `unorderedListItemPrefix` added.
+* HTML entities in links are not supported.
 
 ## Version 3.3.0
 
