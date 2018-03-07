@@ -2,7 +2,7 @@ var path = require('path');
 
 var htmlToText = require('../lib/html-to-text');
 
-console.log('fromString:')
+console.log('fromString:');
 var text = htmlToText.fromString('<h1>Hello World</h1>', {
   wordwrap: 130
 });

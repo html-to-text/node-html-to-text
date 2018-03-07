@@ -195,6 +195,16 @@ describe('html-to-text', function() {
   });
 
   describe('a', function () {
+    it('should decode html attribute entities from href', function () {
+      var result = htmlToText.fromString('<a href="/foo?a&#x3D;b">test</a>');
+      expect(result).to.equal('test [/foo?a=b]');
+    });
+
+    it('should strip mailto: from email links', function () {
+      var result = htmlToText.fromString('<a href="mailto:foo@example.com">email me</a>');
+      expect(result).to.equal('email me [foo@example.com]');
+    });
+
     it('should return link with brackets', function () {
       var result = htmlToText.fromString('<a href="http://my.link">test</a>');
       expect(result).to.equal('test [http://my.link]');
@@ -366,7 +376,7 @@ describe('html-to-text', function() {
         }
       });
       expect(result).to.equal('====\ntest\n====');
-    })
+    });
   });
 
   describe('Base element', function () {
@@ -608,7 +618,6 @@ describe('html-to-text', function() {
       var testString = 'foo<blockquote>test</blockquote>bar';
       var expectedResult = 'foo> test\nbar';
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
-    })
-  })
-
+    });
+  });
 });

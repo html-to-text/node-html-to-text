@@ -175,7 +175,7 @@ rules:
   quotes: 0
   require-jsdoc: 0
   semi-spacing: 0
-  semi: 0
+  semi: [error, always]
   sort-vars: 0
   space-after-keywords: 0
   space-before-blocks: 0
