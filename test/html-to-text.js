@@ -601,5 +601,14 @@ describe('html-to-text', function() {
       testString += "</body></html>";
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
     });
+  });
+
+  describe('blockquote', function() {
+    it('should handle format blockquote', function() {
+      var testString = 'foo<blockquote>test</blockquote>bar';
+      var expectedResult = 'foo> test\nbar';
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    })
   })
+
 });
