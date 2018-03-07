@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 4.0.0
+
+* Support dropped for node version < 4.
+* New option `unorderedListItemPrefix` added.
+
 ## Version 3.3.0
 
 * Ability to pass custom formatting via the `format` option #128
