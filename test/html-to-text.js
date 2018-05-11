@@ -192,6 +192,31 @@ describe('html-to-text', function() {
       var result = htmlToText.fromString(html, { tables: true });
       expect(result).to.equal(resultExpected);
     });
+    it('does handle colspan on th elements correctly', function () {
+      var html = '\
+        <table> \
+        <tr> \
+        <th>header column 1</th> \
+        <th colspan="2">header columns 2 and 3</th> \
+        <th>header column 4</th> \
+        </tr> \
+        <tbody> \
+        <tr> \
+        <td>column 1</td> \
+        <td>column 2</td> \
+        <td>column 3</td> \
+        <td>column 4</td> \
+        </tr> \
+        </center> \
+        </tbody> \
+        </table> \
+      ';
+      var resultExpected = ' HEADER COLUMN 1   HEADER COLUMNS 2 AND 3              HEADER COLUMN 4   \n\
+column 1          column 2                 column 3   column 4';
+      var result = htmlToText.fromString(html, { tables: true });
+      expect(result).to.equal(resultExpected);
+    });
+
   });
 
   describe('a', function () {
