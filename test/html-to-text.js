@@ -377,6 +377,23 @@ describe('html-to-text', function() {
       });
       expect(result).to.equal('====\ntest\n====');
     });
+
+    it('should use custom formatting functions when nested elements are being parsed', function () {
+      var result = htmlToText.fromString('<ul><li>one</li><li>two</li></ul>', {
+        format: {
+          listItem: function (prefix, elem, fn, options) {
+            options = Object.assign({}, options);
+            if (options.wordwrap) {
+              options.wordwrap -= prefix.length;
+            }
+            var text = fn(elem.children, options);
+            text = text.replace(/\n/g, '\n' + ' '.repeat(prefix.length));
+            return prefix + text.toUpperCase() + '\n';
+          }
+        }
+      });
+      expect(result).to.equal(' * ONE\n * TWO');
+    });
   });
 
   describe('Base element', function () {
