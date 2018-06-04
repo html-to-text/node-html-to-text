@@ -367,15 +367,20 @@ describe('html-to-text', function() {
 
   describe('custom formatting', function () {
     it('should allow to pass custom formatting functions', function () {
-      var result = htmlToText.fromString('<h1>TeSt</h1>', {
+      var result = htmlToText.fromString('<h1>TeSt</h1><div>tag</div>', {
         format: {
           heading: function (elem, fn, options) {
             var h = fn(elem.children, options);
-            return '====\n' + h.toLowerCase() + '\n====';
+            return '====\n' + h.toLowerCase() + '\n====\n';
+          },
+
+          otherTag: function (elem, fn, options) {
+            var div = fn(elem.children, options);
+            return '----\n' + div.toUpperCase() + '\n----';
           }
         }
       });
-      expect(result).to.equal('====\ntest\n====');
+      expect(result).to.equal('====\ntest\n====\n----\nTAG\n----');
     });
   });
 

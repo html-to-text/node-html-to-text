@@ -78,6 +78,8 @@ You can configure the behaviour of html-to-text with the following options:
 
 By using the `format` option, you can specify formatting for these elements: `text`, `image`, `lineBreak`, `paragraph`, `anchor`, `heading`, `table`, `orderedList`, `unorderedList`, `listItem`, `horizontalLine`.
 
+A catch-all key `otherTag` may be used to specify a formatter for tags that aren't covered by one of the other keys.
+
 Each key must be a function which eventually receive `elem` (the current elem), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
 
 ```js
