@@ -595,6 +595,13 @@ describe('html-to-text', function() {
       var testString = 'foo<span> </span>bar';
       expect(htmlToText.fromString(testString)).to.equal('foo bar');
     });
+
+    it('should not add additional whitespace after <sup>', function() {
+      var testString = '<p>This text contains <sup>superscript</sup> text.</p>';
+      var options = { preserveNewlines: true };
+
+      expect(htmlToText.fromString(testString, options)).to.equal('This text contains superscript text.');
+    });
   });
 
   describe('wbr', function() {
