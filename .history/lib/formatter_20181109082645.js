@@ -126,7 +126,7 @@ function formatUnorderedList(elem, fn, options) {
   // if this list is a child of a list-item,
   // ensure that an additional line break is inserted
   var nestedList = get(elem, 'parent.name')
-  var result = nestedList === 'li' ? '\n' : '';
+  var result = nestedList ? '\n' : '';
   var prefix = options.unorderedListItemPrefix;
   var nonWhiteSpaceChildren = (elem.children || []).filter(function(child) {
     return child.type !== 'text' || !whiteSpaceRegex.test(child.data);
@@ -141,7 +141,7 @@ function formatOrderedList(elem, fn, options) {
   // if this list is a child of a list-item,
   // ensure that an additional line break is inserted
   var nestedList = get(elem, 'parent.name')
-  var result = nestedList === 'li' ? '\n' : '';
+  var result = nestedList ? '\n' : '';
   var nonWhiteSpaceChildren = (elem.children || []).filter(function(child) {
     return child.type !== 'text' || !whiteSpaceRegex.test(child.data);
   });
