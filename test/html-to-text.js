@@ -249,6 +249,11 @@ describe('html-to-text', function() {
         var options = {unorderedListItemPrefix: ' test '};
         expect(htmlToText.fromString(testString, options)).to.equal(' test foo\n test bar');
       });
+
+      it('should handle nested ul correctly', function() {
+        var testString = '<ul><li>foo<ul><li>bar<ul><li>baz.1</li><li>baz.2</li></ul></li></ul></li></ul>';
+        expect(htmlToText.fromString(testString)).to.equal(' * foo\n    * bar\n       * baz.1\n       * baz.2');
+      });
     });
 
     describe('ol', function() {
@@ -299,6 +304,11 @@ describe('html-to-text', function() {
       it('should support the ordered list start attribute', function() {
         var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
         expect(htmlToText.fromString(testString)).to.equal(' 2. foo\n 3. bar');
+      });
+
+      it('should handle nested ol correctly', function() {
+        var testString = '<ol><li>foo<ol><li>bar<ol><li>baz</li><li>baz</li></ol></li></ol></li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n    1. bar\n       1. baz\n       2. baz');
       });
 
       /*
