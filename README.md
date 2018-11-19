@@ -1,6 +1,7 @@
-# node-html-to-text
+# html-to-text
 
 [![Build Status](https://travis-ci.org/werk85/node-html-to-text.svg?branch=master)](https://travis-ci.org/werk85/node-html-to-text)
+[![Test Coverage](https://codeclimate.com/github/werk85/node-html-to-text/badges/coverage.svg)](https://codeclimate.com/github/werk85/node-html-to-text/coverage)
 
 An advanced converter that parses HTML and returns beautiful text. It was mainly designed to transform HTML E-Mail templates to a text representation. So it is currently optimized for table layouts.
 
@@ -32,10 +33,10 @@ You can read from a file via:
 var htmlToText = require('html-to-text');
 
 htmlToText.fromFile(path.join(__dirname, 'test.html'), {
-	tables: ['#invoice', '.address']
+  tables: ['#invoice', '.address']
 }, (err, text) => {
-	if (err) return console.error(err);
-	console.log(text);
+  if (err) return console.error(err);
+  console.log(text);
 });
 ```
 
@@ -45,7 +46,7 @@ or directly from a string:
 var htmlToText = require('html-to-text');
 
 var text = htmlToText.fromString('<h1>Hello World</h1>', {
-	wordwrap: 130
+  wordwrap: 130
 });
 console.log(text);
 ```
@@ -58,16 +59,41 @@ You can configure the behaviour of html-to-text with the following options:
  * `wordwrap` defines after how many chars a line break should follow in `p` elements. Set to `null` or `false` to disable word-wrapping. Default: `80`
  * `linkHrefBaseUrl` allows you to specify the server host for href attributes, where the links start at the root (`/`). For example, `linkHrefBaseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`. Keep in mind that `linkHrefBaseUrl` shouldn't end with a `/`.
  * `hideLinkHrefIfSameAsText` by default links are translated the following `<a href='link'>text</a>` => becomes => `text [link]`. If this option is set to true and `link` and `text` are the same, `[link]` will be hidden and only `text` visible.
+ * `noLinkBrackets` dont print brackets around the link if `true`.
  * `ignoreHref` ignore all document links if `true`.
  * `ignoreImage` ignore all document images if `true`.
  * `preserveNewlines` by default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
  * `decodeOptions` defines the text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
  * `uppercaseHeadings` by default, headings (`<h1>`, `<h2>`, etc) are uppercased. Set to `false` to leave headings as they are.
+ * `singleNewLineParagraphs` by default, paragraphs are converted with two newlines (`\n\n`). Set to `true` to convert to a single newline.
  * `baseElement` defines the tags whose text content will be captured from the html.  All content will be captured below the baseElement tags and added to the resulting text output.  This option allows the user to specify an array of elements as base elements using a single tag with css class and id parameters e.g. [`p.class1.class2#id1#id2`, `p.class1.class2#id1#id2`]  .  Default: `body`
  * `returnDomByDefault` convert the entire document if we don't find the tag we're looking for if `true`.
  * `longWordSplit` describes how to wrap long words, has the following parameters:
    * `wrapCharacters` is an array containing the characters that may be wrapped on, these are used in order
    * `forceWrapOnLimit` defines whether to break long words on the limit if `true`.
+ * `format` pass an object to enable custom formatting for specific elements (see below)
+ * `unorderedListItemPrefix` defines the string that is used as item prefix for unordered lists `<ol>`. Default: `' * '`
+
+### Override formatting for specific elements
+
+By using the `format` option, you can specify formatting for these elements: `text`, `image`, `lineBreak`, `paragraph`, `anchor`, `heading`, `table`, `orderedList`, `unorderedList`, `listItem`, `horizontalLine`.
+
+Each key must be a function which eventually receive `elem` (the current elem), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
+
+```js
+var htmlToText = require('html-to-text');
+
+var text = htmlToText.fromString('<h1>Hello World</h1>', {
+  format: {
+    heading: function (elem, fn, options) {
+      var h = fn(elem.children, options);
+      return '====\n' + h.toUpperCase() + '\n====';
+    }
+  }
+});
+
+console.log(text);
+```
 
 ## Command Line Interface
 
@@ -91,133 +117,133 @@ The `tables` option has to be declared as comma separated list without whitespac
 
 ```html
 <html>
-	<head>
-		<meta charset="utf-8">
-	</head>
+  <head>
+    <meta charset="utf-8">
+  </head>
 
-	<body>
-		<table cellpadding="0" cellspacing="0" border="0">
-			<tr>
-				<td>
-					<h2>Paragraphs</h2>
-					<p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <a href="www.github.com">Github</a>
-					</p>
-					<p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-					</p>
-				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>
-					<hr/>
-					<h2>Pretty printed table</h2>
-					<table id="invoice">
-						<thead>
-							<tr>
-								<th>Article</th>
-								<th>Price</th>
-								<th>Taxes</th>
-								<th>Amount</th>
-								<th>Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<p>
-										Product 1<br />
-										<span style="font-size:0.8em">Contains: 1x Product 1</span>
-									</p>
-								</td>
-								<td align="right" valign="top">6,99&euro;</td>
-								<td align="right" valign="top">7%</td>
-								<td align="right" valign="top">1</td>
-								<td align="right" valign="top">6,99€</td>
-							</tr>
-							<tr>
-								<td>Shipment costs</td>
-								<td align="right">3,25€</td>
-								<td align="right">7%</td>
-								<td align="right">1</td>
-								<td align="right">3,25€</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td colspan="3">to pay: 10,24€</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td colspan="3">Taxes 7%: 0,72€</td>
-							</tr>
-						</tfoot>
-					</table>
+  <body>
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td>
+          <h2>Paragraphs</h2>
+          <p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <a href="www.github.com">Github</a>
+          </p>
+          <p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+          </p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <hr/>
+          <h2>Pretty printed table</h2>
+          <table id="invoice">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Price</th>
+                <th>Taxes</th>
+                <th>Amount</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>
+                    Product 1<br />
+                    <span style="font-size:0.8em">Contains: 1x Product 1</span>
+                  </p>
+                </td>
+                <td align="right" valign="top">6,99&euro;</td>
+                <td align="right" valign="top">7%</td>
+                <td align="right" valign="top">1</td>
+                <td align="right" valign="top">6,99€</td>
+              </tr>
+              <tr>
+                <td>Shipment costs</td>
+                <td align="right">3,25€</td>
+                <td align="right">7%</td>
+                <td align="right">1</td>
+                <td align="right">3,25€</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="3">to pay: 10,24€</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">Taxes 7%: 0,72€</td>
+              </tr>
+            </tfoot>
+          </table>
 
-				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>
-					<hr/>
-					<h2>Lists</h2>
-					<ul>
-						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-					</ul>
-					<ol>
-						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-						<li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-					</ol>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<hr />
-					<h2>Column Layout with tables</h2>
-					<table class="address">
-						<tr>
-							<th align="left">Invoice Address</th>
-							<th align="left">Shipment Address</th>
-						</tr>
-						<tr>
-							<td align="left">
-								<p>
-								Mr.<br/>
-								John Doe<br/>
-								Featherstone Street 49<br/>
-								28199 Bremen<br/>
-								</p>
-							</td>
-							<td align="left">
-								<p>
-								Mr.<br/>
-								John Doe<br/>
-								Featherstone Street 49<br/>
-								28199 Bremen<br/>
-								</p>
-							</td>
-						</tr>
-					</table>
-				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>
-					<hr/>
-					<h2>Mailto formating</h2>
-					<p class="normal-space small">
-						Some Company<br />
-						Some Street 42<br />
-						Somewhere<br />
-						E-Mail: <a href="mailto:test@example.com">Click here</a>
-					</p>
-				</td>
-			</tr>
-		</table>
-	</body>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <hr/>
+          <h2>Lists</h2>
+          <ul>
+            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          </ul>
+          <ol>
+            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          </ol>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <hr />
+          <h2>Column Layout with tables</h2>
+          <table class="address">
+            <tr>
+              <th align="left">Invoice Address</th>
+              <th align="left">Shipment Address</th>
+            </tr>
+            <tr>
+              <td align="left">
+                <p>
+                Mr.<br/>
+                John Doe<br/>
+                Featherstone Street 49<br/>
+                28199 Bremen<br/>
+                </p>
+              </td>
+              <td align="left">
+                <p>
+                Mr.<br/>
+                John Doe<br/>
+                Featherstone Street 49<br/>
+                28199 Bremen<br/>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <hr/>
+          <h2>Mailto formating</h2>
+          <p class="normal-space small">
+            Some Company<br />
+            Some Street 42<br />
+            Somewhere<br />
+            E-Mail: <a href="mailto:test@example.com">Click here</a>
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>
 ```
 
@@ -284,7 +310,7 @@ E-Mail: Click here [test@example.com]
 
 (The MIT License)
 
-Copyright (c) 2016 werk85 &lt;legenhausen@werk85.de&gt;
+Copyright (c) 2017 werk85 &lt;legenhausen@werk85.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

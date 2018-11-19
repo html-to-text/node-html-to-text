@@ -1,8 +1,9 @@
+/* eslint max-len: "off" */
+
 var expect = require('chai').expect;
 var htmlToText = require('..');
 var path = require('path');
 var fs = require('fs');
-
 
 describe('html-to-text', function() {
   describe('.fromString()', function() {
@@ -119,6 +120,27 @@ describe('html-to-text', function() {
             .to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
       });
     });
+
+    describe('single line paragraph option', function() {
+
+      var paragraphsString;
+
+      beforeEach(function() {
+        paragraphsString = '<p>First</p><p>Second</p>';
+      });
+
+      it('should not use single new line when given null', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: null } )).to.equal('First\n\nSecond');
+      });
+
+      it('should not use single new line when given false', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: false } )).to.equal('First\n\nSecond');
+      });
+
+      it('should use single new line when given true', function() {
+        expect(htmlToText.fromString(paragraphsString, { singleNewLineParagraphs: true } )).to.equal('First\nSecond');
+      });
+    });
   });
 
   describe('.fromFile()', function() {
@@ -133,21 +155,6 @@ describe('html-to-text', function() {
         expect(text).to.equal(expectedTxt);
         done();
       });
-    });
-  });
-
-  describe('li', function () {
-    it('doesnt wrap li if wordwrap isnt', function () {
-      var html = 'Good morning Jacob, \
-        <p>Lorem ipsum dolor sit amet</p> \
-        <p><strong>Lorem ipsum dolor sit amet.</strong></p> \
-        <ul> \
-          <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
-        </ul> \
-      ';
-      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
-      var result = htmlToText.fromString(html, { wordwrap: false });
-      expect(result).to.equal(resultExpected);
     });
   });
 
@@ -187,15 +194,140 @@ describe('html-to-text', function() {
     });
   });
 
-  describe('lists', function() {
-    it('should handle empty unordered lists', function() {
-      var testString = '<ul></ul>';
-      expect(htmlToText.fromString(testString)).to.equal('');
+  describe('a', function () {
+    it('should decode html attribute entities from href', function () {
+      var result = htmlToText.fromString('<a href="/foo?a&#x3D;b">test</a>');
+      expect(result).to.equal('test [/foo?a=b]');
     });
 
-    it('should handle empty ordered lists', function() {
-      var testString = '<ol></ol>';
-      expect(htmlToText.fromString(testString)).to.equal('');
+    it('should strip mailto: from email links', function () {
+      var result = htmlToText.fromString('<a href="mailto:foo@example.com">email me</a>');
+      expect(result).to.equal('email me [foo@example.com]');
+    });
+
+    it('should return link with brackets', function () {
+      var result = htmlToText.fromString('<a href="http://my.link">test</a>');
+      expect(result).to.equal('test [http://my.link]');
+    });
+
+    it('should return link without brackets', function () {
+      var result = htmlToText.fromString('<a href="http://my.link">test</a>', {
+        noLinkBrackets: true
+      });
+      expect(result).to.equal('test http://my.link');
+    });
+
+    it('should not return link for anchor if noAnchorUrl is set to true', function () {
+      var result = htmlToText.fromString('<a href="#link">test</a>', {
+        noAnchorUrl: true
+      });
+      expect(result).to.equal('test');
+    });
+
+    it('should return link for anchor if noAnchorUrl is set to false', function () {
+      var result = htmlToText.fromString('<a href="#link">test</a>', {
+        noAnchorUrl: false
+      });
+      expect(result).to.equal('test [#link]');
+    });
+  });
+
+  describe('lists', function() {
+    describe('ul', function() {
+      it('should handle empty unordered lists', function() {
+        var testString = '<ul></ul>';
+        expect(htmlToText.fromString(testString)).to.equal('');
+      });
+
+      it('should handle an unordered list with multiple elements', function() {
+        var testString = '<ul><li>foo</li><li>bar</li></ul>';
+        expect(htmlToText.fromString(testString)).to.equal(' * foo\n * bar');
+      });
+
+      it('should handle an unordered list prefix option', function() {
+        var testString = '<ul><li>foo</li><li>bar</li></ul>';
+        var options = {unorderedListItemPrefix: ' test '};
+        expect(htmlToText.fromString(testString, options)).to.equal(' test foo\n test bar');
+      });
+    });
+
+    describe('ol', function() {
+      it('should handle empty ordered lists', function() {
+        var testString = '<ol></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('');
+      });
+
+      it('should handle an ordered list with multiple elements', function() {
+        var testString = '<ol><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list type="1" attribute', function() {
+        var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should fallback to type="!" behavior if type attribute is invalid', function() {
+        var testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list type="a" attribute', function() {
+        var testString = '<ol type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' a. foo\n b. bar');
+      });
+
+      it('should support the ordered list type="A" attribute', function() {
+        var testString = '<ol type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' A. foo\n B. bar');
+      });
+
+      it('should support the ordered list type="i" attribute by falling back to type="1"', function() {
+        var testString = '<ol type="i"><li>foo</li><li>bar</li></ol>';
+        // TODO Implement lowercase roman numerals
+        // expect(htmlToText.fromString(testString)).to.equal('i. foo\nii. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list type="I" attribute by falling back to type="1"', function() {
+        var testString = '<ol type="I"><li>foo</li><li>bar</li></ol>';
+        // TODO Implement uppercase roman numerals
+        // expect(htmlToText.fromString(testString)).to.equal('I. foo\nII. bar');
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should support the ordered list start attribute', function() {
+        var testString = '<ol start="2"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 2. foo\n 3. bar');
+      });
+
+      /*
+       * Currently failing tests for continuing to fill out the specification
+       *  Spec: https://html.spec.whatwg.org/multipage/semantics.html#the-ol-element
+       *
+      it('should support the ordered list type="a" attribute past 26 characters', function() {
+        var testString = '<ol start="26" type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('z. foo\naa. bar');
+      });
+
+      it('should support the ordered list type="A" attribute past 26 characters', function() {
+        var testString = '<ol start="26" type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal('Z. foo\nAA. bar');
+      });
+      */
+    });
+
+    it('doesnt wrap li if wordwrap isnt', function () {
+      var html = 'Good morning Jacob, \
+        <p>Lorem ipsum dolor sit amet</p> \
+        <p><strong>Lorem ipsum dolor sit amet.</strong></p> \
+        <ul> \
+          <li>run in the park <span style="color:#888888;">(in progress)</span></li> \
+        </ul> \
+      ';
+      var resultExpected = 'Good morning Jacob, Lorem ipsum dolor sit amet\n\nLorem ipsum dolor sit amet.\n\n * run in the park (in progress)';
+      var result = htmlToText.fromString(html, { wordwrap: false });
+      expect(result).to.equal(resultExpected);
     });
   });
 
@@ -231,13 +363,26 @@ describe('html-to-text', function() {
         expect(result).to.equal('test');
       });
     });
-    
+  });
+
+  describe('custom formatting', function () {
+    it('should allow to pass custom formatting functions', function () {
+      var result = htmlToText.fromString('<h1>TeSt</h1>', {
+        format: {
+          heading: function (elem, fn, options) {
+            var h = fn(elem.children, options);
+            return '====\n' + h.toLowerCase() + '\n====';
+          }
+        }
+      });
+      expect(result).to.equal('====\ntest\n====');
+    });
   });
 
   describe('Base element', function () {
     it('should retrieve and convert the entire document under `body` by default', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -251,8 +396,8 @@ describe('html-to-text', function() {
     });
 
     it('should only retrieve and convert content under the specified base element if found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-address.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-address.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -267,8 +412,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert content under multiple base elements', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-address-dup.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-address-dup.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -283,8 +428,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert content under multiple base elements in any order', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-any-order.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-any-order.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -299,8 +444,8 @@ describe('html-to-text', function() {
     });
 
     it('should process the first base element found when multiple exist', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test-first-element.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test-first-element.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -315,8 +460,8 @@ describe('html-to-text', function() {
     });
 
     it('should retrieve and convert the entire document by default if no base element is found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html'),
-          txtFile = path.join(__dirname, 'test.txt');
+      var htmlFile = path.join(__dirname, 'test.html');
+      var txtFile = path.join(__dirname, 'test.txt');
 
       var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
@@ -359,7 +504,7 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, {} ))
           .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlongword_with_following_text.');
     });
- 
+
     it('should not wrap a string if not wrapCharacters are found and forceWrapOnLimit is not set', function() {
       var testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
       expect(htmlToText.fromString(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: false }} ))
@@ -449,6 +594,30 @@ describe('html-to-text', function() {
     it('should not be ignored inside a whitespace-only node', function() {
       var testString = 'foo<span> </span>bar';
       expect(htmlToText.fromString(testString)).to.equal('foo bar');
+    });
+  });
+
+  describe('wbr', function() {
+    it('should handle a large number of wbr tags w/o stack overflow', function() {
+      var testString = "<!DOCTYPE html><html><head></head><body>\n";
+      var expectedResult = "";
+      for (var i = 0; i < 1000; i++){
+        if (i !== 0 && i % 80 === 0) {
+          expectedResult += "\n";
+        }
+        expectedResult += "n";
+        testString += "<wbr>n";
+      }
+      testString += "</body></html>";
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    });
+  });
+
+  describe('blockquote', function() {
+    it('should handle format blockquote', function() {
+      var testString = 'foo<blockquote>test</blockquote>bar';
+      var expectedResult = 'foo> test\nbar';
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
     });
   });
 });

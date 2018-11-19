@@ -1,5 +1,14 @@
+addons:
+  code_climate:
+    repo_token:
+      secure: IbQv9JBOVRXApd+Hd/WQ47f6Ty+2i1ly6hzFXLTuMt7cM/72KC4ocwHsuP6OdiTAgRuSwCHar92v2uTgx0vTjLCBLBCmWYjhVq1u1Pr+9oBidQCT7ryHATNDEh1V68bkmsSXzRDh7j5sesBz7mwzFIpF7FGUlZm3Glba6HbKP5E=
+
+after_success:
+  - npm install -g codeclimate-test-reporter
+  - codeclimate-test-reporter < coverage/lcov.info
+
 language: node_js
 node_js:
-  - "0.10.32"
-  - "4.4.7"
-  - "6.2.1"
+  - "4"
+  - "6"
+  - "8"
