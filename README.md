@@ -13,6 +13,7 @@ An advanced converter that parses HTML and returns beautiful text. It was mainly
  * Automatic extraction of href information from links.
  * `<br>` conversion to `\n`.
  * Unicode support.
+ * Runs in browser and server environments.
 
 ## Installation
 
@@ -296,7 +297,7 @@ E-Mail: Click here [test@example.com]
 
 (The MIT License)
 
-Copyright (c) 2017 werk85 &lt;legenhausen@werk85.de&gt;
+Copyright (c) 2019 werk85 &lt;malte@werk85.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
