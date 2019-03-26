@@ -1,5 +1,42 @@
 # Changelog
 
+## Version 5.0.0
+
+### BREAKING CHANGES
+
+#### fromFile removed
+
+The function `fromFile` is removed. It was the main reason `html-to-text` could not be used in the browser [#164](https://github.com/werk85/node-html-to-text/pull/164).
+
+You can get the `fromFile` functionality back by using the following code
+
+```js
+const fs = require('fs');
+const { fromString } = require('html-to-text');
+
+// Callback version
+const fromFile = (file, options, callback) => {
+  if (!callback) {
+    callback = options;
+    options = {};
+  }
+  fs.readFile(file, 'utf8', (err, str) => {
+    if (err) return callback(err);
+    callback(null, fromString(str, options));
+  });
+};
+
+// Promise version
+const fromFile = (file, option) => fs.promises.readFile(file, 'utf8').then(html => fromString(html, options));
+
+// Sync version
+const fromFileSync = (file, options) => fromString(fs.readFileSync(file, 'utf8'), options);
+```
+
+#### Supported NodeJS Versions
+Node versions < 6 are no longer supported.
+
+
 ## Version 4.0.0
 
 * Support dropped for node version < 4.
