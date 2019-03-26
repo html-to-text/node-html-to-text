@@ -143,21 +143,6 @@ describe('html-to-text', function() {
     });
   });
 
-  describe('.fromFile()', function() {
-    it('should convert file at given path', function(done) {
-
-      var htmlFile = path.join(__dirname, 'test.html'),
-        txtFile = path.join(__dirname, 'test.txt');
-
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
-      htmlToText.fromFile(htmlFile, { tables: ['#invoice', '.address'] }, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
-    });
-  });
-
   describe('tables', function () {
     it('does not process tables with uppercase tags / does not process tables with center tag', function () {
       var html = 'Good morning Jacob, \
@@ -380,103 +365,79 @@ describe('html-to-text', function() {
   });
 
   describe('Base element', function () {
-    it('should retrieve and convert the entire document under `body` by default', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test.txt');
+    it('should retrieve and convert the entire document under `body` by default', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['#invoice', '.address']
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should only retrieve and convert content under the specified base element if found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test-address.txt');
+    it('should only retrieve and convert content under the specified base element if found', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test-address.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['.address'],
         baseElement: 'table.address'
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should retrieve and convert content under multiple base elements', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test-address-dup.txt');
+    it('should retrieve and convert content under multiple base elements', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test-address-dup.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['.address'],
         baseElement: ['table.address', 'table.address']
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should retrieve and convert content under multiple base elements in any order', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test-any-order.txt');
+    it('should retrieve and convert content under multiple base elements in any order', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test-any-order.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['.address'],
         baseElement: ['table.address', 'p.normal-space', 'table.address']
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should process the first base element found when multiple exist', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test-first-element.txt');
+    it('should process the first base element found when multiple exist', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test-first-element.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['.address'],
         baseElement: 'p.normal-space'
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should retrieve and convert the entire document by default if no base element is found', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
-      var txtFile = path.join(__dirname, 'test.txt');
+    it('should retrieve and convert the entire document by default if no base element is found', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      var txtFile = fs.readFileSync(path.join(__dirname, 'test.txt'), 'utf8');
 
-      var expectedTxt = fs.readFileSync(txtFile, 'utf8');
       var options = {
         tables: ['#invoice', '.address'],
         baseElement: 'table.notthere'
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(txtFile);
     });
 
-    it('should return null if the base element isn\'t found and we\'re not returning the DOM by default', function(done) {
-      var htmlFile = path.join(__dirname, 'test.html');
+    it('should return null if the base element isn\'t found and we\'re not returning the DOM by default', function() {
+      var htmlFile = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
 
       var expectedTxt = '';
       var options = {
@@ -484,11 +445,8 @@ describe('html-to-text', function() {
         baseElement: 'table.notthere',
         returnDomByDefault: false
       };
-      htmlToText.fromFile(htmlFile, options, function(err, text) {
-        expect(err).to.be.a('null');
-        expect(text).to.equal(expectedTxt);
-        done();
-      });
+      var text = htmlToText.fromString(htmlFile, options);
+      expect(text).to.equal(expectedTxt);
     });
   });
 

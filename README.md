@@ -27,28 +27,14 @@ npm install html-to-text -g
 ```
 
 ## Usage
-You can read from a file via:
 
-```javascript
-var htmlToText = require('html-to-text');
+```js
+const htmlToText = require('html-to-text');
 
-htmlToText.fromFile(path.join(__dirname, 'test.html'), {
-  tables: ['#invoice', '.address']
-}, (err, text) => {
-  if (err) return console.error(err);
-  console.log(text);
-});
-```
-
-or directly from a string:
-
-```javascript
-var htmlToText = require('html-to-text');
-
-var text = htmlToText.fromString('<h1>Hello World</h1>', {
+const text = htmlToText.fromString('<h1>Hello World</h1>', {
   wordwrap: 130
 });
-console.log(text);
+console.log(text); // Hello World
 ```
 
 ### Options:
