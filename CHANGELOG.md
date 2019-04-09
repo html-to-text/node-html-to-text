@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.1.0
+
+* Hard-coded CLI options removed [#173](https://github.com/werk85/node-html-to-text/pull/173)
+
 ## Version 5.0.0
 
 ### BREAKING CHANGES
