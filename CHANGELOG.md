@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.1.1
+
+* `preserveNewLines` whitespace issue fixed [#162](https://github.com/werk85/node-html-to-text/pull/162)
+
 ## Version 5.1.0
 
 * Hard-coded CLI options removed [#173](https://github.com/werk85/node-html-to-text/pull/173)
