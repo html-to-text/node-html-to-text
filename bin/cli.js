@@ -1,15 +1,27 @@
 #!/usr/bin/env node
-var optimist = require('optimist');
+var parseArgs = require('minimist');
 
 var htmlToText = require('../lib/html-to-text');
 
-var argv = optimist
-  .string('tables')
-  .default('wordwrap', 80)
-  .default('ignore-href', false)
-  .default('ignore-image', false)
-  .default('noLinkBrackets', false)
-  .argv;
+var argv = parseArgs(process.argv.slice(2), {
+  string: [
+    'tables'
+  ],
+  boolean: [
+    'noLinkBrackets',
+    'ignoreHref',
+    'ignoreImage'
+  ],
+  alias: {
+    'ignore-href': 'ignoreHref',
+    'ignore-image': 'ignoreImage'
+  },
+  default: {
+    'wordwrap': 80
+  }
+});
+
+argv.tables = interpretTables(argv.tables);
 
 var text = '';
 
@@ -22,13 +34,7 @@ process.stdin.on('data', function data(data) {
 });
 
 process.stdin.on('end', function end() {
-  text = htmlToText.fromString(text, {
-    tables: interpretTables(argv.tables),
-    wordwrap: argv.wordwrap,
-    ignoreHref: argv['ignore-href'],
-    ignoreImage: argv['ignore-image'],
-    noLinkBrackets: argv['noLinkBrackets']
-  });
+  text = htmlToText.fromString(text, argv);
   process.stdout.write(text + '\n', 'utf-8');
 });
 
