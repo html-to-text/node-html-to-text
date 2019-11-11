@@ -603,10 +603,16 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, { ignoredSelectors: ['span'] })).to.equal(expectedResult);
     });
 
-    it('should ignore two tags', function() {
-      var testString = 'foo<span>bar</span><span>zar</span>';
+    it('should ignore two same tags', function() {
+      var testString = 'foo<span>bar</span><span>bar</span>';
       var expectedResult = 'foo';
       expect(htmlToText.fromString(testString, { ignoredSelectors: ['span'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two different tags', function() {
+      var testString = 'foo<span>bar</span><div>bar</div>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['span', 'div'] })).to.equal(expectedResult);
     });
 
     it('should ignore class', function() {
@@ -615,16 +621,34 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz'] })).to.equal(expectedResult);
     });
 
-    it('should ignore two classes', function() {
-      var testString = 'foo<span class="baz">bar</span><dic class="baz">bar</dic>';
+    it('should ignore class if element has several classes', function() {
+      var testString = 'foo<span class="baz zab">bar</span>';
       var expectedResult = 'foo';
       expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two same classes', function() {
+      var testString = 'foo<span class="baz">bar</span><div class="baz">bar</div>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two different classes', function() {
+      var testString = 'foo<span class="baz">bar</span><div class="zab">bar</div>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz', '.zab'] })).to.equal(expectedResult);
     });
 
     it('should ignore id', function() {
       var testString = 'foo<span id="baz">bar</span>';
       var expectedResult = 'foo';
       expect(htmlToText.fromString(testString, { ignoredSelectors: ['#baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two different ids', function() {
+      var testString = 'foo<span id="baz">bar</span><div id="zab"></div>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['#baz', '#zab'] })).to.equal(expectedResult);
     });
 
     it('should not separate ids', function() {
