@@ -595,4 +595,48 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
     });
   });
+
+  describe('option ignored selectors', function() {
+    it('should ignore tag', function() {
+      var testString = 'foo<span>qwe</span>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['span'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two tags', function() {
+      var testString = 'foo<span>bar</span><span>zar</span>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['span'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore class', function() {
+      var testString = 'foo<span class="baz">bar</span>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore two classes', function() {
+      var testString = 'foo<span class="baz">bar</span><dic class="baz">bar</dic>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['.baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore id', function() {
+      var testString = 'foo<span id="baz">bar</span>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['#baz'] })).to.equal(expectedResult);
+    });
+
+    it('should not separate ids', function() {
+      var testString = 'foo<span id="baz id">bar</span>';
+      var expectedResult = 'foobar';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['#baz'] })).to.equal(expectedResult);
+    });
+
+    it('should ignore several selectors', function() {
+      var testString = 'foo<span>bar</span><div class="baz">bar</div><h1 id="uniq">bar</h1>';
+      var expectedResult = 'foo';
+      expect(htmlToText.fromString(testString, { ignoredSelectors: ['span', '.baz', '#uniq'] })).to.equal(expectedResult);
+    });
+  });
 });
