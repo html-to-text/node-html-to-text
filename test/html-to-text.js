@@ -343,16 +343,15 @@ describe('html-to-text', function() {
 
     it('should update relatively sourced entities with linkHrefBaseUrl', function () {
       var html1 = '<img src="/test.png">';
-      var html2 = '<a href="/test.html">';
+      var html2 = '<a href="/test.html">test</a>';
 
-      var result = htmlToText.fromString(html1, {
+      var options = {
         linkHrefBaseUrl: "http://www.domain.com"
-      });
+      };
+      var result = htmlToText.fromString(html1, options);
       expect(result).to.equal('[http://www.domain.com/test.png]');
-      result = htmlToText.fromString(html2, {
-        linkHrefBaseUrl: "http://www.domain.com"
-      });
-      expect(result).to.equal('[http://www.domain.com/test.html]');
+      result = htmlToText.fromString(html2, options);
+      expect(result).to.equal('test [http://www.domain.com/test.html]');
     });
   });
 
