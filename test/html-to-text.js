@@ -589,10 +589,20 @@ describe('html-to-text', function() {
   });
 
   describe('blockquote', function() {
-    it('should handle format blockquote', function() {
+    it('should handle format single-line blockquote', function() {
       var testString = 'foo<blockquote>test</blockquote>bar';
       var expectedResult = 'foo> test\nbar';
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
     });
+    it('should format multi-line blockquote', function () {
+      var testString = '<blockquote>a<br/>b</blockquote>';
+      var expectedResult = '> a\n> b';
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    })
+    it('should trim newlines', function () {
+      var testString = '<blockquote><br/>a<br/><br/><br/></blockquote>';
+      var expectedResult = '> a';
+      expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    })
   });
 });
