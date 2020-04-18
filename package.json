@@ -1,13 +1,14 @@
 {
   "name": "html-to-text",
-  "version": "5.1.1",
+  "version": "6.0.0-next.0",
   "description": "Advanced html to plain text converter",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha && eslint .",
+    "test": "mocha && eslint .",
     "example": "node ./example/html-to-text.js",
     "lint": "eslint .",
-    "prepublish": "npm test"
+    "cover": "nyc --reporter=lcov --reporter=text-summary npm run test",
+    "prepare": "npm run cover"
   },
   "author": {
     "name": "Malte Legenhausen",
@@ -24,9 +25,9 @@
   },
   "dependencies": {
     "he": "^1.2.0",
-    "htmlparser2": "^3.10.1",
-    "minimist": "^1.2.0",
-    "lodash": "^4.17.11"
+    "htmlparser2": "^4.1.0",
+    "minimist": "^1.2.5",
+    "lodash": "^4.17.15"
   },
   "keywords": [
     "html",
@@ -37,15 +38,15 @@
     "converter"
   ],
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">=8.10.0"
   },
   "bin": {
     "html-to-text": "./bin/cli.js"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.15.3",
-    "istanbul": "^0.4.5",
-    "mocha": "^6.0.2"
+    "eslint": "^6.8.0",
+    "nyc": "^15.0.1",
+    "mocha": "^7.1.1"
   }
 }

@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 6.0.0 (WIP)
+
+Version 6 roadmap tracking issue: [#200](https://github.com/werk85/node-html-to-text/issues/200)
+
+* Node version >=8.10.0
+* Bump dependencies to latest versions
+* Replace istanbul with nyc
+* Support multiline blockquote [#193](https://github.com/werk85/node-html-to-text/pull/193)
+* fix(NestedLists): corrected prefix in `ol` [#191](https://github.com/werk85/node-html-to-text/pull/191)
+* fix(NestedLists): First element of sublist now indented [#168](https://github.com/werk85/node-html-to-text/pull/168)
+* use `linkHrefBaseUrl` for image src too [#145](https://github.com/werk85/node-html-to-text/pull/145)
+
 ## Version 5.1.1
 
 * `preserveNewLines` whitespace issue fixed [#162](https://github.com/werk85/node-html-to-text/pull/162)
@@ -42,8 +54,8 @@ const fromFileSync = (file, options) => fromString(fs.readFileSync(file, 'utf8')
 ```
 
 #### Supported NodeJS Versions
-Node versions < 6 are no longer supported.
 
+Node versions < 6 are no longer supported.
 
 ## Version 4.0.0
 
@@ -74,7 +86,7 @@ Node versions < 6 are no longer supported.
 
 ## Version 2.1.1
 
- * Extra space ploblem fixed. #88
+* Extra space ploblem fixed. #88
 
 ## Version 2.1.0
 
