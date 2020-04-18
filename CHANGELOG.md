@@ -7,6 +7,7 @@ Version 6 roadmap tracking issue: [#200](https://github.com/werk85/node-html-to-
 * Node version >=8.10.0
 * Bump dependencies to latest versions
 * Replace istanbul with nyc
+* Make cli tests work on Windows
 * Support multiline blockquote [#193](https://github.com/werk85/node-html-to-text/pull/193)
 * fix(NestedLists): corrected prefix in `ol` [#191](https://github.com/werk85/node-html-to-text/pull/191)
 * fix(NestedLists): First element of sublist now indented [#168](https://github.com/werk85/node-html-to-text/pull/168)
