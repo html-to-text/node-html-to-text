@@ -584,9 +584,12 @@ describe('html-to-text', function() {
       expect(htmlToText.fromString(testString, options)).to.equal('This text contains superscript text.');
     });
 
-    it('should handle unicode whitespaces the same as the regular one', function() {
-      var testString = '<span>test text' + String.fromCharCode(160) + '</span><div>last line</div>';
-      expect(htmlToText.fromString(testString, {wordwrap: false})).to.equal('test text last line');
+    it('should handle different whitespace characters equally at leading/trailing position', function() {
+      var withTrailingSpace = '<span>first span' + String.fromCharCode(160) + '</span><span>last span</span>';
+      var withLeadingSpace = '<span>first span</span><span>' + String.fromCharCode(160) + 'last span</span>';
+      var expected = 'first span last span';
+      expect(htmlToText.fromString(withTrailingSpace)).to.equal(expected);
+      expect(htmlToText.fromString(withLeadingSpace)).to.equal(expected);
     });
   });
 
