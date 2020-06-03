@@ -593,11 +593,11 @@ describe('html-to-text', function() {
     });
   });
 
-  describe('wbr', function() {
+  describe('lots of tags, limits', function() {
     it('should handle a large number of wbr tags w/o stack overflow', function() {
       var testString = "<!DOCTYPE html><html><head></head><body>\n";
       var expectedResult = "";
-      for (var i = 0; i < 1000; i++){
+      for (var i = 0; i < 10000; i++){
         if (i !== 0 && i % 80 === 0) {
           expectedResult += "\n";
         }
@@ -606,6 +606,60 @@ describe('html-to-text', function() {
       }
       testString += "</body></html>";
       expect(htmlToText.fromString(testString)).to.equal(expectedResult);
+    });
+
+    it('should handle a very large number of wbr tags with limits', function() {
+      var testString = "<!DOCTYPE html><html><head></head><body>\n";
+      for (var i = 0; i < 70000; i++){
+        testString += "<wbr>n";
+      }
+      testString += "</body></html>";
+      var options = {
+        limits: {
+          maxChildNodes: 10,
+          ellipsis: '(...)'
+        }
+      };
+      var expectedResult = "nnnn(...)";
+      expect(htmlToText.fromString(testString, options)).to.equal(expectedResult);
+    });
+
+    it('should respect maxDepth limit', function() {
+      var testString = /*html*/`<!DOCTYPE html><html><head></head><body><div>a<div>b<div>c<div>d</div>e</div>f</div>g<div>h<div>i<div>j</div>k</div>l</div>m</div></body></html>`;
+      var options = {
+        limits: {
+          maxDepth: 2,
+          ellipsis: '(...)'
+        }
+      };
+      var expectedResult = "a(...)g(...)m";
+      expect(htmlToText.fromString(testString, options)).to.equal(expectedResult);
+    });
+
+    it('should respect maxChildNodes limit', function() {
+      var testString = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
+      var options = {
+        singleNewLineParagraphs: true,
+        limits: {
+          maxChildNodes: 6,
+          ellipsis: '(skipped the rest)'
+        }
+      };
+      var expectedResult = "a\nb\nc\nd\ne\nf\n(skipped the rest)";
+      expect(htmlToText.fromString(testString, options)).to.equal(expectedResult);
+    });
+
+    it('should not add ellipsis when maxChildNodes limit is exact match', function() {
+      var testString = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
+      var options = {
+        singleNewLineParagraphs: true,
+        limits: {
+          maxChildNodes: 10,
+          ellipsis: 'can\'t see me'
+        }
+      };
+      var expectedResult = "a\nb\nc\nd\ne\nf\ng\nh\ni\nj";
+      expect(htmlToText.fromString(testString, options)).to.equal(expectedResult);
     });
   });
 
