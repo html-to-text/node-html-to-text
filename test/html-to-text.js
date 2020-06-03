@@ -229,6 +229,11 @@ describe('html-to-text', function() {
         expect(htmlToText.fromString(testString)).to.equal(' * foo\n * bar');
       });
 
+      it('should handle an unordered list with line break', function() {
+        var testString = '<ul><br><li>foo</li><li>bar</li></ul>';
+        expect(htmlToText.fromString(testString)).to.equal(' * foo\n * bar');
+      });
+
       it('should handle an unordered list prefix option', function() {
         var testString = '<ul><li>foo</li><li>bar</li></ul>';
         var options = {unorderedListItemPrefix: ' test '};
@@ -249,6 +254,11 @@ describe('html-to-text', function() {
 
       it('should handle an ordered list with multiple elements', function() {
         var testString = '<ol><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
+      });
+
+      it('should handle an ordered list with line break', function() {
+        var testString = '<ol><br><li>foo</li><li>bar</li></ol>';
         expect(htmlToText.fromString(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
