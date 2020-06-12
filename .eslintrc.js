@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: [ 'filenames', 'github', 'jsdoc', 'mocha' ],
+  plugins: [ 'filenames', 'jsdoc', 'mocha' ],
   extends: [
     'eslint:recommended',
     'plugin:import/errors',
@@ -143,9 +143,6 @@ module.exports = {
     'import/no-unassigned-import': 'error',
     'import/no-named-default': 'error',
     'import/group-exports': 'error',
-
-    // GitHub
-    // 'github/array-foreach': 'error',
 
     // Mocha tests
     'mocha/no-setup-in-describe': 'off', // using some dynamically generated tests
