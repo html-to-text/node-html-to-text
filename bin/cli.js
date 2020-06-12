@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const parseArgs = require('minimist');
 
-const htmlToText = require('../lib/html-to-text');
+const { htmlToText } = require('../lib/html-to-text');
 
 
 const argv = parseArgs(process.argv.slice(2), {
@@ -26,12 +26,12 @@ process.title = 'html-to-text';
 
 process.stdin.resume();
 process.stdin.setEncoding('utf8');
-process.stdin.on('data', function listener (data) {
+process.stdin.on('data', function (data) {
   text += data;
 });
 
-process.stdin.on('end', function end () {
-  text = htmlToText.fromString(text, argv);
+process.stdin.on('end', function () {
+  text = htmlToText(text, argv);
   process.stdout.write(text + '\n', 'utf-8');
 });
 

@@ -116,9 +116,18 @@ module.exports = {
     'prefer-spread': 'error',
 
     // JSDoc
+    'jsdoc/check-examples': ['error', {
+      checkEslintrc: false,
+      baseConfig: { extends: [ 'eslint:recommended' ], env: { es6: true } }
+    }],
     'jsdoc/check-indentation': 'error',
-    'jsdoc/require-jsdoc': ['off', { 'publicOnly': true }], // TODO: set to error
-    'jsdoc/require-returns': 'off', // description usually tells this better
+    'jsdoc/check-syntax': 'error',
+    'jsdoc/empty-tags': 'error',
+    'jsdoc/no-undefined-types': 'off', // doesn't work with typedefs in a different file
+    'jsdoc/require-description-complete-sentence': ['error', { tags: ['typedef'] }],
+    'jsdoc/require-hyphen-before-param-description': ['error', 'never'],
+    'jsdoc/require-jsdoc': ['error', { 'publicOnly': true }],
+    'jsdoc/require-returns-description': 'off', // description might tell this better, avoid repetition
 
     // Import
     'import/no-deprecated': 'error',
