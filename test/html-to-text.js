@@ -378,7 +378,7 @@ describe('html-to-text', function () {
   });
 
   describe('custom formatting', function () {
-    it('should allow to pass custom formatting functions', function () {
+    it('should allow to pass custom formatting functions: heading', function () {
       const result = htmlToText('<h1>TeSt</h1>', {
         format: {
           heading: function (elem, fn, options) {
@@ -388,6 +388,18 @@ describe('html-to-text', function () {
         }
       });
       expect(result).to.equal('====\ntest\n====');
+    });
+
+    it('should allow to pass custom formatting functions: div', function () {
+      const result = htmlToText('<div>Hello</div><div>World</div>!', {
+        format: {
+          div: function (elem, fn, options) {
+            const h = fn(elem.children, options);
+            return h + '\n';
+          }
+        }
+      });
+      expect(result).to.equal('Hello\nWorld\n!');
     });
   });
 

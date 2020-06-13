@@ -64,7 +64,7 @@ Option             | Default   | Description
 
 ### Override formatting for specific elements
 
-By using the `format` option, you can specify formatting for these elements:
+By using the `format` option, you can specify formatting for **ALL** elements:
 
 Key               | Tags
 ----------------- | -----------------
@@ -80,6 +80,7 @@ Key               | Tags
 `table`           | `table`
 `text`            |
 `unorderedList`   | `ul`
+`...`             | `...`
 
 Each key must be a function which eventually receive `elem` (the current elem), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
 
@@ -96,6 +97,19 @@ var text = htmlToText.fromString('<h1>Hello World</h1>', {
 });
 
 console.log(text);
+// ====\nHELLO WORLD\n====
+
+var text2 = htmlToText.fromString('<div>Hello</div><div>World</div>!', {
+  format: {
+    div: function (elem, fn, options) {
+      const h = fn(elem.children, options);
+      return h + '\n';
+    }
+  }
+});
+
+console.log(text2);
+// Hello\nWorld\n!
 ```
 
 ## Command Line Interface
