@@ -7,7 +7,7 @@ const { htmlToText } = require('..');
 
 
 describe('html-to-text', function () {
-  describe('.fromString()', function () {
+  describe('.htmlToText()', function () {
     describe('wordwrap option', function () {
 
       let longStr;
@@ -378,7 +378,7 @@ describe('html-to-text', function () {
   });
 
   describe('custom formatting', function () {
-    it('should allow to pass custom formatting functions', function () {
+    it('should allow to pass custom formatting functions for existing tags', function () {
       const result = htmlToText('<h1>TeSt</h1>', {
         format: {
           heading: function (elem, fn, options) {
@@ -388,6 +388,39 @@ describe('html-to-text', function () {
         }
       });
       expect(result).to.equal('====\ntest\n====');
+    });
+
+    it('should allow to skip tags with dummy formatting function', function () {
+      const input = '<ruby>漢<rt>かん</rt>字<rt>じ</rt></ruby>';
+      const expected = '漢字';
+      const result = htmlToText(
+        input,
+        { tags: { 'rt': { formatter: 'skip' } } }
+      );
+      expect(result).to.equal(expected);
+    });
+
+    it('should allow to add support for different tags', function () {
+      const input = '<div><foo>foo content</foo><bar src="bar.src" /></div>';
+      const expected = '[FOO]foo content[/FOO][BAR src="bar.src"]';
+      const result = htmlToText(
+        input,
+        {
+          format: {
+            'formatFoo': function (elem, fn, options) {
+              return '[FOO]' + fn(elem.children, options) + '[/FOO]';
+            },
+            'formatBar': function (elem, fn, options) {
+              return `[BAR src="${elem.attribs.src}"]`; // attribute availability check is left out for brevity
+            }
+          },
+          tags: {
+            'foo': { formatter: 'formatFoo', inline: true },
+            'bar': { formatter: 'formatBar' }
+          }
+        }
+      );
+      expect(result).to.equal(expected);
     });
   });
 
@@ -664,6 +697,17 @@ describe('html-to-text', function () {
       const expectedResult = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
       expect(htmlToText(testString, options)).to.equal(expectedResult);
     });
+
+    it('should use default ellipsis value if none provided', function () {
+      const testString = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
+      const options = {
+        singleNewLineParagraphs: true,
+        limits: { maxChildNodes: 6 }
+      };
+      const expectedResult = 'a\nb\nc\nd\ne\nf\n...';
+      expect(htmlToText(testString, options)).to.equal(expectedResult);
+    });
+
   });
 
   describe('blockquote', function () {
@@ -672,14 +716,35 @@ describe('html-to-text', function () {
       const expectedResult = 'foo> test\nbar';
       expect(htmlToText(testString)).to.equal(expectedResult);
     });
+
     it('should format multi-line blockquote', function () {
       const testString = '<blockquote>a<br/>b</blockquote>';
       const expectedResult = '> a\n> b';
       expect(htmlToText(testString)).to.equal(expectedResult);
     });
+
     it('should trim newlines', function () {
       const testString = '<blockquote><br/>a<br/><br/><br/></blockquote>';
       const expectedResult = '> a';
+      expect(htmlToText(testString)).to.equal(expectedResult);
+    });
+  });
+
+  describe('pre', function () {
+    it('should support simple preformatted text', function () {
+      const testString = '<P>Code fragment:</P><PRE>  body {\n    color: red;\n  }</PRE>';
+      const expectedResult = 'Code fragment:\n\n  body {\n    color: red;\n  }';
+      expect(htmlToText(testString)).to.equal(expectedResult);
+    });
+
+    it('should support preformatted text with inner tags', function () {
+      const testString = /*html*/`
+<p>Code fragment:</p>
+<pre><code>  var total = 0;
+
+  <em style="color: green;">// Add 1 to total and display in a paragraph</em>
+  <strong style="color: blue;">document.write('&lt;p&gt;Sum: ' + (total + 1) + '&lt;/p&gt;');</strong></code></pre>`;
+      const expectedResult = `Code fragment:\n\n  var total = 0;\n\n  // Add 1 to total and display in a paragraph\n  document.write('<p>Sum: ' + (total + 1) + '</p>');`;
       expect(htmlToText(testString)).to.equal(expectedResult);
     });
   });

@@ -17,7 +17,7 @@ module.exports = {
   rules: {
     // Best practices
     'block-scoped-var': 'error',
-    // 'complexity': ['error', 10],
+    // 'complexity': ['error', 14],
     'consistent-return': 'error',
     'curly': 'error',
     'default-case': 'error',
@@ -57,6 +57,7 @@ module.exports = {
 
     // Variables
     'no-undef-init': 'error',
+    'no-unused-vars': ['error', { 'args': 'none' }], // function shapes have to be clear
 
     // Stylistic Issues
     'block-spacing': 'error',
@@ -74,7 +75,7 @@ module.exports = {
     'keyword-spacing': 'error',
     'max-depth': ['error', 5],
     'max-len': ['error', 130],
-    // 'max-lines-per-function': ['error', 70],
+    'max-lines-per-function': ['error', 65],
     'max-nested-callbacks': ['error', 4],
     'max-params': ['error', 4],
     // 'max-statements': ['error', 20],
@@ -155,13 +156,17 @@ module.exports = {
   },
   overrides: [
     {
-      'files': ['test/*.js', 'example/*.js'],
+      'files': ['example/*.js'],
       'rules': { 'import/no-nodejs-modules': 'off' }
     },
     {
       'files': ['test/*.js'],
       'env': { mocha: true },
-      'rules': { 'max-len': 'off' }
+      'rules': {
+        'import/no-nodejs-modules': 'off',
+        'max-len': 'off',
+        'max-lines-per-function': 'off'
+      }
     },
     {
       'files': ['.eslintrc.js'],
