@@ -395,7 +395,7 @@ describe('html-to-text', function () {
       const expected = '漢字';
       const result = htmlToText(
         input,
-        { tags: { 'rt': { formatter: 'skip' } } }
+        { tags: { 'rt': { format: 'skip' } } }
       );
       expect(result).to.equal(expected);
     });
@@ -415,8 +415,8 @@ describe('html-to-text', function () {
             }
           },
           tags: {
-            'foo': { formatter: 'formatFoo', inline: true },
-            'bar': { formatter: 'formatBar' }
+            'foo': { format: 'formatFoo', inline: true },
+            'bar': { format: 'formatBar' }
           }
         }
       );
