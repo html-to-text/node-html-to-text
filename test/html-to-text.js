@@ -75,20 +75,15 @@ describe('html-to-text', function () {
       let newlineStr;
 
       beforeEach(function () {
-        newlineStr = '<p\n>One\nTwo\nThree</p>';
+        newlineStr = '<p\n>One\nTwo\nThree</p>'; // newline inside a tag is intentional
       });
 
       it('should not preserve newlines by default', function () {
-        expect(htmlToText(newlineStr)).to.not.contain('\n');
+        expect(htmlToText(newlineStr)).to.equal('One Two Three');
       });
 
       it('should preserve newlines when provided with a truthy value', function () {
-        expect(htmlToText(newlineStr, { preserveNewlines: true })).to.contain('\n');
-      });
-
-      it('should not preserve newlines in the tags themselves', function () {
-        const result = htmlToText(newlineStr, { preserveNewlines: true });
-        expect(result.slice(0, 1)).to.equal('O');
+        expect(htmlToText(newlineStr, { preserveNewlines: true })).to.equal('One\nTwo\nThree');
       });
 
       it('should preserve line feeds in a long wrapping string containing line feeds', function () {
@@ -119,6 +114,12 @@ describe('html-to-text', function () {
         const testString = '<p>If a word with a line feed exists over the line feed boundary then you must respect it.</p>';
         expect(htmlToText(testString, { preserveNewlines: true }))
           .to.equal('If a word with a line feed exists over the line feed boundary then you must\nrespect it.');
+      });
+
+      it('should remove spaces if they occur around line feed', function () {
+        const testString = '<p>A string of text\nwith \nmultiple\n spaces   \n   that \n \n can be safely removed.</p>';
+        expect(htmlToText(testString, { preserveNewlines: true }))
+          .to.equal('A string of text\nwith\nmultiple\nspaces\nthat\n\ncan be safely removed.');
       });
     });
 
@@ -522,13 +523,13 @@ describe('html-to-text', function () {
         .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlongword_with_following_text.');
     });
 
-    it('should not wrap a string if not wrapCharacters are found and forceWrapOnLimit is not set', function () {
+    it('should not wrap a string if wrapCharacters are set but not found and forceWrapOnLimit is not set', function () {
       const testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
       expect(htmlToText(testString, { longWordSplit: { wrapCharacters: ['/'], forceWrapOnLimit: false } }))
         .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
     });
 
-    it('should not wrap a string if no wrapCharacters are set and forceWrapOnLimit is not set', function () {
+    it('should not wrap a string if wrapCharacters are not set and forceWrapOnLimit is not set', function () {
       const testString = '<p>_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.</p>';
       expect(htmlToText(testString, { longWordSplit: { wrapCharacters: [], forceWrapOnLimit: false } }))
         .to.equal('_This_string_is_meant_to_test_if_a_string_is_split_properly_across_anewlineandlong\nword_with_following_text.');
@@ -626,6 +627,14 @@ describe('html-to-text', function () {
       const expected = 'first span last span';
       expect(htmlToText(withTrailingSpace)).to.equal(expected);
       expect(htmlToText(withLeadingSpace)).to.equal(expected);
+    });
+
+    it('should handle space and newline combination - keep space when and only when needed', function () {
+      const testString = '<span>foo</span> \n<span>bar</span>';
+      const defaultResult = htmlToText(testString);
+      const resultWithNewLine = htmlToText(testString, { preserveNewlines: true });
+      expect(defaultResult).to.equal('foo bar');
+      expect(resultWithNewLine).to.equal('foo\nbar');
     });
   });
 
