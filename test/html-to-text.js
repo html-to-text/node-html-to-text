@@ -765,9 +765,9 @@ describe('html-to-text', function () {
       expect(htmlToText(testString)).to.equal(expectedResult);
     });
 
-    it('should output horizontal line of width 80 when wordwrap is disabled', function () {
+    it('should output horizontal line of width 40 when wordwrap is disabled', function () {
       const testString = '<div>foo</div><hr/><div>bar</div>';
-      const expectedResult = 'foo\n--------------------------------------------------------------------------------\n\nbar';
+      const expectedResult = 'foo\n----------------------------------------\n\nbar';
       expect(htmlToText(testString, { wordwrap: false })).to.equal(expectedResult);
     });
   });
