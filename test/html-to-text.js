@@ -401,6 +401,26 @@ describe('html-to-text', function () {
       expect(result).to.equal(expected);
     });
 
+    it('should allow to define basic support for inline tags', function () {
+      const input = /*html*/`<p>a <span>b </span>c<span>  d  </span>e</p>`;
+      const expected = 'a b c d e';
+      const result = htmlToText(
+        input,
+        { tags: { 'span': { format: 'inline', level: 'inline' } } }
+      );
+      expect(result).to.equal(expected);
+    });
+
+    it('should allow to define basic support for block-level tags', function () {
+      const input = /*html*/`<div><div>a</div><div>b</div></div>c<div>d<div>e</div>f</div>`;
+      const expected = 'a\nb\nc\nd\ne\nf';
+      const result = htmlToText(
+        input,
+        { tags: { 'div': { format: 'block', level: 'block' } } }
+      );
+      expect(result).to.equal(expected);
+    });
+
     it('should allow to add support for different tags', function () {
       const input = '<div><foo>foo content</foo><bar src="bar.src" /></div>';
       const expected = '[FOO]foo content[/FOO][BAR src="bar.src"]';
@@ -416,7 +436,7 @@ describe('html-to-text', function () {
             }
           },
           tags: {
-            'foo': { format: 'formatFoo', inline: true },
+            'foo': { format: 'formatFoo' },
             'bar': { format: 'formatBar' }
           }
         }
