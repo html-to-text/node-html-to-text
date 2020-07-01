@@ -244,6 +244,21 @@ describe('html-to-text', function () {
         const testString = '<ul><li>foo<ul><li>bar<ul><li>baz.1</li><li>baz.2</li></ul></li></ul></li></ul>';
         expect(htmlToText(testString)).to.equal(' * foo\n    * bar\n       * baz.1\n       * baz.2');
       });
+
+      it('should handle long nested ul correctly', function () {
+        const testString = /*html*/`<ul>
+          <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          <li>Inner:
+            <ul>
+              <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+              <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+            </ul>
+          </li>
+        </ul>`;
+        const expected = ' * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u\n   b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u\n   b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n * Inner: \n    * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g\n      u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n    * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g\n      u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+        expect(htmlToText(testString)).to.equal(expected);
+      });
     });
 
     describe('ol', function () {
@@ -262,8 +277,8 @@ describe('html-to-text', function () {
         expect(htmlToText(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
-      it('should fallback to type="!" behavior if type attribute is invalid', function () {
-        const testString = '<ol type="1"><li>foo</li><li>bar</li></ol>';
+      it('should fallback to type="1" behavior if type attribute is invalid', function () {
+        const testString = '<ol type="whatever"><li>foo</li><li>bar</li></ol>';
         expect(htmlToText(testString)).to.equal(' 1. foo\n 2. bar');
       });
 
@@ -277,18 +292,18 @@ describe('html-to-text', function () {
         expect(htmlToText(testString)).to.equal(' A. foo\n B. bar');
       });
 
-      it('should support the ordered list type="i" attribute by falling back to type="1"', function () {
-        const testString = '<ol type="i"><li>foo</li><li>bar</li></ol>';
-        // TODO Implement lowercase roman numerals
-        // expect(htmlToText(testString)).to.equal('i. foo\nii. bar');
-        expect(htmlToText(testString)).to.equal(' 1. foo\n 2. bar');
+      it('should support the ordered list type="i" attribute', function () {
+        const testString1 = '<ol type="i"><li>foo</li><li>bar</li></ol>';
+        const testString2 = '<ol start="8" type="i"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText(testString1)).to.equal(' i.  foo\n ii. bar');
+        expect(htmlToText(testString2)).to.equal(' viii. foo\n ix.   bar');
       });
 
-      it('should support the ordered list type="I" attribute by falling back to type="1"', function () {
-        const testString = '<ol type="I"><li>foo</li><li>bar</li></ol>';
-        // TODO Implement uppercase roman numerals
-        // expect(htmlToText(testString)).to.equal('I. foo\nII. bar');
-        expect(htmlToText(testString)).to.equal(' 1. foo\n 2. bar');
+      it('should support the ordered list type="I" attribute', function () {
+        const testString1 = '<ol type="I"><li>foo</li><li>bar</li></ol>';
+        const testString2 = '<ol start="8" type="I"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText(testString1)).to.equal(' I.  foo\n II. bar');
+        expect(htmlToText(testString2)).to.equal(' VIII. foo\n IX.   bar');
       });
 
       it('should support the ordered list start attribute', function () {
@@ -301,20 +316,47 @@ describe('html-to-text', function () {
         expect(htmlToText(testString)).to.equal(' 1. foo\n    1. bar\n       1. baz\n       2. baz');
       });
 
-      /*
-       * Currently failing tests for continuing to fill out the specification
-       *  Spec: https://html.spec.whatwg.org/multipage/semantics.html#the-ol-element
-       *
-      it('should support the ordered list type="a" attribute past 26 characters', function() {
-        var testString = '<ol start="26" type="a"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText(testString)).to.equal('z. foo\naa. bar');
+      it('should handle long nested ol correctly', function () {
+        const testString = /*html*/`<ol>
+          <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+          <li>Inner:
+            <ol>
+              <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+              <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
+            </ol>
+          </li>
+        </ol>`;
+        const expected = ' 1. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u\n    b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n 2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd g u\n    b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n 3. Inner: \n    1. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n       g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit\n       amet.\n    2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd\n       g u b e r g r e n, no sea takimata sanctus est Lorem ipsum dolor sit\n       amet.';
+        expect(htmlToText(testString)).to.equal(expected);
       });
 
-      it('should support the ordered list type="A" attribute past 26 characters', function() {
-        var testString = '<ol start="26" type="A"><li>foo</li><li>bar</li></ol>';
-        expect(htmlToText(testString)).to.equal('Z. foo\nAA. bar');
+      it('should support the ordered list type="a" attribute past 26 characters', function () {
+        const testString1 = '<ol start="26" type="a"><li>foo</li><li>bar</li></ol>';
+        const testString2 = '<ol start="702" type="a"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText(testString1)).to.equal(' z.  foo\n aa. bar');
+        expect(htmlToText(testString2)).to.equal(' zz.  foo\n aaa. bar');
       });
-      */
+
+      it('should support the ordered list type="A" attribute past 26 characters', function () {
+        const testString1 = '<ol start="26" type="A"><li>foo</li><li>bar</li></ol>';
+        const testString2 = '<ol start="702" type="A"><li>foo</li><li>bar</li></ol>';
+        expect(htmlToText(testString1)).to.equal(' Z.  foo\n AA. bar');
+        expect(htmlToText(testString2)).to.equal(' ZZ.  foo\n AAA. bar');
+      });
+
+      // HTML standard defines vinculum extension for large numbers.
+      // But that doesn't seem to have any significance for practical purposes.
+
+      // it('should support the ordered list type="i" attribute past 3999', function () {
+      //   const testString = '<ol start="3999" type="i"><li>foo</li><li>bar</li></ol>';
+      //   expect(htmlToText(testString)).to.equal(' mmmcmxcix. foo\n i̅v̅.        bar');
+      // });
+
+      // it('should support the ordered list type="I" attribute past 3999', function () {
+      //   const testString = '<ol start="3999" type="I"><li>foo</li><li>bar</li></ol>';
+      //   expect(htmlToText(testString)).to.equal(' MMMCMXCIX. foo\n I̅V̅.        bar');
+      // });
     });
 
     it('should not wrap li when wordwrap is disabled', function () {

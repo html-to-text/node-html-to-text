@@ -54,7 +54,7 @@ module.exports = {
     'no-useless-call': 'error',
     'no-useless-concat': 'error',
     'no-void': 'error',
-    // 'no-warning-comments': 'warn',
+    'no-warning-comments': 'warn',
     'radix': 'error',
     'wrap-iife': ['error', 'any'],
 
