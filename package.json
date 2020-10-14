@@ -27,7 +27,7 @@
     "deepmerge": "^4.2.2",
     "he": "^1.2.0",
     "htmlparser2": "^4.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "minimist": "^1.2.5"
   },
   "keywords": [
