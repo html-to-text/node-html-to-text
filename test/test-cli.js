@@ -19,6 +19,9 @@ function runWithInputAndExpect (input, args, expectedOutput, done) {
 }
 
 describe('cli arguments', function () {
+
+  this.timeout(5000);
+
   it('should output nothing with empty input', function (done) {
     runWithInputAndExpect('', '', '', done);
   });
