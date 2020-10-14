@@ -8,7 +8,7 @@
     "example": "node ./example/html-to-text.js",
     "lint": "eslint .",
     "cover": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "prepare": "npm run cover"
+    "prepublishOnly": "npm run cover"
   },
   "author": {
     "name": "Malte Legenhausen",
