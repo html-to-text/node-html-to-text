@@ -22,6 +22,12 @@ Because formatters are integral part of the formatting code (as the name suggest
 
 Cells can make use of extra space with colspan and rowspan attributes. Max column width is defined separately from global wordwrap limit.
 
+### Limits
+
+Multiple options to cut content in large HTML documents.
+
+By default, any input longer than 16 million characters will be truncated.
+
 ### Node and dependencies
 
 Required Node version is now >=8.10.0.

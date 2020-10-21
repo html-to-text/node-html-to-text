@@ -1059,6 +1059,36 @@ describe('html-to-text', function () {
 
   });
 
+  describe('limits.maxInputLength', function () {
+
+    const processStderrWrite = process.stderr.write;
+
+    let processStderrWriteBuffer;
+    const overwriteProcessStderrWrite = () => {
+      processStderrWriteBuffer = '';
+      process.stderr.write = (text) => { processStderrWriteBuffer += text; };
+    };
+    const getProcessStderrBuffer = () => processStderrWriteBuffer;
+    const resetProcessStderrWrite = () => { process.stderr.write = processStderrWrite; };
+
+    beforeEach(function () { overwriteProcessStderrWrite(); });
+    afterEach(function () { resetProcessStderrWrite(); });
+
+    it('should respect default limit of maxInputLength', function () {
+      const testString = '0123456789'.repeat(2000000);
+      const options = { wordwrap: false };
+      expect(htmlToText(testString, options).length).to.equal(1 << 24);
+      expect(getProcessStderrBuffer()).to.equal('Input lenght 20000000 is above allowed limit of 16777216. Truncating without ellipsis.\n');
+    });
+
+    it('should respect custom maxInputLength', function () {
+      const testString = '0123456789'.repeat(2000000);
+      const options = { limits: { maxInputLength: 42 } };
+      expect(htmlToText(testString, options).length).to.equal(42);
+      expect(getProcessStderrBuffer()).to.equal('Input lenght 20000000 is above allowed limit of 42. Truncating without ellipsis.\n');
+    });
+  });
+
   describe('blockquote', function () {
     it('should handle format single-line blockquote', function () {
       const testString = 'foo<blockquote>test</blockquote>bar';

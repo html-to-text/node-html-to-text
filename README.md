@@ -41,24 +41,25 @@ console.log(text); // Hello World
 
 #### General options
 
-Option                 | Default     | Description
----------------------- | ----------- | -----------
-`baseElement`          | `'body'`    | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
-`decodeOptions`        | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
-`formatters`           | `{}`        | An object with custom formatting functions for specific elements (see "Override formatting" section below).
-`limits`               |             | Describes how to limit the output text in case of large HTML documents.
-`limits.ellipsis`      | `'...'`     | A string to insert in place of skipped content.
-`limits.maxChildNodes` | `undefined` | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
-`limits.maxDepth`      | `undefined` | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
-`longWordSplit`        |             | Describes how to wrap long words.
-`longWordSplit.wrapCharacters` | `[]` | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
+Option                  | Default      | Description
+----------------------- | ------------ | -----------
+`baseElement`           | `'body'`     | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
+`decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
+`formatters`            | `{}`         | An object with custom formatting functions for specific elements (see "Override formatting" section below).
+`limits`                |              | Describes how to limit the output text in case of large HTML documents.
+`limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
+`limits.maxChildNodes`  | `undefined`  | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
+`limits.maxDepth`       | `undefined`  | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
+`limits.maxInputLength` | `16_777_216` | If the input string is longer than this value - it will be truncated and a message will be sent to `stderr`. Ellipsis is not used in this case. Unlimited if undefined.
+`longWordSplit`         |              | Describes how to wrap long words.
+`longWordSplit.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
 `longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
-`preserveNewlines`     | `false`     | By default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
-`returnDomByDefault`   | `true`      | Convert the entire document if we don't find the tag defined in `baseElement`.
-`tables`               | `[]`        | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
-`tags`                 |             | Describes how different tags should be formatted. See "Tags" section below.
-`whitespaceCharacters` | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
-`wordwrap`             | `80`        | After how many chars a line break should follow.<br/>Set to `null` or `false` to disable word-wrapping.
+`preserveNewlines`      | `false`      | By default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
+`returnDomByDefault`    | `true`       | Convert the entire document if we don't find the tag defined in `baseElement`.
+`tables`                | `[]`         | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
+`tags`                  |              | Describes how different tags should be formatted. See "Tags" section below.
+`whitespaceCharacters`  | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
+`wordwrap`              | `80`         | After how many chars a line break should follow.<br/>Set to `null` or `false` to disable word-wrapping.
 
 #### Options deprecated in version 6
 
