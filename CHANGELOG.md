@@ -8,7 +8,7 @@ This is a major update. No code left untouched. While the goal was to keep as mu
 
 Formatting code was rewritten almost entirely to make it aware of block-level tags and to handle HTML whitespace properly. One of popular requests was to support divs, and it is here now, after a lot of effort.
 
-### Options rearganized
+### Options reorganized
 
 Options are reorganized to make room for some extra format options while making everything more structured. Now tag-specific options live within that tag configuration.
 
