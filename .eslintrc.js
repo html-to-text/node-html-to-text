@@ -72,21 +72,20 @@ module.exports = {
     'func-call-spacing': 'error',
     'func-name-matching': ['error', { 'includeCommonJSModuleExports': true }],
     'function-call-argument-newline': ['error', 'consistent'],
-    'function-paren-newline': ['error'],
+    'function-paren-newline': ['error', "consistent"],
     'indent': ['error', 2, { 'SwitchCase': 1, 'flatTernaryExpressions': true }],
     'key-spacing': ['error'],
     'keyword-spacing': 'error',
     'lines-between-class-members': 'error',
     'max-depth': ['error', 5],
     'max-len': ['error', 130],
-    'max-lines-per-function': ['error', 60],
+    'max-lines-per-function': ['error', 80],
     'max-nested-callbacks': ['error', 4],
-    'max-params': ['error', 4],
-    'max-statements': ['error', 23],
+    'max-params': ['error', 5],
+    'max-statements': ['error', 35],
     'max-statements-per-line': ['error', { 'max': 2 }],
     'multiline-ternary': ['error', 'always-multiline'],
-    'newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 2 }],
-    'no-bitwise': 'error',
+    'newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 3 }],
     'no-lonely-if': 'warn',
     'no-mixed-operators': 'error',
     'no-multiple-empty-lines': 'error',
@@ -110,7 +109,7 @@ module.exports = {
     'template-tag-spacing': ['error', 'never'],
 
     // ECMAScript 6
-    'arrow-body-style': ['error', 'never'],
+    'arrow-body-style': ['error', 'as-needed'],
     'arrow-spacing': 'error',
     'no-confusing-arrow': 'error',
     'no-var': 'error',
@@ -155,7 +154,7 @@ module.exports = {
     'mocha/valid-test-description': 'error',
 
     // Filenames
-    'filenames/match-regex': ['error', '^[a-z\\-]+$'],
+    'filenames/match-regex': ['error', '^[a-z][a-z0-9\\-]+$'],
     'filenames/match-exported': 'error'
   },
   overrides: [
