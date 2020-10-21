@@ -4,6 +4,10 @@
 
 This is a major update. No code left untouched. While the goal was to keep as much compatibility as possible, some client-facing changes were unavoidable.
 
+### fromString is deprecated in favor of htmlToText
+
+Since the library has the only exported function, it is now self-titled.
+
 ### Inline and block-level tags, HTML whitespace
 
 Formatting code was rewritten almost entirely to make it aware of block-level tags and to handle HTML whitespace properly. One of popular requests was to support divs, and it is here now, after a lot of effort.
