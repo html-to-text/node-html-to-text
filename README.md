@@ -3,17 +3,16 @@
 [![Build Status](https://travis-ci.org/werk85/node-html-to-text.svg?branch=master)](https://travis-ci.org/werk85/node-html-to-text)
 [![Test Coverage](https://codeclimate.com/github/werk85/node-html-to-text/badges/coverage.svg)](https://codeclimate.com/github/werk85/node-html-to-text/coverage)
 
-An advanced converter that parses HTML and returns beautiful text. It was mainly designed to transform HTML E-Mail templates to a text representation. So it is currently optimized for table layouts.
+Advanced converter that parses HTML and returns beautiful text.
 
 ## Features
 
-* Transform headlines to uppercase text.
-* Convert tables to an appropiate text representation with rows and columns.
-* Word wrapping for paragraphs (default 80 chars).
-* Automatic extraction of href information from links.
-* `<br>` conversion to `\n`.
+* Inline and block-level tags.
+* Tables with colspans and rowspans.
+* Links with both text and href.
+* Word wrapping.
 * Unicode support.
-* Runs in browser and server environments.
+* Plenty of customization options.
 
 ## Installation
 
@@ -30,9 +29,9 @@ npm install html-to-text -g
 ## Usage
 
 ```js
-const htmlToText = require('html-to-text');
+const { htmlToText } = require('html-to-text');
 
-const text = htmlToText.fromString('<h1>Hello World</h1>', {
+const text = htmlToText('<h1>Hello World</h1>', {
   wordwrap: 130
 });
 console.log(text); // Hello World
@@ -40,63 +39,161 @@ console.log(text); // Hello World
 
 ### Options
 
-You can configure the behaviour of html-to-text with the following options:
+#### General options
 
-Option             | Default   | Description
------------------- | --------- | -----------
-`baseElement`      | `'body'`  | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
-`decodeOptions`    | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
-`format`           | `{}`      | An object with custom formatting functions for specific elements (see below).
-`hideLinkHrefIfSameAsText` | `false` | By default links are translated the following `<a href='link'>text</a>` => becomes => `text [link]`. If this option is set to `true` and `link` and `text` are the same, `[link]` will be hidden and only `text` visible.
-`ignoreHref`       | `false`   | Ignore all links if `true`.
-`ignoreImage`      | `false`   | Ignore all images if `true`.
-`linkHrefBaseUrl`  | `null`    | Server host for link `href` attributes and image `src` attributes *(starting from version 6.0.0)*, where the links start at the root (`/`).<br/>For example, `linkHrefBaseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.<br/>Keep in mind that `linkHrefBaseUrl` shouldn't end with a `/`.
-`longWordSplit`    | `{ wrapCharacters: [], forceWrapOnLimit: false }` | Describes how to wrap long words, has the following parameters:<br/>`wrapCharacters` is an array containing the characters that may be wrapped on, these are used in order<br/>`forceWrapOnLimit` defines whether to break long words on the limit if `true`.
-`noAnchorUrl`      | `true`    | Ignore anchor links (where `href='#...'`).
-`noLinkBrackets`   | `false`   | Don't print brackets around the link if `true`.
-`preserveNewlines` | `false`   | By default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
-`returnDomByDefault` | `true`  | Convert the entire document if we don't find the tag defined in `baseElement` if `true`.
-`singleNewLineParagraphs` | `false` | By default, paragraphs are converted with two newlines (`\n\n`). Set to `true` to convert to a single newline.
-`tables`           | `[]`      | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
-`unorderedListItemPrefix` | `' * '` | The string that is used as item prefix for unordered lists `<ol>`.
-`uppercaseHeadings` | `true`   | By default, headings (`<h1>`, `<h2>`, etc) are uppercased. Set to `false` to leave headings as they are.
-`wordwrap`         | `80`      | After how many chars a line break should follow in `p` elements.<br/>Set to `null` or `false` to disable word-wrapping.
+Option                 | Default     | Description
+---------------------- | ----------- | -----------
+`baseElement`          | `'body'`    | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
+`decodeOptions`        | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
+`formatters`           | `{}`        | An object with custom formatting functions for specific elements (see "Override formatting" section below).
+`limits`               |             | Describes how to limit the output text in case of large HTML documents.
+`limits.ellipsis`      | `'...'`     | A string to insert in place of skipped content.
+`limits.maxChildNodes` | `undefined` | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
+`limits.maxDepth`      | `undefined` | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
+`longWordSplit`        |             | Describes how to wrap long words.
+`longWordSplit.wrapCharacters` | `[]` | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
+`longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
+`preserveNewlines`     | `false`     | By default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
+`returnDomByDefault`   | `true`      | Convert the entire document if we don't find the tag defined in `baseElement`.
+`tables`               | `[]`        | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
+`tags`                 |             | Describes how different tags should be formatted. See "Tags" section below.
+`whitespaceCharacters` | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
+`wordwrap`             | `80`        | After how many chars a line break should follow.<br/>Set to `null` or `false` to disable word-wrapping.
 
-### Override formatting for specific elements
+#### Options deprecated in version 6
 
-By using the `format` option, you can specify formatting for these elements:
+Old&nbsp;option            | Instead&nbsp;use
+-------------------------- | -----------
+`hideLinkHrefIfSameAsText` | `hideLinkHrefIfSameAsText` option for tags with `anchor` formatter.
+`ignoreHref`               | `ignoreHref` option for tags with `anchor` formatter.
+`ignoreImage`              | Set format to `skip` for `img` tags.
+`linkHrefBaseUrl`          | `baseUrl` option for tags with `anchor` and `image` formatters.
+`noAnchorUrl`              | `noAnchorUrl` option for tags with `anchor` formatter.
+`noLinkBrackets`           | `noLinkBrackets` option for tags with `anchor` formatter.
+`singleNewLineParagraphs`  | Set `leadingLineBreaks` and `trailingLineBreaks` options to `1` for `p` and `pre` tags.
+`unorderedListItemPrefix`  | `itemPrefix` option for tags with `unorderedList` formatter.
+`uppercaseHeadings`        | `uppercase` option for tags with `heading` formatter, `uppercaseHeaderCells` option for `table` or `dataTable` formatters.
 
-Key               | Tags
------------------ | -----------------
-`anchor`          | `a`
-`blockquote`      | `blockquote`
-`heading`         | `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-`horizontalLine`  | `hr`
-`image`           | `img`
-`lineBreak`       | `br`
-~~`listItem`~~    |
-`orderedList`     | `ol`
-`paragraph`       | `p`, `pre`
-`table`           | `table`
-`text`            |
-`unorderedList`   | `ul`
+Deprecated options will be removed with future major version update.
 
-Each key must be a function which eventually receive `elem` (the current elem), `fn` (the next formatting function) and `options` (the options passed to html-to-text).
+#### Options removed in version 6
 
-```js
-var htmlToText = require('html-to-text');
+Old&nbsp;option | Description
+--------------- | -----------
+`format`        | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See new instructions below.
 
-var text = htmlToText.fromString('<h1>Hello World</h1>', {
-  format: {
-    heading: function (elem, fn, options) {
-      var h = fn(elem.children, options);
-      return '====\n' + h.toUpperCase() + '\n====';
+#### Tags
+
+By default there are following tag to formatter assignments:
+
+Tag&nbsp;name | Default&nbsp;format | Notes
+------------- | ------------------- | -----
+`''`          | `inline`            | Catch-all default for unknown tags.
+`a`           | `anchor`            |
+`article`     | `block`             |
+`aside`       | `block`             |
+`blockquote`  | `blockquote`        |
+`br`          | `lineBreak`         |
+`div`         | `block`             |
+`footer`      | `block`             |
+`form`        | `block`             |
+`h1`          | `heading`           |
+`h2`          | `heading`           |
+`h3`          | `heading`           |
+`h4`          | `heading`           |
+`h5`          | `heading`           |
+`h6`          | `heading`           |
+`header`      | `block`             |
+`hr`          | `horizontalLine`    |
+`img`         | `image`             |
+`main`        | `block`             |
+`nav`         | `block`             |
+`ol`          | `orderedList`       |
+`p`           | `paragraph`         |
+`pre`         | `pre`               |
+`table`       | `table`             | there is also `dataTable` formatter. Using it will be equivalent to setting `tables` to `true`. `tables` option might be deprecated in the future.
+`ul`          | `unorderedList`     |
+`wbr`         | `wbr`               |
+
+More formatters also available for use:
+
+* `skip` - as the name implies it skips the given tag with it's contents without printing anything.
+
+Format options are specified for each tag indepentently:
+
+Option              | Default     | Applies&nbsp;to    | Description
+------------------- | ----------- | ------------------ | -----------
+`leadingLineBreaks` | `1`, `2` or `3` | all block-level formatters | Number of line breaks to separate previous block from this one.<br/>Note that N+1 line breaks are needed to make N empty lines.
+`trailingLineBreaks` | `1` or `2` | all block-level formatters | Number of line breaks to separate this block from the next one.<br/>Note that N+1 line breaks are needed to make N empty lines.
+`baseUrl`           | null        | `anchor`, `image`  | Server host for link `href` attributes and image `src` attributes relative to the root (the ones that start with `/`).<br/>For example, with `baseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.<br/>Keep in mind that `baseUrl` should not end with a `/`.
+`hideLinkHrefIfSameAsText` | `false` | `anchor`        | By default links are translated in the following way:<br/>`<a href='link'>text</a>` => becomes => `text [link]`.<br/>If this option is set to `true` and `link` and `text` are the same, `[link]` will be omitted and only `text` will be present.
+`ignoreHref`        | `false`     | `anchor`           | Ignore all links. Only process internal text of anchor tags.
+`noAnchorUrl`       | `true`      | `anchor`           | Ignore anchor links (where `href='#...'`).
+`noLinkBrackets`    | `false`     | `anchor`           | Don't print brackets around links.
+`itemPrefix`        | `' * '`     | `unorderedList`    | String prefix for each list item.
+`uppercase`         | `true`      | `heading`          | By default, headings (`<h1>`, `<h2>`, etc) are uppercased.<br/>Set this to `false` to leave headings as they are.
+`length`            | `undefined` | `horizontalLine`   | Length of the line. If undefined then `wordwrap` value is used. Falls back to 40 if that's also disabled.
+`trimEmptyLines`    | `true`      | `blockquote`       | Trim empty lines from blockquote.<br/>While empty lines should be preserved in HTML, space-saving behavior is chosen as default for convenience.
+`uppercaseHeaderCells` | `true` | `table`, `dataTable` | By default, heading cells (`<th>`) are uppercased.<br/>Set this to `false` to leave heading cells as they are.
+`maxColumnWidth`    | `60`      | `table`, `dataTable` | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set to `undefined` in order to fall back to `wordwrap` limit.
+`colSpacing`        | `3`       | `table`, `dataTable` | Number of spaces between data table columns.
+`rowSpacing`        | `0`       | `table`, `dataTable` | Number of empty lines between data table rows.
+
+How to set a specific format option, example:
+
+```javascript
+var { htmlToText } = require('html-to-text');
+
+var text = htmlToText('<a href="/page.html">Page</a>', {
+  tags: { 'a': { options: { baseUrl: 'https://example.com' } } }
+});
+
+console.log(text); // Page [https://example.com/page.html]
+```
+
+### Override formatting
+
+This is significantly changed in version 6.
+
+`formatters` option is an object that holds formatting functions. They can be assigned to format different tags by key in the `tags` option.
+
+Each formatter is a function of four arguments that returns nothing. Arguments are:
+
+* `elem` - the HTML element to be processed by this formatter;
+* `walk` - recursive function to process the children of this element. Called as `walk(elem.children, builder)`;
+* `builder` - [BlockTextBuilder](https://github.com/werk85/node-html-to-text/blob/master/lib/block-text-builder.js) object. Manipulate this object state to build the output text;
+* `formatOptions` - options that are specified for a tag, along with this formatter (Note: if you need global html-to-text options - they are accessible via `builder.options`).
+
+Custom formatter example:
+
+```javascript
+var { htmlToText } = require('html-to-text');
+
+var text = htmlToText('<foo>Hello World</foo>', {
+  formatters: {
+    // Create a formatter.
+    'fooBlockFormatter': function (elem, walk, builder, formatOptions) {
+      builder.openBlock(formatOptions.leadingLineBreaks || 1);
+      walk(elem.children, builder);
+      builder.addInline('!');
+      builder.closeBlock(formatOptions.trailingLineBreaks || 1);
+    }
+  },
+  tags: {
+    // Assign it to `foo` tags.
+    'foo': {
+      format: 'fooBlockFormatter',
+      options: { leadingLineBreaks: 1, trailingLineBreaks: 1 }
     }
   }
 });
 
-console.log(text);
+console.log(text); // Hello World!
 ```
+
+Refer to [built-in formatters](https://github.com/werk85/node-html-to-text/blob/master/lib/formatter.js) for more examples.
+
+Refer to [BlockTextBuilder](https://github.com/werk85/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
 
 ## Command Line Interface
 
@@ -118,196 +215,8 @@ The `tables` option has to be declared as comma separated list without whitespac
 
 ## Example
 
-```html
-<html>
-  <head>
-    <meta charset="utf-8">
-  </head>
-
-  <body>
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tr>
-        <td>
-          <h2>Paragraphs</h2>
-          <p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. <a href="www.github.com">Github</a>
-          </p>
-          <p class="normal-space">At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <hr/>
-          <h2>Pretty printed table</h2>
-          <table id="invoice">
-            <thead>
-              <tr>
-                <th>Article</th>
-                <th>Price</th>
-                <th>Taxes</th>
-                <th>Amount</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <p>
-                    Product 1<br />
-                    <span style="font-size:0.8em">Contains: 1x Product 1</span>
-                  </p>
-                </td>
-                <td align="right" valign="top">6,99&euro;</td>
-                <td align="right" valign="top">7%</td>
-                <td align="right" valign="top">1</td>
-                <td align="right" valign="top">6,99€</td>
-              </tr>
-              <tr>
-                <td>Shipment costs</td>
-                <td align="right">3,25€</td>
-                <td align="right">7%</td>
-                <td align="right">1</td>
-                <td align="right">3,25€</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td colspan="3">to pay: 10,24€</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td colspan="3">Taxes 7%: 0,72€</td>
-              </tr>
-            </tfoot>
-          </table>
-
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <hr/>
-          <h2>Lists</h2>
-          <ul>
-            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-          </ul>
-          <ol>
-            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-            <li>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</li>
-          </ol>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <hr />
-          <h2>Column Layout with tables</h2>
-          <table class="address">
-            <tr>
-              <th align="left">Invoice Address</th>
-              <th align="left">Shipment Address</th>
-            </tr>
-            <tr>
-              <td align="left">
-                <p>
-                Mr.<br/>
-                John Doe<br/>
-                Featherstone Street 49<br/>
-                28199 Bremen<br/>
-                </p>
-              </td>
-              <td align="left">
-                <p>
-                Mr.<br/>
-                John Doe<br/>
-                Featherstone Street 49<br/>
-                28199 Bremen<br/>
-                </p>
-              </td>
-            </tr>
-          </table>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <hr/>
-          <h2>Mailto formating</h2>
-          <p class="normal-space small">
-            Some Company<br />
-            Some Street 42<br />
-            Somewhere<br />
-            E-Mail: <a href="mailto:test@example.com">Click here</a>
-          </p>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>
-```
-
-Gets converted to:
-
-```text
-PARAGRAPHS
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Github [www.github.com]
-
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum
-dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
-et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-takimata sanctus est Lorem ipsum dolor sit amet.
-
---------------------------------------------------------------------------------
-
-PRETTY PRINTED TABLE
-ARTICLE                  PRICE   TAXES             AMOUNT   TOTAL
-Product 1                6,99€   7%                1        6,99€
-Contains: 1x Product 1
-Shipment costs           3,25€   7%                1        3,25€
-                                 to pay: 10,24€
-                                 Taxes 7%: 0,72€
-
---------------------------------------------------------------------------------
-
-LISTS
- * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
- * At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-   gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
- 1. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
- 2. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-    gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
---------------------------------------------------------------------------------
-
-COLUMN LAYOUT WITH TABLES
-INVOICE ADDRESS          SHIPMENT ADDRESS
-Mr.                      Mr.
-John Doe                 John Doe
-Featherstone Street 49   Featherstone Street 49
-28199 Bremen             28199 Bremen
-
---------------------------------------------------------------------------------
-
-MAILTO FORMATING
-Some Company
-Some Street 42
-Somewhere
-E-Mail: Click here [test@example.com]
-```
+* Input text: [test.html](https://github.com/werk85/node-html-to-text/blob/master/test/test.html)
+* Output text: [test.txt](https://github.com/werk85/node-html-to-text/blob/master/test/test.txt)
 
 ## License
 
