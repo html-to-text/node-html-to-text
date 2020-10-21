@@ -2,16 +2,35 @@
 
 ## Version 6.0.0 (WIP)
 
-Version 6 roadmap tracking issue: [#200](https://github.com/werk85/node-html-to-text/issues/200)
+This is a major update. No code left untouched. While the goal was to keep as much compatibility as possible, some client-facing changes were unavoidable.
 
-* Node version >=8.10.0
-* Bump dependencies to latest versions
-* Replace istanbul with nyc
-* Make cli tests work on Windows
-* Support multiline blockquote [#193](https://github.com/werk85/node-html-to-text/pull/193)
-* fix(NestedLists): corrected prefix in `ol` [#191](https://github.com/werk85/node-html-to-text/pull/191)
-* fix(NestedLists): First element of sublist now indented [#168](https://github.com/werk85/node-html-to-text/pull/168)
-* use `linkHrefBaseUrl` for image src too [#145](https://github.com/werk85/node-html-to-text/pull/145)
+### Inline and block-level tags, HTML whitespace
+
+Formatting code was rewritten almost entirely to make it aware of block-level tags and to handle HTML whitespace properly. One of popular requests was to support divs, and it is here now, after a lot of effort.
+
+### Options rearganized
+
+Options are reorganized to make room for some extra format options while making everything more structured. Now tag-specific options live within that tag configuration.
+
+For the majority of changed options there is a compatibility layer that will remain until next major release. But you are encouraged to explore new options since they provide a bit more flexibility.
+
+### Custom formatters are different now
+
+Because formatters are integral part of the formatting code (as the name suggests), it wasn't possible to provide a compatibility layer. Please refer to the Readme to see how things are wired now. This is not an issue if custom formatters weren't used or were used only to deal with the lack of block-level tags support before.
+
+### Tables support was improved
+
+Cells can make use of extra space with colspan and rowspan attributes. Max column width is defined separately from global wordwrap limit.
+
+### Node and dependencies
+
+Required Node version is now >=8.10.0.
+
+Dependency versions are bumped.
+
+### And more
+
+Version 6 roadmap issue: [#200](https://github.com/werk85/node-html-to-text/issues/200)
 
 ## Version 5.1.1
 
