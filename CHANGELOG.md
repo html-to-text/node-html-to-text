@@ -1,10 +1,10 @@
 # Changelog
 
-## Version 6.0.0 (WIP)
+## Version 6.0.0
 
 This is a major update. No code left untouched. While the goal was to keep as much compatibility as possible, some client-facing changes were unavoidable.
 
-### fromString is deprecated in favor of htmlToText
+### fromString() is deprecated in favor of htmlToText()
 
 Since the library has the only exported function, it is now self-titled.
 
@@ -20,7 +20,9 @@ For the majority of changed options there is a compatibility layer that will rem
 
 ### Custom formatters are different now
 
-Because formatters are integral part of the formatting code (as the name suggests), it wasn't possible to provide a compatibility layer. Please refer to the Readme to see how things are wired now. This is not an issue if custom formatters weren't used or were used only to deal with the lack of block-level tags support before.
+Because formatters are integral part of the formatting code (as the name suggests), it wasn't possible to provide a compatibility layer.
+
+Please refer to the Readme to see how things are wired now, in case you were using them for anything othen than dealing with the lack of block-level tags support.
 
 ### Tables support was improved
 
@@ -42,7 +44,7 @@ Dependency versions are bumped.
 
 [https://github.com/html-to-text/node-html-to-text](https://github.com/html-to-text/node-html-to-text) is the new home.
 
-GitHub handles all redirects from the old url, so it shouldn't break anything, even if have a local fork pointing at the old origin. But it is still a good idea to [update](https://docs.github.com/en/free-pro-team@latest/github/using-git/changing-a-remotes-url) it.
+GitHub should handle all redirects from the old url, so it shouldn't break anything, even if you have a local fork pointing at the old origin. But it is still a good idea to [update](https://docs.github.com/en/free-pro-team@latest/github/using-git/changing-a-remotes-url) the url.
 
 ### And more
 
