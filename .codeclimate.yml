@@ -16,9 +16,6 @@ plugins:
   eslint:
     enabled: true
     channel: "eslint-6"
-    checks:
-      import/order:
-        enabled: false
   fixme:
     enabled: true
 exclude_patterns:
