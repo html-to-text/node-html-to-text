@@ -14,6 +14,12 @@ Advanced converter that parses HTML and returns beautiful text.
 * Unicode support.
 * Plenty of customization options.
 
+## Changelog
+
+Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/CHANGELOG.md)
+
+Version 6 contains a ton of changes, so it worth to take a look.
+
 ## Installation
 
 ```
