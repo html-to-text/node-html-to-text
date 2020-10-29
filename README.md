@@ -226,6 +226,12 @@ The `tables` option has to be declared as comma separated list without whitespac
 * Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.html)
 * Output text: [test.txt](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.txt)
 
+## Contributors
+
+* [@mlegenhausen](https://github.com/mlegenhausen) - creator;
+* [@KillyMXI](https://github.com/KillyMXI) - maintainer since 2020;
+* Everyone else who [added something](https://github.com/html-to-text/node-html-to-text/graphs/contributors) to the tool or helped us shaping it via [issues](https://github.com/html-to-text/node-html-to-text/issues) and [PRs](https://github.com/html-to-text/node-html-to-text/pulls).
+
 ## License
 
 [MIT License](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE-MIT)
