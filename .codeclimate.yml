@@ -13,9 +13,6 @@ checks:
     config:
       threshold: 55
 plugins:
-  eslint:
-    enabled: true
-    channel: "eslint-6"
   fixme:
     enabled: true
 exclude_patterns:

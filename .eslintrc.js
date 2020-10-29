@@ -142,7 +142,7 @@ module.exports = {
     'import/first': 'error',
     'import/no-namespace': 'error',
     'import/extensions': 'error',
-    'import/order': 'error',
+    'import/order': ['error', { 'newlines-between': 'always', 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
     'import/newline-after-import': ['error', { 'count': 2 }],
     'import/no-unassigned-import': 'error',
     'import/no-named-default': 'error',
