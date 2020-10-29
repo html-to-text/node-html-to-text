@@ -38,6 +38,12 @@ Required Node version is now >=8.10.0.
 
 Dependency versions are bumped.
 
+### Repository is moved to it's own organization
+
+[https://github.com/html-to-text/node-html-to-text](https://github.com/html-to-text/node-html-to-text) is the new home.
+
+GitHub handles all redirects from the old url, so it shouldn't break anything, even if have a local fork pointing at the old origin. But it is still a good idea to [update](https://docs.github.com/en/free-pro-team@latest/github/using-git/changing-a-remotes-url) it.
+
 ### And more
 
 Version 6 roadmap issue: [#200](https://github.com/html-to-text/node-html-to-text/issues/200)
