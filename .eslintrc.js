@@ -142,7 +142,7 @@ module.exports = {
     'import/first': 'error',
     'import/no-namespace': 'error',
     'import/extensions': 'error',
-    'import/order': ['error', { 'newlines-between': 'always', 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
+    'import/order': 'error',
     'import/newline-after-import': ['error', { 'count': 2 }],
     'import/no-unassigned-import': 'error',
     'import/no-named-default': 'error',
@@ -172,10 +172,7 @@ module.exports = {
       }
     },
     {
-      'files': [
-        '.eslintrc.js',
-        '.eslintrc_codeclimate.js'
-      ],
+      'files': ['.eslintrc.js'],
       'rules': {
         'sort-keys': 'off',
         'filenames/match-regex': 'off',
