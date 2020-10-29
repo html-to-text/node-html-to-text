@@ -1,7 +1,7 @@
 # html-to-text
 
-[![Build Status](https://travis-ci.org/werk85/node-html-to-text.svg?branch=master)](https://travis-ci.org/werk85/node-html-to-text)
-[![Test Coverage](https://codeclimate.com/github/werk85/node-html-to-text/badges/coverage.svg)](https://codeclimate.com/github/werk85/node-html-to-text/coverage)
+[![Build Status](https://travis-ci.org/html-to-text/node-html-to-text.svg?branch=master)](https://travis-ci.org/html-to-text/node-html-to-text)
+[![Test Coverage](https://codeclimate.com/github/html-to-text/node-html-to-text/badges/coverage.svg)](https://codeclimate.com/github/html-to-text/node-html-to-text/coverage)
 
 Advanced converter that parses HTML and returns beautiful text.
 
@@ -162,7 +162,7 @@ Each formatter is a function of four arguments that returns nothing. Arguments a
 
 * `elem` - the HTML element to be processed by this formatter;
 * `walk` - recursive function to process the children of this element. Called as `walk(elem.children, builder)`;
-* `builder` - [BlockTextBuilder](https://github.com/werk85/node-html-to-text/blob/master/lib/block-text-builder.js) object. Manipulate this object state to build the output text;
+* `builder` - [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) object. Manipulate this object state to build the output text;
 * `formatOptions` - options that are specified for a tag, along with this formatter (Note: if you need global html-to-text options - they are accessible via `builder.options`).
 
 Custom formatter example:
@@ -192,9 +192,9 @@ var text = htmlToText('<foo>Hello World</foo>', {
 console.log(text); // Hello World!
 ```
 
-Refer to [built-in formatters](https://github.com/werk85/node-html-to-text/blob/master/lib/formatter.js) for more examples.
+Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples.
 
-Refer to [BlockTextBuilder](https://github.com/werk85/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
+Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
 
 ## Command Line Interface
 
@@ -216,8 +216,8 @@ The `tables` option has to be declared as comma separated list without whitespac
 
 ## Example
 
-* Input text: [test.html](https://github.com/werk85/node-html-to-text/blob/master/test/test.html)
-* Output text: [test.txt](https://github.com/werk85/node-html-to-text/blob/master/test/test.txt)
+* Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.html)
+* Output text: [test.txt](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.txt)
 
 ## License
 

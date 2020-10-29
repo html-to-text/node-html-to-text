@@ -40,15 +40,15 @@ Dependency versions are bumped.
 
 ### And more
 
-Version 6 roadmap issue: [#200](https://github.com/werk85/node-html-to-text/issues/200)
+Version 6 roadmap issue: [#200](https://github.com/html-to-text/node-html-to-text/issues/200)
 
 ## Version 5.1.1
 
-* `preserveNewLines` whitespace issue fixed [#162](https://github.com/werk85/node-html-to-text/pull/162)
+* `preserveNewLines` whitespace issue fixed [#162](https://github.com/html-to-text/node-html-to-text/pull/162)
 
 ## Version 5.1.0
 
-* Hard-coded CLI options removed [#173](https://github.com/werk85/node-html-to-text/pull/173)
+* Hard-coded CLI options removed [#173](https://github.com/html-to-text/node-html-to-text/pull/173)
 
 ## Version 5.0.0
 
@@ -56,7 +56,7 @@ Version 6 roadmap issue: [#200](https://github.com/werk85/node-html-to-text/issu
 
 #### fromFile removed
 
-The function `fromFile` is removed. It was the main reason `html-to-text` could not be used in the browser [#164](https://github.com/werk85/node-html-to-text/pull/164).
+The function `fromFile` is removed. It was the main reason `html-to-text` could not be used in the browser [#164](https://github.com/html-to-text/node-html-to-text/pull/164).
 
 You can get the `fromFile` functionality back by using the following code
 

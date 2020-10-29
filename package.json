@@ -14,14 +14,14 @@
     "name": "Malte Legenhausen",
     "email": "legenhausen@werk85.de"
   },
-  "homepage": "https://github.com/werk85/node-html-to-text",
+  "homepage": "https://github.com/html-to-text/node-html-to-text",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/werk85/node-html-to-text.git"
+    "url": "git://github.com/html-to-text/node-html-to-text.git"
   },
   "bugs": {
-    "url": "https://github.com/werk85/node-html-to-text/issues"
+    "url": "https://github.com/html-to-text/node-html-to-text/issues"
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
