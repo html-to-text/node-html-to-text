@@ -987,6 +987,13 @@ describe('html-to-text', function () {
       expect(htmlToText(testString)).to.equal('foo bar');
     });
 
+    it('should handle html character entities for html whitespace characters', function () {
+      const testString = /*html*/`a<span>&#x0020;</span>b<span>&Tab;</span>c<span>&NewLine;</span>d<span>&#10;</span>e`;
+      const result = htmlToText(testString);
+      const expected = 'a b c d e';
+      expect(result).to.equal(expected);
+    });
+
     it('should not add additional whitespace after <sup>', function () {
       const testString = '<p>This text contains <sup>superscript</sup> text.</p>';
       const options = { preserveNewlines: true };
@@ -996,7 +1003,7 @@ describe('html-to-text', function () {
 
     it('should handle custom whitespace characters', function () {
       // No-Break Space - decimal 160, hex \u00a0.
-      const testString = '<span>first span\u00a0</span>\u00a0<span>\u00a0last span</span>';
+      const testString = /*html*/`<span>first span\u00a0</span>&nbsp;<span>&#160;last span</span>`;
       const expectedDefault = 'first span\u00a0\u00a0\u00a0last span';
       const expectedCustom = 'first span last span';
       const options = { whitespaceCharacters: ' \t\r\n\f\u200b\u00a0' };
