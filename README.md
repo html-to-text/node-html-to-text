@@ -74,15 +74,15 @@ Option                  | Default      | Description
 
 Old&nbsp;option            | Instead&nbsp;use
 -------------------------- | -----------
-`hideLinkHrefIfSameAsText` | `hideLinkHrefIfSameAsText` option for tags with `anchor` formatter.
-`ignoreHref`               | `ignoreHref` option for tags with `anchor` formatter.
-`ignoreImage`              | Set format to `skip` for `img` tags.
-`linkHrefBaseUrl`          | `baseUrl` option for tags with `anchor` and `image` formatters.
-`noAnchorUrl`              | `noAnchorUrl` option for tags with `anchor` formatter.
-`noLinkBrackets`           | `noLinkBrackets` option for tags with `anchor` formatter.
-`singleNewLineParagraphs`  | Set `leadingLineBreaks` and `trailingLineBreaks` options to `1` for `p` and `pre` tags.
-`unorderedListItemPrefix`  | `itemPrefix` option for tags with `unorderedList` formatter.
-`uppercaseHeadings`        | `uppercase` option for tags with `heading` formatter, `uppercaseHeaderCells` option for `table` or `dataTable` formatters.
+`hideLinkHrefIfSameAsText` | `tags: { 'a': { options: { hideLinkHrefIfSameAsText: true } } }`
+`ignoreHref`               | `tags: { 'a': { options: { ignoreHref: true } } }`
+`ignoreImage`              | `tags: { 'img': { format: 'skip' } }`
+`linkHrefBaseUrl`          | `tags: {`<br/>`'a': { options: { baseUrl: 'https://example.com' } },`<br/>`'img': { options: { baseUrl: 'https://example.com' } }`<br/>`}`
+`noAnchorUrl`              | `tags: { 'a': { options: { noAnchorUrl: true } } }`
+`noLinkBrackets`           | `tags: { 'a': { options: { noLinkBrackets: true } } }`
+`singleNewLineParagraphs`  | `tags: {`<br/>`'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`'pre': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`}`
+`unorderedListItemPrefix`  | `tags: { 'ul': { options: { itemPrefix: ' * ' } } }`
+`uppercaseHeadings`        | `tags: {`<br/>`'h1': { options: { uppercase: false } },`<br/>`...`<br/>`'table': { options: { uppercaseHeaderCells: false } },`<br/>`'dataTable': { options: { uppercaseHeaderCells: false } }`<br/>`}`
 
 Deprecated options will be removed with future major version update.
 
