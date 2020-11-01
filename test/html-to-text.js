@@ -665,16 +665,20 @@ describe('html-to-text', function () {
     });
   });
 
-  describe('disable uppercaseHeadings', function () {
-    for (const i of [1, 2, 3, 4, 5, 6]) {
-      it('should return h' + i + ' in lowercase', function () {
-        const result = htmlToText(
-          '<h' + i + '>test</h' + i + '>',
-          { uppercaseHeadings: false }
-        );
-        expect(result).to.equal('test');
-      });
-    }
+  describe('headings', function () {
+    it('should allow to disable uppercased headings', function () {
+      const html = /*html*/`
+        <h1>Heading 1</h1>
+        <h2>heading 2</h2>
+        <h3>heading 3</h3>
+        <h4>heading 4</h4>
+        <h5>heading 5</h5>
+        <h6>heading 6</h6>
+      `;
+      const expected = 'Heading 1\n\n\nheading 2\n\n\nheading 3\n\nheading 4\n\nheading 5\n\nheading 6';
+      expect(htmlToText(html)).to.equal(expected.toUpperCase());
+      expect(htmlToText(html, { uppercaseHeadings: false })).to.equal(expected);
+    });
   });
 
   describe('custom formatting', function () {
