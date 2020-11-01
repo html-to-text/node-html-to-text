@@ -421,6 +421,25 @@ describe('html-to-text', function () {
       );
       expect(result).to.equal('test [#link]');
     });
+
+    it('should not uppercase links inside headings', function () {
+      const html = /*html*/`<h1><a href="http://example.com">Heading</a></h1>`;
+      expect(htmlToText(html)).to.equal('HEADING [http://example.com]');
+    });
+
+    it('should not uppercase links inside table header cells', function () {
+      const html = /*html*/`
+        <table>
+          <tr>
+            <th>Header cell 1</th>
+            <th><a href="http://example.com">Header cell 2</a></th>
+            <td><a href="http://example.com">Regular cell</a></td>
+          </tr>
+        </table>
+      `;
+      const expected = 'HEADER CELL 1   HEADER CELL 2 [http://example.com]   Regular cell [http://example.com]';
+      expect(htmlToText(html, { tables: true })).to.equal(expected);
+    });
   });
 
   describe('lists', function () {
