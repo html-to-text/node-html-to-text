@@ -82,7 +82,7 @@ Old&nbsp;option            | Instead&nbsp;use
 `noLinkBrackets`           | `tags: { 'a': { options: { noLinkBrackets: true } } }`
 `singleNewLineParagraphs`  | `tags: {`<br/>`'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`'pre': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`}`
 `unorderedListItemPrefix`  | `tags: { 'ul': { options: { itemPrefix: ' * ' } } }`
-`uppercaseHeadings`        | `tags: {`<br/>`'h1': { options: { uppercase: false } },`<br/>`...`<br/>`'table': { options: { uppercaseHeaderCells: false } },`<br/>`'dataTable': { options: { uppercaseHeaderCells: false } }`<br/>`}`
+`uppercaseHeadings`        | `tags: {`<br/>`'h1': { options: { uppercase: false } },`<br/>`...`<br/>`'table': { options: { uppercaseHeaderCells: false } }`<br/>`}`
 
 Deprecated options will be removed with future major version update.
 
