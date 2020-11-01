@@ -8,7 +8,7 @@ const { htmlToText } = require('..');
 
 describe('html-to-text', function () {
 
-  describe('Smoke test', function () {
+  describe('smoke test', function () {
     it('should return empty input unchanged', function () {
       expect(htmlToText('')).to.equal('');
     });
@@ -19,6 +19,40 @@ describe('html-to-text', function () {
 
     it('should return plain text (no line breaks) unchanged', function () {
       expect(htmlToText('Hello world!')).to.equal('Hello world!');
+    });
+  });
+
+  describe('skipped html content', function () {
+    it('should ignore html comments', function () {
+      const html = /*html*/`
+        <!--[^-]*-->
+        <!-- <h1>Hello World</h1> -->
+        text
+      `;
+      expect(htmlToText(html)).to.equal('text');
+    });
+
+    it('should ignore scripts', function () {
+      const html = /*html*/`
+        <script src="javascript.js"></script>
+        <script>
+          console.log("Hello World!");
+        </script>
+        <script id="data" type="application/json">{"userId":1234,"userName":"John Doe","memberSince":"2000-01-01T00:00:00.000Z"}</script>
+        text
+      `;
+      expect(htmlToText(html)).to.equal('text');
+    });
+
+    it('should ignore styles', function () {
+      const html = /*html*/`
+        <link href="main.css" rel="stylesheet">
+        <style type="text/css" media="all and (max-width: 500px)">
+          p { color: #26b72b; }
+        </style>
+        text
+      `;
+      expect(htmlToText(html)).to.equal('text');
     });
   });
 
