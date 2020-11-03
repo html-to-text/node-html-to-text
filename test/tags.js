@@ -43,22 +43,17 @@ describe('tags', function () {
 
   describe('p', function () {
 
-    it('should not use single new line when given null', function () {
-      const html = '<p>First</p><p>Second</p>';
-      const expected = 'First\n\nSecond';
-      expect(htmlToText(html, { singleNewLineParagraphs: null })).to.equal(expected);
+    it('should separate paragraphs from surrounding content by two linebreaks', function () {
+      const html = 'text<p>first</p><p>second</p>text';
+      const expected = 'text\n\nfirst\n\nsecond\n\ntext';
+      expect(htmlToText(html)).to.equal(expected);
     });
 
-    it('should not use single new line when given false', function () {
-      const html = '<p>First</p><p>Second</p>';
-      const expected = 'First\n\nSecond';
-      expect(htmlToText(html, { singleNewLineParagraphs: false })).to.equal(expected);
-    });
-
-    it('should use single new line when given true', function () {
-      const html = '<p>First</p><p>Second</p>';
-      const expected = 'First\nSecond';
-      expect(htmlToText(html, { singleNewLineParagraphs: true })).to.equal(expected);
+    it('should allow to change the number of linebreaks', function () {
+      const html = 'text<p>first</p><p>second</p>text';
+      const options = { tags: { 'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } } } };
+      const expected = 'text\nfirst\nsecond\ntext';
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
   });
@@ -130,7 +125,18 @@ describe('tags', function () {
       `;
       const expected = 'Heading 1\n\n\nheading 2\n\n\nheading 3\n\nheading 4\n\nheading 5\n\nheading 6';
       expect(htmlToText(html)).to.equal(expected.toUpperCase());
-      expect(htmlToText(html, { uppercaseHeadings: false })).to.equal(expected);
+
+      const options = {
+        tags: {
+          'h1': { options: { uppercase: false } },
+          'h2': { options: { uppercase: false } },
+          'h3': { options: { uppercase: false } },
+          'h4': { options: { uppercase: false } },
+          'h5': { options: { uppercase: false } },
+          'h6': { options: { uppercase: false } }
+        }
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
   });
@@ -170,10 +176,10 @@ describe('tags', function () {
       expect(htmlToText(html)).to.equal(expected);
     });
 
-    it('should update relatively sourced images with linkHrefBaseUrl', function () {
+    it('should update relatively sourced images with baseUrl', function () {
       const html = '<img src="/test.png">';
-      const options = { linkHrefBaseUrl: 'http://www.domain.com' };
-      const expected = '[http://www.domain.com/test.png]';
+      const options = { tags: { 'img': { options: { baseUrl: 'https://example.com' } } } };
+      const expected = '[https://example.com/test.png]';
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -195,8 +201,8 @@ describe('tags', function () {
 
     it('should update relatively sourced links with linkHrefBaseUrl', function () {
       const html = '<a href="/test.html">test</a>';
-      const options = { linkHrefBaseUrl: 'http://www.domain.com' };
-      const expected = 'test [http://www.domain.com/test.html]';
+      const options = { tags: { 'a': { options: { baseUrl: 'https://example.com' } } } };
+      const expected = 'test [https://example.com/test.html]';
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -215,18 +221,21 @@ describe('tags', function () {
     it('should return link without brackets if noLinkBrackets is set to true', function () {
       const html = '<a href="http://my.link">test</a>';
       const expected = 'test http://my.link';
-      expect(htmlToText(html, { noLinkBrackets: true })).to.equal(expected);
+      const options = { tags: { 'a': { options: { noLinkBrackets: true } } } };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should not return link for anchor if noAnchorUrl is set to true', function () {
       const html = '<a href="#link">test</a>';
-      expect(htmlToText(html, { noAnchorUrl: true })).to.equal('test');
+      const options = { tags: { 'a': { options: { noAnchorUrl: true } } } };
+      expect(htmlToText(html, options)).to.equal('test');
     });
 
     it('should return link for anchor if noAnchorUrl is set to false', function () {
       const html = '<a href="#link">test</a>';
       const expected = 'test [#link]';
-      expect(htmlToText(html, { noAnchorUrl: false })).to.equal(expected);
+      const options = { tags: { 'a': { options: { noAnchorUrl: false } } } };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should not uppercase links inside headings', function () {
@@ -268,7 +277,7 @@ describe('tags', function () {
 
       it('should handle an unordered list prefix option', function () {
         const html = '<ul><li>foo</li><li>bar</li></ul>';
-        const options = { unorderedListItemPrefix: ' test ' };
+        const options = { tags: { 'ul': { options: { itemPrefix: ' test ' } } } };
         const expected = ' test foo\n test bar';
         expect(htmlToText(html, options)).to.equal(expected);
       });
