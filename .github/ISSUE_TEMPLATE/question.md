@@ -17,4 +17,4 @@ assignees: ''
 *What you can't figure out yourself?*
 
 **Prior research**
-*Where did you look and what you've tried to do so far in order to figure out the answer before writing here?*
+*Where did you look and what you've tried to do so far in order to figure out the answer before writing here? Is there anything else you can try?*

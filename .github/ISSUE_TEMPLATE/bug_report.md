@@ -32,8 +32,9 @@ Replace this line with what you expected to see
 ```
 
 **Version information**
- - html-to-text: <!-- e.g. 6.0.0 -->
- - node: <!-- e.g. 10.16.3 -->
+
+- html-to-text: <!-- e.g. 6.0.0 -->
+- node: <!-- e.g. 10.16.3 -->
 
 ----
 
