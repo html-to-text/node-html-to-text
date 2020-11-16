@@ -63,7 +63,7 @@ Option                  | Default      | Description
 `longWordSplit`         |              | Describes how to wrap long words.
 `longWordSplit.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
 `longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
-`preserveNewlines`      | `false`      | By default, any newlines `\n` in a block of text will be removed. If `true`, these newlines will not be removed.
+`preserveNewlines`      | `false`      | By default, any newlines `\n` in a block of text are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
 `returnDomByDefault`    | `true`       | Convert the entire document if we don't find the tag defined in `baseElement`.
 `tables`                | `[]`         | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
 `tags`                  |              | Describes how different tags should be formatted. See "Tags" section below.
