@@ -40,7 +40,8 @@ npm install html-to-text -g
 ```js
 const { htmlToText } = require('html-to-text');
 
-const text = htmlToText('<h1>Hello World</h1>', {
+const html = '<h1>Hello World</h1>';
+const text = htmlToText(html, {
   wordwrap: 130
 });
 console.log(text); // Hello World
@@ -63,7 +64,7 @@ Option                  | Default      | Description
 `longWordSplit`         |              | Describes how to wrap long words.
 `longWordSplit.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
 `longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
-`preserveNewlines`      | `false`      | By default, any newlines `\n` in a block of text are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
+`preserveNewlines`      | `false`      | By default, any newlines `\n` from the input HTML are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
 `returnDomByDefault`    | `true`       | Convert the entire document if we don't find the tag defined in `baseElement`.
 `tables`                | `[]`         | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
 `tags`                  |              | Describes how different tags should be formatted. See "Tags" section below.
@@ -94,7 +95,24 @@ Old&nbsp;option | Description
 
 #### Tags
 
-By default there are following tag to formatter assignments:
+Example for tag-specific options:
+
+```javascript
+const { htmlToText } = require('html-to-text');
+
+const html = '<a href="/page.html">Page</a>';
+const text = htmlToText(html, {
+  tags: {
+    'a': { options: { baseUrl: 'https://example.com' } },
+    'figure': { format: 'block' }
+  }
+});
+console.log(text); // Page [https://example.com/page.html]
+```
+
+For new tags you have to specify the `format` value. For tags listed below you can skip it and only provide `options`. (Valid options listed in the next table.)
+
+By default there are following tag to format assignments:
 
 Tag&nbsp;name | Default&nbsp;format | Notes
 ------------- | ------------------- | -----
@@ -121,11 +139,11 @@ Tag&nbsp;name | Default&nbsp;format | Notes
 `ol`          | `orderedList`       |
 `p`           | `paragraph`         |
 `pre`         | `pre`               |
-`table`       | `table`             | there is also `dataTable` formatter. Using it will be equivalent to setting `tables` to `true`. `tables` option might be deprecated in the future.
+`table`       | `table`             | there is also `dataTable` format. Using it will be equivalent to setting `tables` to `true`. `tables` option might be deprecated in the future.
 `ul`          | `unorderedList`     |
 `wbr`         | `wbr`               |
 
-More formatters also available for use:
+More formats also available for use:
 
 * `skip` - as the name implies it skips the given tag with it's contents without printing anything.
 
@@ -135,7 +153,7 @@ Option              | Default     | Applies&nbsp;to    | Description
 ------------------- | ----------- | ------------------ | -----------
 `leadingLineBreaks` | `1`, `2` or `3` | all block-level formatters | Number of line breaks to separate previous block from this one.<br/>Note that N+1 line breaks are needed to make N empty lines.
 `trailingLineBreaks` | `1` or `2` | all block-level formatters | Number of line breaks to separate this block from the next one.<br/>Note that N+1 line breaks are needed to make N empty lines.
-`baseUrl`           | null        | `anchor`, `image`  | Server host for link `href` attributes and image `src` attributes relative to the root (the ones that start with `/`).<br/>For example, with `baseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.<br/>Keep in mind that `baseUrl` should not end with a `/`.
+`baseUrl`           | `null`      | `anchor`, `image`  | Server host for link `href` attributes and image `src` attributes relative to the root (the ones that start with `/`).<br/>For example, with `baseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.<br/>Keep in mind that `baseUrl` should not end with a `/`.
 `hideLinkHrefIfSameAsText` | `false` | `anchor`        | By default links are translated in the following way:<br/>`<a href='link'>text</a>` => becomes => `text [link]`.<br/>If this option is set to `true` and `link` and `text` are the same, `[link]` will be omitted and only `text` will be present.
 `ignoreHref`        | `false`     | `anchor`           | Ignore all links. Only process internal text of anchor tags.
 `noAnchorUrl`       | `true`      | `anchor`           | Ignore anchor links (where `href='#...'`).
@@ -145,21 +163,9 @@ Option              | Default     | Applies&nbsp;to    | Description
 `length`            | `undefined` | `horizontalLine`   | Length of the line. If undefined then `wordwrap` value is used. Falls back to 40 if that's also disabled.
 `trimEmptyLines`    | `true`      | `blockquote`       | Trim empty lines from blockquote.<br/>While empty lines should be preserved in HTML, space-saving behavior is chosen as default for convenience.
 `uppercaseHeaderCells` | `true` | `table`, `dataTable` | By default, heading cells (`<th>`) are uppercased.<br/>Set this to `false` to leave heading cells as they are.
-`maxColumnWidth`    | `60`      | `table`, `dataTable` | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set to `undefined` in order to fall back to `wordwrap` limit.
+`maxColumnWidth`    | `60`      | `table`, `dataTable` | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set this to `undefined` in order to fall back to `wordwrap` limit.
 `colSpacing`        | `3`       | `table`, `dataTable` | Number of spaces between data table columns.
 `rowSpacing`        | `0`       | `table`, `dataTable` | Number of empty lines between data table rows.
-
-How to set a specific format option, example:
-
-```javascript
-var { htmlToText } = require('html-to-text');
-
-var text = htmlToText('<a href="/page.html">Page</a>', {
-  tags: { 'a': { options: { baseUrl: 'https://example.com' } } }
-});
-
-console.log(text); // Page [https://example.com/page.html]
-```
 
 ### Override formatting
 
@@ -177,9 +183,10 @@ Each formatter is a function of four arguments that returns nothing. Arguments a
 Custom formatter example:
 
 ```javascript
-var { htmlToText } = require('html-to-text');
+const { htmlToText } = require('html-to-text');
 
-var text = htmlToText('<foo>Hello World</foo>', {
+const html = '<foo>Hello World</foo>';
+const text = htmlToText(html, {
   formatters: {
     // Create a formatter.
     'fooBlockFormatter': function (elem, walk, builder, formatOptions) {
@@ -197,7 +204,6 @@ var text = htmlToText('<foo>Hello World</foo>', {
     }
   }
 });
-
 console.log(text); // Hello World!
 ```
 
