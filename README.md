@@ -55,7 +55,7 @@ Option                  | Default      | Description
 ----------------------- | ------------ | -----------
 `baseElement`           | `'body'`     | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
 `decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
-`formatters`            | `{}`         | An object with custom formatting functions for specific elements (see "Override formatting" section below).
+`formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
 `limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
 `limits.maxChildNodes`  | `undefined`  | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
@@ -67,7 +67,7 @@ Option                  | Default      | Description
 `preserveNewlines`      | `false`      | By default, any newlines `\n` from the input HTML are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
 `returnDomByDefault`    | `true`       | Convert the entire document if we don't find the tag defined in `baseElement`.
 `tables`                | `[]`         | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
-`tags`                  |              | Describes how different tags should be formatted. See "Tags" section below.
+`tags`                  |              | Describes how different tags should be formatted. See [Tags](#tags) section below.
 `whitespaceCharacters`  | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
 `wordwrap`              | `80`         | After how many chars a line break should follow.<br/>Set to `null` or `false` to disable word-wrapping.
 
@@ -91,7 +91,7 @@ Deprecated options will be removed with future major version update.
 
 Old&nbsp;option | Description
 --------------- | -----------
-`format`        | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See new instructions below.
+`format`        | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
 
 #### Tags
 
@@ -178,7 +178,7 @@ Each formatter is a function of four arguments that returns nothing. Arguments a
 * `elem` - the HTML element to be processed by this formatter;
 * `walk` - recursive function to process the children of this element. Called as `walk(elem.children, builder)`;
 * `builder` - [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) object. Manipulate this object state to build the output text;
-* `formatOptions` - options that are specified for a tag, along with this formatter (Note: if you need global html-to-text options - they are accessible via `builder.options`).
+* `formatOptions` - options that are specified for a tag, along with this formatter (Note: if you need general html-to-text [options](#general-options) - they are accessible via `builder.options`).
 
 Custom formatter example:
 
