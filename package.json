@@ -39,7 +39,7 @@
     "converter"
   ],
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=10.23.2"
   },
   "bin": {
     "html-to-text": "./bin/cli.js"

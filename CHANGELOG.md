@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 7.0.0 (WIP)
+
+Required Node version is now >=10.23.2.
+
+Version 7 roadmap issue: [#222](https://github.com/html-to-text/node-html-to-text/issues/222)
+
 ## Version 6.0.0
 
 This is a major update. No code left untouched. While the goal was to keep as much compatibility as possible, some client-facing changes were unavoidable.
