@@ -534,7 +534,7 @@ describe('html-to-text', function () {
       const html = '0123456789'.repeat(2000000);
       const options = { wordwrap: false };
       expect(htmlToText(html, options).length).to.equal(1 << 24);
-      const expectedStderrBuffer = 'Input lenght 20000000 is above allowed limit of 16777216. Truncating without ellipsis.\n';
+      const expectedStderrBuffer = 'Input length 20000000 is above allowed limit of 16777216. Truncating without ellipsis.\n';
       expect(getProcessStderrBuffer()).to.equal(expectedStderrBuffer);
     });
 
@@ -542,7 +542,7 @@ describe('html-to-text', function () {
       const html = '0123456789'.repeat(2000000);
       const options = { limits: { maxInputLength: 42 } };
       expect(htmlToText(html, options).length).to.equal(42);
-      const expectedStderrBuffer = 'Input lenght 20000000 is above allowed limit of 42. Truncating without ellipsis.\n';
+      const expectedStderrBuffer = 'Input length 20000000 is above allowed limit of 42. Truncating without ellipsis.\n';
       expect(getProcessStderrBuffer()).to.equal(expectedStderrBuffer);
     });
 
