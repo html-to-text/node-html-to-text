@@ -362,14 +362,14 @@ describe('html-to-text', function () {
 
     it('should split long strings buried in links and hide the href', function () {
       const html = '<a href="http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/">http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/</a>';
-      const options = { hideLinkHrefIfSameAsText: true, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false } };
+      const options = { longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false }, tags: { 'a': { options: { hideLinkHrefIfSameAsText: true } } } };
       const expected = 'http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/';
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should split long strings buried in links and show the href', function () {
       const html = '<a href="http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/">http://images.fb.com/2015/12/21/ivete-sangalo-launches-360-music-video-on-facebook/</a>';
-      const options = { hideLinkHrefIfSameAsText: false, longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false } };
+      const options = { longWordSplit: { wrapCharacters: ['/', '_'], forceWrapOnLimit: false } };
       const expected = 'http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/\n[http://images.fb.com/2015/12/21/\nivete-sangalo-launches-360-music-video-on-facebook/]';
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -480,11 +480,11 @@ describe('html-to-text', function () {
     it('should respect maxChildNodes limit', function () {
       const html = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
       const options = {
-        singleNewLineParagraphs: true,
         limits: {
           maxChildNodes: 6,
           ellipsis: '(skipped the rest)'
-        }
+        },
+        tags: { 'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } } }
       };
       const expected = 'a\nb\nc\nd\ne\nf\n(skipped the rest)';
       expect(htmlToText(html, options)).to.equal(expected);
@@ -493,11 +493,11 @@ describe('html-to-text', function () {
     it('should not add ellipsis when maxChildNodes limit is exact match', function () {
       const html = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
       const options = {
-        singleNewLineParagraphs: true,
         limits: {
           maxChildNodes: 10,
           ellipsis: 'can\'t see me'
-        }
+        },
+        tags: { 'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } } }
       };
       const expected = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
       expect(htmlToText(html, options)).to.equal(expected);
@@ -506,8 +506,8 @@ describe('html-to-text', function () {
     it('should use default ellipsis value if none provided', function () {
       const html = /*html*/`<!DOCTYPE html><html><head></head><body><p>a</p><p>b</p><p>c</p><p>d</p><p>e</p><p>f</p><p>g</p><p>h</p><p>i</p><p>j</p></body></html>`;
       const options = {
-        singleNewLineParagraphs: true,
-        limits: { maxChildNodes: 6 }
+        limits: { maxChildNodes: 6 },
+        tags: { 'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } } }
       };
       const expected = 'a\nb\nc\nd\ne\nf\n...';
       expect(htmlToText(html, options)).to.equal(expected);
