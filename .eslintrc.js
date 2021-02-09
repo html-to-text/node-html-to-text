@@ -14,6 +14,7 @@ module.exports = {
     node: true,
   },
   globals: {},
+  settings: { 'jsdoc': { mode: 'typescript' } }, // allow compact callback types in particular
   rules: {
     // Best practices
     'block-scoped-var': 'error',
@@ -72,7 +73,7 @@ module.exports = {
     'func-call-spacing': 'error',
     'func-name-matching': ['error', { 'includeCommonJSModuleExports': true }],
     'function-call-argument-newline': ['error', 'consistent'],
-    'function-paren-newline': ['error', "consistent"],
+    'function-paren-newline': ['error', 'consistent'],
     'indent': ['error', 2, { 'SwitchCase': 1, 'flatTernaryExpressions': true }],
     'key-spacing': ['error'],
     'keyword-spacing': 'error',
