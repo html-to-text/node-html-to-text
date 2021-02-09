@@ -670,13 +670,16 @@ describe('tags', function () {
       const options = {
         formatters: {
           heading: function (elem, walk, builder, formatOptions) {
-            builder.openBlock(2);
+            builder.openBlock({ leadingLineBreaks: 2 });
             builder.pushWordTransform(str => str.toLowerCase());
             walk(elem.children, builder);
             builder.popWordTransform();
-            builder.closeBlock(2, str => {
-              const line = '='.repeat(str.length);
-              return `${line}\n${str}\n${line}`;
+            builder.closeBlock({
+              trailingLineBreaks: 2,
+              blockTransform: str => {
+                const line = '='.repeat(str.length);
+                return `${line}\n${str}\n${line}`;
+              }
             });
           }
         }
@@ -719,13 +722,16 @@ describe('tags', function () {
       const options = {
         formatters: {
           'formatFoo': function (elem, walk, builder, formatOptions) {
-            builder.openBlock(1);
+            builder.openBlock({ leadingLineBreaks: 1 });
             walk(elem.children, builder);
-            builder.closeBlock(1, str => `[FOO]${str}[/FOO]`);
+            builder.closeBlock({
+              trailingLineBreaks: 1,
+              blockTransform: str => `[FOO]${str}[/FOO]`
+            });
           },
           'formatBar': function (elem, walk, builder, formatOptions) {
             // attribute availability check is left out for brevity
-            builder.addInline(`[BAR src="${elem.attribs.src}"]`, true);
+            builder.addInline(`[BAR src="${elem.attribs.src}"]`, { noWordTransform: true });
           }
         },
         tags: {
