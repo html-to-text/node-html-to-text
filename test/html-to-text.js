@@ -182,10 +182,14 @@ describe('html-to-text', function () {
 
   });
 
-  describe('unicode support', function () {
+  describe('unicode and html entities', function () {
 
     it('should decode &#128514; to 😂', function () {
       expect(htmlToText('&#128514;')).to.equal('😂');
+    });
+
+    it('should decode &lt;&gt; to <>', function () {
+      expect(htmlToText('<span>span</span>, &lt;not a span&gt;')).to.equal('span, <not a span>');
     });
 
   });
