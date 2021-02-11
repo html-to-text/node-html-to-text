@@ -5,8 +5,7 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:jsdoc/recommended',
-    'plugin:mocha/recommended',
-    'plugin:you-dont-need-lodash-underscore/compatible'
+    'plugin:mocha/recommended'
   ],
   parserOptions: {},
   env: {
