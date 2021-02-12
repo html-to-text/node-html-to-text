@@ -1,8 +1,30 @@
 # Changelog
 
-## Version 7.0.0 (WIP)
+## Version 7.0.0
+
+### Node version
 
 Required Node version is now >=10.23.2.
+
+### Dependency updates
+
+* `lodash` dependency is removed;
+* `htmlparser2` updated from 4.1.0 to 6.0.0 ([Release notes](https://github.com/fb55/htmlparser2/releases), also [domhandler](https://github.com/fb55/domhandler/releases/tag/v4.0.0)). There is a slim chance you can run into some differences in case you're relying on it heavily in your custom formatters;
+* dev dependencies are bumped.
+
+### Custom formatters API change
+
+[BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) methods now accept option objects for optional arguments. This improves client code readability and allows to introduce extra options with ease. It will see some use in future updates.
+
+Positional arguments introduced in version 6.0.0 are now deprecated. Formatters written for the version 6.0.0 should keep working for now but the compatibility layer is rather inconvenient and will be removed with the next major version.
+
+See the commit [f50f10f](https://github.com/html-to-text/node-html-to-text/commit/f50f10f54cf814efb2f7633d9d377ba7eadeaf1e). Changes in `lib/formatter.js` file are illustrative for how to migrate to the new API.
+
+### And more
+
+* Bunch of documentation and test updates.
+
+All commits: [6.0.0...7.0.0](https://github.com/html-to-text/node-html-to-text/compare/6.0.0...7.0.0)
 
 Version 7 roadmap issue: [#222](https://github.com/html-to-text/node-html-to-text/issues/222)
 

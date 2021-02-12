@@ -23,6 +23,8 @@ Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text
 
 Version 6 contains a ton of changes, so it worth to take a look.
 
+Version 7 contains an important change for custom formatters.
+
 ## Installation
 
 ```
@@ -190,10 +192,10 @@ const text = htmlToText(html, {
   formatters: {
     // Create a formatter.
     'fooBlockFormatter': function (elem, walk, builder, formatOptions) {
-      builder.openBlock(formatOptions.leadingLineBreaks || 1);
+      builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 1 });
       walk(elem.children, builder);
       builder.addInline('!');
-      builder.closeBlock(formatOptions.trailingLineBreaks || 1);
+      builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
     }
   },
   tags: {
@@ -210,6 +212,8 @@ console.log(text); // Hello World!
 Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples.
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
+
+Note: `BlockTextBuilder` got some important [changes](https://github.com/html-to-text/node-html-to-text/commit/f50f10f54cf814efb2f7633d9d377ba7eadeaf1e) in the version 7. Positional arguments are deprecated and formatters written for the version 6 have to be updated accordingly in order to keep working after next major update.
 
 ## Command Line Interface
 
