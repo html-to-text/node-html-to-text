@@ -1,25 +1,20 @@
-name: test
+name: cover
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
-    name: Run tests
+    name: Coverage report
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-        os: [ubuntu-latest, windows-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js 12.x
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12.x
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -41,4 +36,9 @@ jobs:
 
       - run: npm ci
 
-      - run: npm test
+      - name: Publish coverage results
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: npm run cover
