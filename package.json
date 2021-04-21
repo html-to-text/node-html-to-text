@@ -31,11 +31,11 @@
     "html-to-text": "./bin/cli.js"
   },
   "scripts": {
-    "test": "mocha && eslint .",
+    "cover": "nyc --reporter=lcov --reporter=text-summary npm test",
     "example": "node ./example/html-to-text.js",
     "lint": "eslint .",
-    "cover": "nyc --reporter=lcov --reporter=text-summary npm run test",
-    "prepublishOnly": "npm run cover"
+    "prepublishOnly": "npm run lint && npm test",
+    "test": "mocha"
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
