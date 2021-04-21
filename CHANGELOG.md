@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 7.1.0
+
+### Dependency updates
+
+* `htmlparser2` updated from 6.0.0 to 6.1.0 ([Release notes](https://github.com/fb55/htmlparser2/releases));
+* dev dependencies are bumped.
+
 ## Version 7.0.0
 
 ### Node version
