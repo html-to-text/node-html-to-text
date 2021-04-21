@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 7.1.1
+
+Regenerate `package-lock.json`.
+
 ## Version 7.1.0
 
 ### Dependency updates
