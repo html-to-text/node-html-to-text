@@ -7,7 +7,7 @@ module.exports = {
     'plugin:jsdoc/recommended',
     'plugin:mocha/recommended'
   ],
-  parserOptions: {},
+  parserOptions: { ecmaVersion: 2018 },
   env: {
     es6: true,
     node: true,
@@ -100,7 +100,7 @@ module.exports = {
     'semi': 'error',
     'semi-spacing': 'error',
     'semi-style': 'error',
-    'sort-keys': ['error', 'asc', { minKeys: 3 }],
+    'sort-keys': ['error', 'asc', { minKeys: 4 }],
     'space-before-blocks': 'error',
     'space-before-function-paren': ['error'],
     'space-in-parens': 'error',

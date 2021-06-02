@@ -29,7 +29,11 @@ describe('tags', function () {
     it('should output horizontal line of specific length', function () {
       const html = '<div>foo</div><hr/><div>bar</div>';
       const expected = 'foo\n\n------------------------------\n\nbar';
-      const options = { tags: { 'hr': { options: { length: 30 } } } };
+      const options = {
+        selectors: [
+          { selector: 'hr', options: { length: 30 } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -51,7 +55,11 @@ describe('tags', function () {
 
     it('should allow to change the number of linebreaks', function () {
       const html = 'text<p>first</p><p>second</p>text';
-      const options = { tags: { 'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } } } };
+      const options = {
+        selectors: [
+          { selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }
+        ]
+      };
       const expected = 'text\nfirst\nsecond\ntext';
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -127,14 +135,14 @@ describe('tags', function () {
       expect(htmlToText(html)).to.equal(expected.toUpperCase());
 
       const options = {
-        tags: {
-          'h1': { options: { uppercase: false } },
-          'h2': { options: { uppercase: false } },
-          'h3': { options: { uppercase: false } },
-          'h4': { options: { uppercase: false } },
-          'h5': { options: { uppercase: false } },
-          'h6': { options: { uppercase: false } }
-        }
+        selectors: [
+          { selector: 'h1', options: { uppercase: false } },
+          { selector: 'h2', options: { uppercase: false } },
+          { selector: 'h3', options: { uppercase: false } },
+          { selector: 'h4', options: { uppercase: false } },
+          { selector: 'h5', options: { uppercase: false } },
+          { selector: 'h6', options: { uppercase: false } },
+        ]
       };
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -161,7 +169,11 @@ describe('tags', function () {
       const expectedDefault = '> a';
       expect(htmlToText(html)).to.equal(expectedDefault);
 
-      const options = { tags: { 'blockquote': { options: { trimEmptyLines: false } } } };
+      const options = {
+        selectors: [
+          { selector: 'blockquote', options: { trimEmptyLines: false } }
+        ]
+      };
       const expectedCustom = '> \n> a\n> \n> \n> ';
       expect(htmlToText(html, options)).to.equal(expectedCustom);
     });
@@ -178,7 +190,11 @@ describe('tags', function () {
 
     it('should update relatively sourced images with baseUrl', function () {
       const html = '<img src="/test.png">';
-      const options = { tags: { 'img': { options: { baseUrl: 'https://example.com' } } } };
+      const options = {
+        selectors: [
+          { selector: 'img', options: { baseUrl: 'https://example.com' } }
+        ]
+      };
       const expected = '[https://example.com/test.png]';
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -201,7 +217,11 @@ describe('tags', function () {
 
     it('should update relatively sourced links with linkHrefBaseUrl', function () {
       const html = '<a href="/test.html">test</a>';
-      const options = { tags: { 'a': { options: { baseUrl: 'https://example.com' } } } };
+      const options = {
+        selectors: [
+          { selector: 'a', options: { baseUrl: 'https://example.com' } }
+        ]
+      };
       const expected = 'test [https://example.com/test.html]';
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -221,20 +241,32 @@ describe('tags', function () {
     it('should return link without brackets if noLinkBrackets is set to true', function () {
       const html = '<a href="http://my.link">test</a>';
       const expected = 'test http://my.link';
-      const options = { tags: { 'a': { options: { noLinkBrackets: true } } } };
+      const options = {
+        selectors: [
+          { selector: 'a', options: { noLinkBrackets: true } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should not return link for anchor if noAnchorUrl is set to true', function () {
       const html = '<a href="#link">test</a>';
-      const options = { tags: { 'a': { options: { noAnchorUrl: true } } } };
+      const options = {
+        selectors: [
+          { selector: 'a', options: { noAnchorUrl: true } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal('test');
     });
 
     it('should return link for anchor if noAnchorUrl is set to false', function () {
       const html = '<a href="#link">test</a>';
       const expected = 'test [#link]';
-      const options = { tags: { 'a': { options: { noAnchorUrl: false } } } };
+      const options = {
+        selectors: [
+          { selector: 'a', options: { noAnchorUrl: false } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -255,7 +287,12 @@ describe('tags', function () {
         </table>
       `;
       const expected = 'HEADER CELL 1   HEADER CELL 2 [http://example.com]   Regular cell [http://example.com]';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
   });
@@ -277,7 +314,11 @@ describe('tags', function () {
 
       it('should handle an unordered list prefix option', function () {
         const html = '<ul><li>foo</li><li>bar</li></ul>';
-        const options = { tags: { 'ul': { options: { itemPrefix: ' test ' } } } };
+        const options = {
+          selectors: [
+            { selector: 'ul', options: { itemPrefix: ' test ' } }
+          ]
+        };
         const expected = ' test foo\n test bar';
         expect(htmlToText(html, options)).to.equal(expected);
       });
@@ -477,7 +518,12 @@ describe('tags', function () {
         </TABLE>
       `;
       const expected = 'Good morning Jacob,\n\nLorem ipsum dolor sit amet.';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should handle non-integer colspan on td element gracefully', function () {
@@ -491,7 +537,12 @@ describe('tags', function () {
         </table>
       `;
       const expected = 'Good morning Jacob,\n\nLorem ipsum dolor sit amet.';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should handle tables with colspans and rowspans', function () {
@@ -539,7 +590,12 @@ describe('tags', function () {
         'h   ii   k   ll   mm\n' +
         'nn   o   k   ll   pp\n' +
         'nn   qqqq         pp';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should support custom spacing for tables', function () {
@@ -564,7 +620,11 @@ describe('tags', function () {
         '    c\n' +
         '\n' +
         'd e f';
-      const options = { tables: true, tags: { 'table': { options: { colSpacing: 1, rowSpacing: 1 } } } };
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable', options: { colSpacing: 1, rowSpacing: 1 } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -595,7 +655,12 @@ describe('tags', function () {
         'aaaaaaaaa   b\n' +
         'ccc         ddd   eee\n' +
         'f                 ggggggggg';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should render block-level elements inside table cells properly', function () {
@@ -622,7 +687,12 @@ describe('tags', function () {
         '                                       > from somewhere.\n' +
         '   preformatted...        ...text       1. list item one\n' +
         '                                        2. list item two';
-      expect(htmlToText(html, { tables: true })).to.equal(expected);
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should wrap table contents to custom max column width', function () {
@@ -657,7 +727,11 @@ describe('tags', function () {
       '        cupidatat non proident, sunt\n' +
       '        in culpa qui officia deserunt\n' +
       '        mollit anim id est laborum.';
-      const options = { tables: true, tags: { 'table': { options: { maxColumnWidth: 30 } } } };
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable', options: { maxColumnWidth: 30 } }
+        ]
+      };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -691,14 +765,14 @@ describe('tags', function () {
     it('should allow to skip tags with dummy formatting function', function () {
       const html = '<ruby>漢<rt>かん</rt>字<rt>じ</rt></ruby>';
       const expected = '漢字';
-      const options = { tags: { 'rt': { format: 'skip' } } };
+      const options = { selectors: [ { selector: 'rt', format: 'skip' } ] };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
     it('should allow to define basic support for inline tags', function () {
       const html = /*html*/`<p>a <span>b </span>c<span>  d  </span>e</p>`;
       const expected = 'a b c d e';
-      const options = { tags: { 'span': { format: 'inline' } } };
+      const options = { selectors: [ { selector: 'span', format: 'inline' } ] };
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
@@ -706,12 +780,12 @@ describe('tags', function () {
       const html = /*html*/`<widget><gadget>a</gadget><fidget>b</fidget></widget>c<budget>d</budget>e`;
       const expected = 'a\nb\nc\nd\ne';
       const options = {
-        tags: {
-          'budget': { format: 'block' },
-          'fidget': { format: 'block' },
-          'gadget': { format: 'block' },
-          'widget': { format: 'block' },
-        }
+        selectors: [
+          { selector: 'budget', format: 'block' },
+          { selector: 'fidget', format: 'block' },
+          { selector: 'gadget', format: 'block' },
+          { selector: 'widget', format: 'block' }
+        ]
       };
       expect(htmlToText(html, options)).to.equal(expected);
     });
@@ -734,10 +808,57 @@ describe('tags', function () {
             builder.addInline(`[BAR src="${elem.attribs.src}"]`, { noWordTransform: true });
           }
         },
-        tags: {
-          'foo': { format: 'formatFoo' },
-          'bar': { format: 'formatBar' }
-        }
+        selectors: [
+          { selector: 'foo', format: 'formatFoo' },
+          { selector: 'bar', format: 'formatBar' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+  });
+
+  describe('selectors', function () {
+
+    it('should merge entries with the same selector', function () {
+      const html = '<foo></foo><foo></foo><foo></foo>';
+      const expected = '----------\n\n\n\n----------\n\n\n\n----------';
+      const options = {
+        selectors: [
+          { selector: 'foo', format: 'somethingElse' },
+          { selector: 'foo', options: { length: 20 } },
+          { selector: 'foo', options: { leadingLineBreaks: 4 } },
+          { selector: 'foo', options: { trailingLineBreaks: 4 } },
+          { selector: 'foo', options: { length: 10 } },
+          { selector: 'foo', format: 'horizontalLine' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should pick the most specific selector', function () {
+      const html = '<hr/><hr class="foo" id="bar"/>';
+      const expected = '---\n\n-----';
+      const options = {
+        selectors: [
+          { selector: 'hr', options: { length: 3 } },
+          { selector: 'hr#bar', format: 'horizontalLine', options: { length: 5 } },
+          { selector: 'hr.foo', format: 'horizontalLine', options: { length: 7 } },
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should pick the last selector of equal specificity', function () {
+      const html = '<hr class="bar baz"/><hr class="foo bar"/><hr class="foo baz"/>';
+      const expected = '-----\n\n-------\n\n-------';
+      const options = {
+        selectors: [
+          { selector: 'hr.foo', format: 'horizontalLine', options: { length: 7 } },
+          { selector: 'hr.baz', format: 'horizontalLine', options: { length: 3 } },
+          { selector: 'hr.bar', format: 'horizontalLine', options: { length: 5 } },
+          { selector: 'hr.foo' }
+        ]
       };
       expect(htmlToText(html, options)).to.equal(expected);
     });

@@ -26,28 +26,48 @@ Version 6 contains a ton of changes, so it worth to take a look.
 
 Version 7 contains an important change for custom formatters.
 
+Version 8 brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
+
 ## Installation
 
 ```
 npm install html-to-text
 ```
 
-Or when you want to use it as command line interface it is recommended to install it globally via
-
-```
-npm install html-to-text -g
-```
-
 ## Usage
 
+Convert a single document:
+
 ```js
-const { htmlToText } = require('html-to-text');
+const { convert } = require('html-to-text');
+// There is also an alias to `convert` called `htmlToText`.
 
 const html = '<h1>Hello World</h1>';
-const text = htmlToText(html, {
+const text = convert(html, {
   wordwrap: 130
 });
 console.log(text); // Hello World
+```
+
+Configure `html-to-text` once for batch processing:
+
+```js
+const { compile } = require('html-to-text');
+
+const convert = compile({
+  wordwrap: 130
+});
+
+const htmls = [
+  '<h1>Hello World!</h1>',
+  '<h1>こんにちは世界！</h1>',
+  '<h1>Привет, мир!</h1>'
+];
+const texts = htmls.map(convert);
+console.log(texts.join('\n'));
+// Hello World!
+// こんにちは世界！
+// Привет, мир!
 ```
 
 ### Options
@@ -56,11 +76,15 @@ console.log(text); // Hello World
 
 Option                  | Default      | Description
 ----------------------- | ------------ | -----------
-`baseElement`           | `'body'`     | The tag(s) whose text content will be captured from the html and added to the resulting text output.<br/>Single element or an array of elements can be specified, each as a single tag name with optional css class and id parameters e.g. `['p.class1.class2#id1#id2', 'p.class1.class2#id1#id2']`.
+`baseElements`          |              | Describes which parts of the input document have to be converted and present in the output text, and in what order.
+`baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
+`baseElements.orderBy`  | `selectors`  | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
+`baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
 `decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
 `limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
+`limits.maxBaseElements` | `undefined` | Stop looking for more base elements after reaching this amount. Unlimited if undefined.
 `limits.maxChildNodes`  | `undefined`  | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
 `limits.maxDepth`       | `undefined`  | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
 `limits.maxInputLength` | `16_777_216` | If the input string is longer than this value - it will be truncated and a message will be sent to `stderr`. Ellipsis is not used in this case. Unlimited if undefined.
@@ -68,58 +92,85 @@ Option                  | Default      | Description
 `longWordSplit.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
 `longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
 `preserveNewlines`      | `false`      | By default, any newlines `\n` from the input HTML are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
-`returnDomByDefault`    | `true`       | Convert the entire document if we don't find the tag defined in `baseElement`.
-`tables`                | `[]`         | Allows to select certain tables by the `class` or `id` attribute from the HTML document. This is necessary because the majority of HTML E-Mails uses a table based layout. Prefix your table selectors with an `.` for the `class` and with a `#` for the `id` attribute. All other tables are ignored.<br/>You can assign `true` to this attribute to select all tables.
-`tags`                  |              | Describes how different tags should be formatted. See [Tags](#tags) section below.
+`selectors`             | `[]`         | Describes how different HTML elements should be formatted. See [Selectors](#selectors) section below.
 `whitespaceCharacters`  | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
 `wordwrap`              | `80`         | After how many chars a line break should follow.<br/>Set to `null` or `false` to disable word-wrapping.
 
-#### Options deprecated in version 6
+#### Deprecated or removed options
 
-Old&nbsp;option            | Instead&nbsp;use
--------------------------- | -----------
-`hideLinkHrefIfSameAsText` | `tags: { 'a': { options: { hideLinkHrefIfSameAsText: true } } }`
-`ignoreHref`               | `tags: { 'a': { options: { ignoreHref: true } } }`
-`ignoreImage`              | `tags: { 'img': { format: 'skip' } }`
-`linkHrefBaseUrl`          | `tags: {`<br/>`'a': { options: { baseUrl: 'https://example.com' } },`<br/>`'img': { options: { baseUrl: 'https://example.com' } }`<br/>`}`
-`noAnchorUrl`              | `tags: { 'a': { options: { noAnchorUrl: true } } }`
-`noLinkBrackets`           | `tags: { 'a': { options: { noLinkBrackets: true } } }`
-`singleNewLineParagraphs`  | `tags: {`<br/>`'p': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`'pre': { options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`}`
-`unorderedListItemPrefix`  | `tags: { 'ul': { options: { itemPrefix: ' * ' } } }`
-`uppercaseHeadings`        | `tags: {`<br/>`'h1': { options: { uppercase: false } },`<br/>`...`<br/>`'table': { options: { uppercaseHeaderCells: false } }`<br/>`}`
+Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
+-------------------------- | --- | ----- | -----------------
+`baseElement`              | 8.0 |       | `baseElements: { selectors: [ 'body' ] }`
+`format`                   |     |  6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
+`hideLinkHrefIfSameAsText` | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
+`ignoreHref`               | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
+`ignoreImage`              | 6.0 | *9.0* | `selectors: [ { selector: 'img', format: 'skip' } ]`
+`linkHrefBaseUrl`          | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
+`noAnchorUrl`              | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
+`noLinkBrackets`           | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { noLinkBrackets: true } } ]`
+`returnDomByDefault`       | 8.0 |       | `baseElements: { returnDomByDefault: true }`
+`singleNewLineParagraphs`  | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
+`tables`                   | 8.0 |       | `selectors: [ { selector: 'table.class#id', format: 'dataTable' } ]`
+`tags`                     | 8.0 |       | See [Selectors](#selectors) section below.
+`unorderedListItemPrefix`  | 6.0 | *9.0* | `selectors: [ { selector: 'ul', options: { itemPrefix: ' * ' } } ]`
+`uppercaseHeadings`        | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`...`<br/>`{ selector: 'table', options: { uppercaseHeaderCells: false } }`<br/>`]`
 
-Deprecated options will be removed with future major version update.
+Other things deprecated:
 
-#### Options removed in version 6
+* `fromString` method;
+* positional arguments in `BlockTextBuilder` methods (in case you have written some custom formatters for version 6.0).
 
-Old&nbsp;option | Description
---------------- | -----------
-`format`        | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
+#### Selectors
 
-#### Tags
-
-Example for tag-specific options:
+Some example:
 
 ```javascript
-const { htmlToText } = require('html-to-text');
+const { convert } = require('html-to-text');
 
-const html = '<a href="/page.html">Page</a>';
-const text = htmlToText(html, {
-  tags: {
-    'a': { options: { baseUrl: 'https://example.com' } },
-    'figure': { format: 'block' }
-  }
+const html = '<a href="/page.html">Page</a><a href="!#" class="button">Action</a>';
+const text = convert(html, {
+  selectors: [
+    { selector: 'a', options: { baseUrl: 'https://example.com' } },
+    { selector: 'a.button', format: 'skip' }
+  ]
 });
 console.log(text); // Page [https://example.com/page.html]
 ```
 
-For new tags you have to specify the `format` value. For tags listed below you can skip it and only provide `options`. (Valid options listed in the next table.)
+Selectors array is our loose approximation of a stylesheet.
 
-By default there are following tag to format assignments:
+* highest [specificity](https://www.w3.org/TR/selectors/#specificity) selector is used when there are multiple matches;
+* the last selector is used when there are multiple matches of equal specificity;
+* all entries with the same selector value are merged (recursively) at the compile stage, in such way so the last defined properties a kept and the relative order of unique selectors is kept;
+* user-defined entries are appended after [predefined entries](#predefined-formatters);
+* Every unique selector must have `format` value specified (at least once);
+* unlike in CSS, values from different matched selectors are NOT merged at the convert stage. Single best match is used instead (that is the last one of those with highest specificity).
 
-Tag&nbsp;name | Default&nbsp;format | Notes
+To achieve the best performance when checking each DOM element against provided selectors, they are compiled into a decision tree. But it is also important how you choose selectors. For example, `div#id` is much better than `#id` - the former will only check divs for the id while the latter has to check every element in the DOM.
+
+##### Supported selectors
+
+`html-to-text` relies on [parseley](https://github.com/mxxii/parseley) and [selderee](https://github.com/mxxii/selderee) packages for selectors support.
+
+Following selectors can be used in any combinations:
+
+* `*` - universal selector;
+* `div` - tag name;
+* `.foo` - class name;
+* `#bar` - id;
+* `[baz]` - attribute presence;
+* `[baz=buzz]` - attribute value (with any operators and also quotes and case sensitivity modifiers);
+* `+` and `>` combinators (other combinators are not supported).
+
+You can match `<p style="...; display:INLINE; ...">...</p>` with `p[style*="display:inline"i]` for example.
+
+##### Predefined formatters
+
+Following selectors have a formatter specified as a part of the default configuration. Everything can be overriden, but you don't have to repeat the `format` or options that you don't want to override. (But keep in mind this is only true for the same selector. There is no connection between different selectors.)
+
+Selector      | Default&nbsp;format | Notes
 ------------- | ------------------- | -----
-`''`          | `inline`            | Catch-all default for unknown tags.
+`*`           | `inline`            | Universal selector.
 `a`           | `anchor`            |
 `article`     | `block`             |
 `aside`       | `block`             |
@@ -142,15 +193,18 @@ Tag&nbsp;name | Default&nbsp;format | Notes
 `ol`          | `orderedList`       |
 `p`           | `paragraph`         |
 `pre`         | `pre`               |
-`table`       | `table`             | there is also `dataTable` format. Using it will be equivalent to setting `tables` to `true`. `tables` option might be deprecated in the future.
+`table`       | `table`             | Equivalent to `block`. Use `dataTable` instead for tabular data.
 `ul`          | `unorderedList`     |
 `wbr`         | `wbr`               |
 
-More formats also available for use:
+More formatters also available for use:
 
+* `dataTable` - for visually-accurate tables. Note that this might be not search-friendly (output text will look like gibberish to a machine when there is any wrapped cell contents) and also better to be avoided for tables used as a page layout tool;
 * `skip` - as the name implies it skips the given tag with it's contents without printing anything.
 
-Format options are specified for each tag indepentently:
+##### Format options
+
+Following options are available for built-in formatters.
 
 Option              | Default     | Applies&nbsp;to    | Description
 ------------------- | ----------- | ------------------ | -----------
@@ -165,16 +219,16 @@ Option              | Default     | Applies&nbsp;to    | Description
 `uppercase`         | `true`      | `heading`          | By default, headings (`<h1>`, `<h2>`, etc) are uppercased.<br/>Set this to `false` to leave headings as they are.
 `length`            | `undefined` | `horizontalLine`   | Length of the line. If undefined then `wordwrap` value is used. Falls back to 40 if that's also disabled.
 `trimEmptyLines`    | `true`      | `blockquote`       | Trim empty lines from blockquote.<br/>While empty lines should be preserved in HTML, space-saving behavior is chosen as default for convenience.
-`uppercaseHeaderCells` | `true` | `table`, `dataTable` | By default, heading cells (`<th>`) are uppercased.<br/>Set this to `false` to leave heading cells as they are.
-`maxColumnWidth`    | `60`      | `table`, `dataTable` | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set this to `undefined` in order to fall back to `wordwrap` limit.
-`colSpacing`        | `3`       | `table`, `dataTable` | Number of spaces between data table columns.
-`rowSpacing`        | `0`       | `table`, `dataTable` | Number of empty lines between data table rows.
+`uppercaseHeaderCells` | `true`   | `dataTable`        | By default, heading cells (`<th>`) are uppercased.<br/>Set this to `false` to leave heading cells as they are.
+`maxColumnWidth`    | `60`        | `dataTable`        | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set this to `undefined` in order to fall back to `wordwrap` limit.
+`colSpacing`        | `3`         | `dataTable`        | Number of spaces between data table columns.
+`rowSpacing`        | `0`         | `dataTable`        | Number of empty lines between data table rows.
 
 ### Override formatting
 
 This is significantly changed in version 6.
 
-`formatters` option is an object that holds formatting functions. They can be assigned to format different tags by key in the `tags` option.
+`formatters` option is an object that holds formatting functions. They can be assigned to format different elements in the `selectors` array.
 
 Each formatter is a function of four arguments that returns nothing. Arguments are:
 
@@ -186,10 +240,10 @@ Each formatter is a function of four arguments that returns nothing. Arguments a
 Custom formatter example:
 
 ```javascript
-const { htmlToText } = require('html-to-text');
+const { convert } = require('html-to-text');
 
 const html = '<foo>Hello World</foo>';
-const text = htmlToText(html, {
+const text = convert(html, {
   formatters: {
     // Create a formatter.
     'fooBlockFormatter': function (elem, walk, builder, formatOptions) {
@@ -199,18 +253,19 @@ const text = htmlToText(html, {
       builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 1 });
     }
   },
-  tags: {
+  selectors: [
     // Assign it to `foo` tags.
-    'foo': {
+    {
+      selector: 'foo',
       format: 'fooBlockFormatter',
       options: { leadingLineBreaks: 1, trailingLineBreaks: 1 }
     }
-  }
+  ]
 });
 console.log(text); // Hello World!
 ```
 
-Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples.
+Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples. The easiest way to write your own is to pick an existing one and customize.
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
 

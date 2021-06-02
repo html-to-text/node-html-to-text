@@ -1,5 +1,53 @@
 # Changelog
 
+## Version 8.0.0 (WIP)
+
+All commits: [7.1.1...8.0.0](https://github.com/html-to-text/node-html-to-text/compare/7.1.1...8.0.0)
+
+Version 8 roadmap issue: [#228](https://github.com/html-to-text/node-html-to-text/issues/228)
+
+### Selectors
+
+The main focus of this version. Addresses the most demanded user requests ([#159](https://github.com/html-to-text/node-html-to-text/issues/159), [#179](https://github.com/html-to-text/node-html-to-text/issues/179), partially [#143](https://github.com/html-to-text/node-html-to-text/issues/143)).
+
+It is now possible to specify formatting options or assign custom formatters not only by tag names but by almost any selectors.
+
+See the README [Selectors](https://github.com/html-to-text/node-html-to-text#selectors) section for details.
+
+Note: The new `selectors` option is an array, in contrast to the `tags` option introduced in version 6 (and now deprecated). Selectors have to have a well defined order and object properties is not a right tool for that.
+
+Two new packages were created to enable this feature - [parseley](https://github.com/mxxii/parseley) and [selderee](https://github.com/mxxii/selderee).
+
+### Base elements
+
+The same selectors implementation is used now to narrow down the conversion to specific HTML DOM fragments. Addresses [#96](https://github.com/html-to-text/node-html-to-text/issues/96). (Previous implementation had more limited selectors format.)
+
+BREAKING CHANGE: All outermost elements matching provided selectors will be present in the output (previously it was only the first match for each selector). Addresses [#215](https://github.com/html-to-text/node-html-to-text/issues/215).
+
+`limits.maxBaseElements` can be used when you only need a fixed number of base elements and would like to avoid checking the rest of the source HTML document.
+
+Base elements can be arranged in output text in the order of matched selectors (default, to keep it closer to the old implementation) or in the order of appearance in sourse HTML document.
+
+BREAKING CHANGE: previous implementation was treating id selectors in the same way as class selectors (could match `<foo id="a b">` with `foo#a` selector). New implementation is closer to the spec and doesn't expect multiple ids on an element. You can achieve the old behavior with `foo[id~=a]` selector in case you rely on it for some poorly formatted documents (note that it has different specificity though).
+
+### Batch processing
+
+Since options preprocessing is getting more involved with selectors compilation, it seemed reasonable to break the single `htmlToText()` function into compilation and convertation steps. It might provide some performance benefits in client code.
+
+* new function `compile(options)` returns a function of a single argument (html string);
+* `htmlToText(html, options)` is now an alias to `convert(html, options)` function and works as before.
+
+### Deprecated options
+
+* `baseElement`;
+* `returnDomByDefault`;
+* `tables`;
+* `tags`.
+
+Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
+
+No previously deprecated stuff is removed in this version. Significant cleanup is planned for version 9 instead.
+
 ## Version 7.1.1
 
 Regenerate `package-lock.json`.
