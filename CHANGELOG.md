@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 8.0.0 (WIP)
+## Version 8.0.0
 
 All commits: [7.1.1...8.0.0](https://github.com/html-to-text/node-html-to-text/compare/7.1.1...8.0.0)
 
