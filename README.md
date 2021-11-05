@@ -78,9 +78,9 @@ Option                  | Default      | Description
 ----------------------- | ------------ | -----------
 `baseElements`          |              | Describes which parts of the input document have to be converted and present in the output text, and in what order.
 `baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
-`baseElements.orderBy`  | `selectors`  | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
+`baseElements.orderBy`  | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
 `baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
-`decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more informations see the [he](https://github.com/mathiasbynens/he) module.
+`decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more information see the [he](https://github.com/mathiasbynens/he) module.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
 `limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
@@ -166,7 +166,7 @@ You can match `<p style="...; display:INLINE; ...">...</p>` with `p[style*="disp
 
 ##### Predefined formatters
 
-Following selectors have a formatter specified as a part of the default configuration. Everything can be overriden, but you don't have to repeat the `format` or options that you don't want to override. (But keep in mind this is only true for the same selector. There is no connection between different selectors.)
+Following selectors have a formatter specified as a part of the default configuration. Everything can be overridden, but you don't have to repeat the `format` or options that you don't want to override. (But keep in mind this is only true for the same selector. There is no connection between different selectors.)
 
 Selector      | Default&nbsp;format | Notes
 ------------- | ------------------- | -----
