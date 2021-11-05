@@ -199,6 +199,39 @@ describe('tags', function () {
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
+    it('should return image link without brackets if linkBrackets is set to false', function () {
+      const html = '<img src="test.png" alt="Awesome">';
+      const expected = 'Awesome test.png';
+      const options = {
+        selectors: [
+          { selector: 'img', options: { linkBrackets: false } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should return image link without brackets if linkBrackets is set to ["", ""]', function () {
+      const html = '<img src="test.png" alt="Awesome">';
+      const expected = 'Awesome test.png';
+      const options = {
+        selectors: [
+          { selector: 'img', options: { linkBrackets: ['', ''] } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should return image link with custom brackets', function () {
+      const html = '<img src="test.png" alt="Awesome">';
+      const expected = 'Awesome ===> test.png <===';
+      const options = {
+        selectors: [
+          { selector: 'img', options: { linkBrackets: ['===> ', ' <==='] } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
   });
 
   describe('a', function () {
@@ -238,12 +271,34 @@ describe('tags', function () {
       expect(htmlToText(html)).to.equal(expected);
     });
 
-    it('should return link without brackets if noLinkBrackets is set to true', function () {
+    it('should return link without brackets if linkBrackets is set to false', function () {
       const html = '<a href="http://my.link">test</a>';
       const expected = 'test http://my.link';
       const options = {
         selectors: [
-          { selector: 'a', options: { noLinkBrackets: true } }
+          { selector: 'a', options: { linkBrackets: false } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should return link without brackets if linkBrackets is set to ["", ""]', function () {
+      const html = '<a href="http://my.link">test</a>';
+      const expected = 'test http://my.link';
+      const options = {
+        selectors: [
+          { selector: 'a', options: { linkBrackets: ['', ''] } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should return link with custom brackets', function () {
+      const html = '<a href="http://my.link">test</a>';
+      const expected = 'test ===> http://my.link <===';
+      const options = {
+        selectors: [
+          { selector: 'a', options: { linkBrackets: ['===> ', ' <==='] } }
         ]
       };
       expect(htmlToText(html, options)).to.equal(expected);

@@ -107,7 +107,7 @@ Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
 `ignoreImage`              | 6.0 | *9.0* | `selectors: [ { selector: 'img', format: 'skip' } ]`
 `linkHrefBaseUrl`          | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
 `noAnchorUrl`              | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
-`noLinkBrackets`           | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { noLinkBrackets: true } } ]`
+`noLinkBrackets`           | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { linkBrackets: false } } ]`
 `returnDomByDefault`       | 8.0 |       | `baseElements: { returnDomByDefault: true }`
 `singleNewLineParagraphs`  | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
 `tables`                   | 8.0 |       | `selectors: [ { selector: 'table.class#id', format: 'dataTable' } ]`
@@ -211,10 +211,10 @@ Option              | Default     | Applies&nbsp;to    | Description
 `leadingLineBreaks` | `1`, `2` or `3` | all block-level formatters | Number of line breaks to separate previous block from this one.<br/>Note that N+1 line breaks are needed to make N empty lines.
 `trailingLineBreaks` | `1` or `2` | all block-level formatters | Number of line breaks to separate this block from the next one.<br/>Note that N+1 line breaks are needed to make N empty lines.
 `baseUrl`           | `null`      | `anchor`, `image`  | Server host for link `href` attributes and image `src` attributes relative to the root (the ones that start with `/`).<br/>For example, with `baseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.<br/>Keep in mind that `baseUrl` should not end with a `/`.
+`linkBrackets`     | `['[', ']']` | `anchor`, `image`  | Surround links with these brackets.<br/>Set to `false` or `['', '']` to disable.
 `hideLinkHrefIfSameAsText` | `false` | `anchor`        | By default links are translated in the following way:<br/>`<a href='link'>text</a>` => becomes => `text [link]`.<br/>If this option is set to `true` and `link` and `text` are the same, `[link]` will be omitted and only `text` will be present.
 `ignoreHref`        | `false`     | `anchor`           | Ignore all links. Only process internal text of anchor tags.
 `noAnchorUrl`       | `true`      | `anchor`           | Ignore anchor links (where `href='#...'`).
-`noLinkBrackets`    | `false`     | `anchor`           | Don't print brackets around links.
 `itemPrefix`        | `' * '`     | `unorderedList`    | String prefix for each list item.
 `uppercase`         | `true`      | `heading`          | By default, headings (`<h1>`, `<h2>`, etc) are uppercased.<br/>Set this to `false` to leave headings as they are.
 `length`            | `undefined` | `horizontalLine`   | Length of the line. If undefined then `wordwrap` value is used. Falls back to 40 if that's also disabled.
@@ -223,6 +223,12 @@ Option              | Default     | Applies&nbsp;to    | Description
 `maxColumnWidth`    | `60`        | `dataTable`        | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set this to `undefined` in order to fall back to `wordwrap` limit.
 `colSpacing`        | `3`         | `dataTable`        | Number of spaces between data table columns.
 `rowSpacing`        | `0`         | `dataTable`        | Number of empty lines between data table rows.
+
+##### Deprecated format options
+
+Old option          | Applies&nbsp;to    | Depr. | Rem. | Instead use
+------------------- | ------------------ | ----- | ---- | ---------------------
+`noLinkBrackets`    | `anchor`           | 8.1   |      | `linkBrackets: false`
 
 ### Override formatting
 
