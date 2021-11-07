@@ -77,20 +77,20 @@ console.log(texts.join('\n'));
 Option                  | Default      | Description
 ----------------------- | ------------ | -----------
 `baseElements`          |              | Describes which parts of the input document have to be converted and present in the output text, and in what order.
-`baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
-`baseElements.orderBy`  | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
-`baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
+`baseElements`<wbr/>`.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
+`baseElements`<wbr/>`.orderBy` | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
+`baseElements`<wbr/>`.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
 `decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more information see the [he](https://github.com/mathiasbynens/he) module.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
-`limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
-`limits.maxBaseElements` | `undefined` | Stop looking for more base elements after reaching this amount. Unlimited if undefined.
-`limits.maxChildNodes`  | `undefined`  | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
-`limits.maxDepth`       | `undefined`  | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
-`limits.maxInputLength` | `16_777_216` | If the input string is longer than this value - it will be truncated and a message will be sent to `stderr`. Ellipsis is not used in this case. Unlimited if undefined.
+`limits`<wbr/>`.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
+`limits`<wbr/>`.maxBaseElements` | `undefined` | Stop looking for more base elements after reaching this amount. Unlimited if undefined.
+`limits`<wbr/>`.maxChildNodes`  | `undefined`  | Maximum number of child nodes of a single node to be added to the output. Unlimited if undefined.
+`limits`<wbr/>`.maxDepth`       | `undefined`  | Stop looking for nodes to add to the output below this depth in the DOM tree. Unlimited if undefined.
+`limits`<wbr/>`.maxInputLength` | `16_777_216` | If the input string is longer than this value - it will be truncated and a message will be sent to `stderr`. Ellipsis is not used in this case. Unlimited if undefined.
 `longWordSplit`         |              | Describes how to wrap long words.
-`longWordSplit.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
-`longWordSplit.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
+`longWordSplit`<wbr/>`.wrapCharacters` | `[]`  | An array containing the characters that may be wrapped on. Checked in order, search stops once line length requirement can be met.
+`longWordSplit`<wbr/>`.forceWrapOnLimit` | `false` | Break long words at the line length limit in case no better wrap opportunities found.
 `preserveNewlines`      | `false`      | By default, any newlines `\n` from the input HTML are collapsed into space as any other HTML whitespace characters. If `true`, these newlines will be preserved in the output. This is only useful when input HTML carries some plain text formatting instead of proper tags.
 `selectors`             | `[]`         | Describes how different HTML elements should be formatted. See [Selectors](#selectors) section below.
 `whitespaceCharacters`  | `' \t\r\n\f\u200b'` | A string of characters that are recognized as HTML whitespace. Default value uses the set of characters defined in [HTML4 standard](https://www.w3.org/TR/html4/struct/text.html#h-9.1). (It includes Zero-width space compared to [living standard](https://infra.spec.whatwg.org#ascii-whitespace).)
