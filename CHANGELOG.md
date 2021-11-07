@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 8.1.0
+
+* Fix for too many newlines in certain cases when `preserveNewlines` option is used. Addresses [#232](https://github.com/html-to-text/node-html-to-text/issues/232);
+* Link and image formatters now have a `linkBrackets` option - it accepts an array of two strings (default: `['[', ']']`) or `false` to remove the brackets. Addresses [#236](https://github.com/html-to-text/node-html-to-text/issues/236);
+* `noLinkBrackets` formatters option is now deprecated.
+
+All commits: [8.0.0...8.1.0](https://github.com/html-to-text/node-html-to-text/compare/8.0.0...8.1.0)
+
 ## Version 8.0.0
 
 All commits: [7.1.1...8.0.0](https://github.com/html-to-text/node-html-to-text/compare/7.1.1...8.0.0)
@@ -26,7 +34,7 @@ BREAKING CHANGE: All outermost elements matching provided selectors will be pres
 
 `limits.maxBaseElements` can be used when you only need a fixed number of base elements and would like to avoid checking the rest of the source HTML document.
 
-Base elements can be arranged in output text in the order of matched selectors (default, to keep it closer to the old implementation) or in the order of appearance in sourse HTML document.
+Base elements can be arranged in output text in the order of matched selectors (default, to keep it closer to the old implementation) or in the order of appearance in source HTML document.
 
 BREAKING CHANGE: previous implementation was treating id selectors in the same way as class selectors (could match `<foo id="a b">` with `foo#a` selector). New implementation is closer to the spec and doesn't expect multiple ids on an element. You can achieve the old behavior with `foo[id~=a]` selector in case you rely on it for some poorly formatted documents (note that it has different specificity though).
 
@@ -109,7 +117,7 @@ For the majority of changed options there is a compatibility layer that will rem
 
 Because formatters are integral part of the formatting code (as the name suggests), it wasn't possible to provide a compatibility layer.
 
-Please refer to the Readme to see how things are wired now, in case you were using them for anything othen than dealing with the lack of block-level tags support.
+Please refer to the Readme to see how things are wired now, in case you were using them for anything other than dealing with the lack of block-level tags support.
 
 ### Tables support was improved
 
@@ -211,7 +219,7 @@ Node versions < 6 are no longer supported.
 
 ## Version 2.1.1
 
-* Extra space ploblem fixed. #88
+* Extra space problem fixed. #88
 
 ## Version 2.1.0
 
@@ -252,7 +260,7 @@ Breaking Changes:
 ## Version 1.4.0
 
 * Uppercase tag processing added. Table center support added. #56
-* Unuused dependencies removed.
+* Unused dependencies removed.
 
 ## Version 1.3.2
 
