@@ -182,6 +182,40 @@ describe('html-to-text', function () {
       expect(convert(html, { preserveNewlines: true })).to.equal(expected);
     });
 
+    it('should produce equal results regardless of newline position between blocks', function () {
+      const newlineOutside = '<p>A</p>\n<p>B</p>';
+      const newlineInside = '<p>A</p><p>\nB</p>';
+      const r1 = convert(newlineOutside, { preserveNewlines: true });
+      const r2 = convert(newlineInside, { preserveNewlines: true });
+      expect(r1).to.equal(r2);
+    });
+
+    it('should produce equal results for preserved newlines and BR tags', function () {
+      const nlHtml = '<p>A</p>\n<p>B</p><p>\nC</p>';
+      const brHtml = '<p>A</p><br/><p>B</p><p><br/>C</p>';
+      const nlResult = convert(nlHtml, { preserveNewlines: true });
+      const brResult = convert(brHtml);
+      expect(nlResult).to.equal(brResult);
+    });
+
+    it('should account for trailing/leading linebreaks of adjacent blocks equally', function () {
+      const html = '<p>A</p>\n<div>B</div>\n<div>C</div>\n<p>D</p>';
+      const newlineInside = 'A\n\n\nB\n\nC\n\n\nD';
+      expect(convert(html, { preserveNewlines: true })).to.equal(newlineInside);
+    });
+
+    it('should work with multiple linebreaks and in presence of whitespaces', function () {
+      const html = '<p>A</p> \n \n <p>B</p>';
+      const newlineInside = 'A\n\n\n\nB';
+      expect(convert(html, { preserveNewlines: true })).to.equal(newlineInside);
+    });
+
+    it('should have no special behavior in presence of words among linebreaks', function () {
+      const html = '<p>A</p> \n B \n <p>C</p>';
+      const newlineInside = 'A\n\n\nB\n\n\nC';
+      expect(convert(html, { preserveNewlines: true })).to.equal(newlineInside);
+    });
+
   });
 
   describe('unicode and html entities', function () {
