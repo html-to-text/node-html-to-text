@@ -15,6 +15,14 @@ If you use CLI then install that package instead: (WIP, to be provided before re
 * `htmlparser2` updated from 6.1.0 to 7.2.0 ([Release notes](https://github.com/fb55/htmlparser2/releases));
 * dev dependencies are bumped.
 
+### Deprecated features removed
+
+* Options deprecated in version 6 are now removed;
+* `fromString` method removed;
+* positional arguments in `BlockTextBuilder` methods are now removed.
+
+Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
+
 ## Version 8.1.0
 
 * Fix for too many newlines in certain cases when `preserveNewlines` option is used. Addresses [#232](https://github.com/html-to-text/node-html-to-text/issues/232);

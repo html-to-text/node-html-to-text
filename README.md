@@ -102,23 +102,23 @@ Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
 -------------------------- | --- | ----- | -----------------
 `baseElement`              | 8.0 |       | `baseElements: { selectors: [ 'body' ] }`
 `format`                   |     |  6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
-`hideLinkHrefIfSameAsText` | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
-`ignoreHref`               | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
-`ignoreImage`              | 6.0 | *9.0* | `selectors: [ { selector: 'img', format: 'skip' } ]`
-`linkHrefBaseUrl`          | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
-`noAnchorUrl`              | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
-`noLinkBrackets`           | 6.0 | *9.0* | `selectors: [ { selector: 'a', options: { linkBrackets: false } } ]`
+`hideLinkHrefIfSameAsText` | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
+`ignoreHref`               | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
+`ignoreImage`              | 6.0 |  9.0  | `selectors: [ { selector: 'img', format: 'skip' } ]`
+`linkHrefBaseUrl`          | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
+`noAnchorUrl`              | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
+`noLinkBrackets`           | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { linkBrackets: false } } ]`
 `returnDomByDefault`       | 8.0 |       | `baseElements: { returnDomByDefault: true }`
-`singleNewLineParagraphs`  | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
+`singleNewLineParagraphs`  | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
 `tables`                   | 8.0 |       | `selectors: [ { selector: 'table.class#id', format: 'dataTable' } ]`
 `tags`                     | 8.0 |       | See [Selectors](#selectors) section below.
-`unorderedListItemPrefix`  | 6.0 | *9.0* | `selectors: [ { selector: 'ul', options: { itemPrefix: ' * ' } } ]`
-`uppercaseHeadings`        | 6.0 | *9.0* | `selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`...`<br/>`{ selector: 'table', options: { uppercaseHeaderCells: false } }`<br/>`]`
+`unorderedListItemPrefix`  | 6.0 |  9.0  | `selectors: [ { selector: 'ul', options: { itemPrefix: ' * ' } } ]`
+`uppercaseHeadings`        | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`...`<br/>`{ selector: 'table', options: { uppercaseHeaderCells: false } }`<br/>`]`
 
-Other things deprecated:
+Other things removed:
 
 * `fromString` method;
-* positional arguments in `BlockTextBuilder` methods (in case you have written some custom formatters for version 6.0).
+* positional arguments in `BlockTextBuilder` methods.
 
 #### Selectors
 
@@ -232,8 +232,6 @@ Old option          | Applies&nbsp;to    | Depr. | Rem. | Instead use
 
 ### Override formatting
 
-This is significantly changed in version 6.
-
 `formatters` option is an object that holds formatting functions. They can be assigned to format different elements in the `selectors` array.
 
 Each formatter is a function of four arguments that returns nothing. Arguments are:
@@ -274,8 +272,6 @@ console.log(text); // Hello World!
 Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples. The easiest way to write your own is to pick an existing one and customize.
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
-
-Note: `BlockTextBuilder` got some important [changes](https://github.com/html-to-text/node-html-to-text/commit/f50f10f54cf814efb2f7633d9d377ba7eadeaf1e) in the version 7. Positional arguments are deprecated and formatters written for the version 6 have to be updated accordingly in order to keep working after next major update.
 
 ## Example
 
