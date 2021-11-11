@@ -18,7 +18,7 @@ module.exports = {
     // Best practices
     'block-scoped-var': 'error',
     'class-methods-use-this': 'error',
-    'complexity': ['error', 15],
+    'complexity': ['error', 14],
     'consistent-return': 'error',
     'curly': 'error',
     'default-case': 'error',
@@ -79,7 +79,7 @@ module.exports = {
     'lines-between-class-members': 'error',
     'max-depth': ['error', 5],
     'max-len': ['error', 130],
-    'max-lines-per-function': ['error', 81],
+    'max-lines-per-function': ['error', 80],
     'max-nested-callbacks': ['error', 4],
     'max-params': ['error', 5],
     'max-statements': ['error', 35],
