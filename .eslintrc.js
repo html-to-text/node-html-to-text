@@ -120,10 +120,7 @@ module.exports = {
     'prefer-spread': 'error',
 
     // JSDoc
-    'jsdoc/check-examples': ['error', {
-      checkEslintrc: false,
-      baseConfig: { extends: [ 'eslint:recommended' ], env: { es6: true } }
-    }],
+    'jsdoc/check-examples': 'off',
     'jsdoc/check-indentation': 'error',
     'jsdoc/check-syntax': 'error',
     'jsdoc/empty-tags': 'error',
@@ -132,6 +129,7 @@ module.exports = {
     'jsdoc/require-hyphen-before-param-description': ['error', 'never'],
     'jsdoc/require-jsdoc': ['error', { 'publicOnly': true }],
     'jsdoc/require-returns-description': 'off', // description might tell this better, avoid repetition
+    'jsdoc/tag-lines': 'off',
 
     // Import
     'import/no-deprecated': 'error',

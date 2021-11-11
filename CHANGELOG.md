@@ -1,5 +1,20 @@
 # Changelog
 
+## Version 9.0.0 (WIP)
+
+### Node version
+
+Required Node version is now >=12.22.0.
+
+### CLI is no longer built in
+
+If you use CLI then install that package instead: (WIP, to be provided before release)
+
+### Dependency updates
+
+* `htmlparser2` updated from 6.1.0 to 7.2.0 ([Release notes](https://github.com/fb55/htmlparser2/releases));
+* dev dependencies are bumped.
+
 ## Version 8.1.0
 
 * Fix for too many newlines in certain cases when `preserveNewlines` option is used. Addresses [#232](https://github.com/html-to-text/node-html-to-text/issues/232);

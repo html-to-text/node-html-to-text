@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "8.1.0",
+  "version": "9.0.0-next1",
   "description": "Advanced html to plain text converter",
   "license": "MIT",
   "author": {
@@ -24,12 +24,9 @@
     "converter"
   ],
   "engines": {
-    "node": ">=10.23.2"
+    "node": ">=12.22.0"
   },
   "main": "index.js",
-  "bin": {
-    "html-to-text": "./bin/cli.js"
-  },
   "scripts": {
     "cover": "c8 --reporter=lcov --reporter=text-summary mocha -t 20000",
     "example": "node ./example/html-to-text.js",
@@ -38,21 +35,20 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.6.0",
+    "@selderee/plugin-htmlparser2": "^0.7.0",
     "deepmerge": "^4.2.2",
     "he": "^1.2.0",
-    "htmlparser2": "^6.1.0",
-    "minimist": "^1.2.5",
-    "selderee": "^0.6.0"
+    "htmlparser2": "^7.2.0",
+    "selderee": "^0.7.0"
   },
   "devDependencies": {
     "c8": "^7.10.0",
     "chai": "^4.3.4",
-    "eslint": "^7.32.0",
+    "eslint": "^8.2.0",
     "eslint-plugin-filenames": "^1.3.2",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jsdoc": "^33.3.0",
-    "eslint-plugin-mocha": "^8.2.0",
-    "mocha": "^8.4.0"
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsdoc": "^37.0.3",
+    "eslint-plugin-mocha": "^9.0.0",
+    "mocha": "^9.1.3"
   }
 }

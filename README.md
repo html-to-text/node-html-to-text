@@ -277,24 +277,6 @@ Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/bl
 
 Note: `BlockTextBuilder` got some important [changes](https://github.com/html-to-text/node-html-to-text/commit/f50f10f54cf814efb2f7633d9d377ba7eadeaf1e) in the version 7. Positional arguments are deprecated and formatters written for the version 6 have to be updated accordingly in order to keep working after next major update.
 
-## Command Line Interface
-
-It is possible to use html-to-text as command line interface. This allows an easy validation of your generated text and the integration in other systems that does not run on node.js.
-
-`html-to-text` uses `stdin` and `stdout` for data in and output. So you can use `html-to-text` the following way:
-
-```
-cat example/test.html | html-to-text > test.txt
-```
-
-There also all options available as described above. You can use them like this:
-
-```
-cat example/test.html | html-to-text --tables=#invoice,.address --wordwrap=100 > test.txt
-```
-
-The `tables` option has to be declared as comma separated list without whitespaces.
-
 ## Example
 
 * Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.html)
