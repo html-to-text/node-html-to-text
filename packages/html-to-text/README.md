@@ -2,7 +2,6 @@
 
 [![lint status](https://github.com/html-to-text/node-html-to-text/workflows/lint/badge.svg)](https://github.com/html-to-text/node-html-to-text/actions/workflows/lint.yml)
 [![test status](https://github.com/html-to-text/node-html-to-text/workflows/test/badge.svg)](https://github.com/html-to-text/node-html-to-text/actions/workflows/test.yml)
-[![Test Coverage](https://codeclimate.com/github/html-to-text/node-html-to-text/badges/coverage.svg)](https://codeclimate.com/github/html-to-text/node-html-to-text/coverage)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE-MIT)
 [![npm](https://img.shields.io/npm/v/html-to-text?logo=npm)](https://www.npmjs.com/package/html-to-text)
 [![npm](https://img.shields.io/npm/dw/html-to-text?color=informational&logo=npm)](https://www.npmjs.com/package/html-to-text)
