@@ -1,0 +1,42 @@
+{
+  "name": "html-to-text",
+  "version": "9.0.0-next1",
+  "description": "Advanced html to plain text converter",
+  "keywords": [
+    "html",
+    "node",
+    "text",
+    "mail",
+    "plain",
+    "converter"
+  ],
+  "license": "MIT",
+  "author": "Malte Legenhausen <legenhausen@werk85.de>",
+  "homepage": "https://github.com/html-to-text/node-html-to-text",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/html-to-text/node-html-to-text.git"
+  },
+  "bugs": {
+    "url": "https://github.com/html-to-text/node-html-to-text/issues"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=12.22.0"
+  },
+  "scripts": {
+    "build:rollup": "rollup -c",
+    "build": "npm run clean && npm run build:rollup",
+    "clean": "rimraf lib",
+    "cover": "c8 --reporter=lcov --reporter=text-summary mocha -t 20000",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@selderee/plugin-htmlparser2": "^0.7.0",
+    "deepmerge": "^4.2.2",
+    "he": "^1.2.0",
+    "htmlparser2": "^7.2.0",
+    "selderee": "^0.7.0"
+  },
+  "devDependencies": {}
+}

@@ -16,4 +16,4 @@ plugins:
   fixme:
     enabled: true
 exclude_patterns:
-- "test/"
+- "**/test/"

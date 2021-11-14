@@ -3,7 +3,7 @@ const he = require('he');
 const { get, numberToLetterSequence, numberToRoman, splitClassesAndIds, trimCharacter } = require('./helper');
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./typedefs');
+require('@html-to-text/base/src/typedefs');
 
 
 /**

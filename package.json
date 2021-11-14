@@ -1,54 +1,40 @@
 {
-  "name": "html-to-text",
-  "version": "9.0.0-next1",
-  "description": "Advanced html to plain text converter",
+  "name": "@html-to-text/monorepo",
   "license": "MIT",
-  "author": {
-    "name": "Malte Legenhausen",
-    "email": "legenhausen@werk85.de"
-  },
-  "homepage": "https://github.com/html-to-text/node-html-to-text",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/html-to-text/node-html-to-text.git"
-  },
-  "bugs": {
-    "url": "https://github.com/html-to-text/node-html-to-text/issues"
-  },
-  "keywords": [
-    "html",
-    "node",
-    "text",
-    "mail",
-    "plain",
-    "converter"
-  ],
   "engines": {
     "node": ">=12.22.0"
   },
-  "main": "index.js",
+  "workspaces": [
+    "packages/base",
+    "packages/html-to-text"
+  ],
   "scripts": {
-    "cover": "c8 --reporter=lcov --reporter=text-summary mocha -t 20000",
+    "build:html-to-text": "cd ./packages/html-to-text/ && npm run build",
+    "build": "concurrently npm:build:*",
+    "cover:html-to-text": "cd ./packages/html-to-text/ && npm run cover",
+    "cover": "concurrently npm:cover:*",
     "example": "node ./example/html-to-text.js",
+    "install:base": "cd ./packages/base/ && npm i",
+    "install:html-to-text": "cd ./packages/html-to-text/ && npm i",
     "lint": "eslint .",
+    "postinstall": "concurrently npm:install:*",
     "prepublishOnly": "npm run lint && npm test",
-    "test": "mocha"
-  },
-  "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.7.0",
-    "deepmerge": "^4.2.2",
-    "he": "^1.2.0",
-    "htmlparser2": "^7.2.0",
-    "selderee": "^0.7.0"
+    "test:html-to-text": "cd ./packages/html-to-text/ && npm run test",
+    "test": "concurrently npm:test:*"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "c8": "^7.10.0",
     "chai": "^4.3.4",
+    "concurrently": "^6.4.0",
     "eslint": "^8.2.0",
     "eslint-plugin-filenames": "^1.3.2",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsdoc": "^37.0.3",
     "eslint-plugin-mocha": "^9.0.0",
-    "mocha": "^9.1.3"
+    "mocha": "^9.1.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.60.0",
+    "rollup-plugin-cjs-es": "^1.0.1"
   }
 }

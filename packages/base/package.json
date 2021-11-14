@@ -1,0 +1,26 @@
+{
+  "name": "@html-to-text/base",
+  "version": "0.5.0",
+  "private": true,
+  "description": "Base package for html-to-x converters",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/html-to-text/node-html-to-text.git"
+  },
+  "bugs": {
+    "url": "https://github.com/html-to-text/node-html-to-text/issues"
+  },
+  "homepage": "https://github.com/html-to-text/node-html-to-text#readme",
+  "engines": {
+    "node": ">=12.22.0"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+    "@selderee/plugin-htmlparser2": "^0.7.0",
+    "deepmerge": "^4.2.2",
+    "he": "^1.2.0",
+    "htmlparser2": "^7.2.0",
+    "selderee": "^0.7.0"
+  }
+}

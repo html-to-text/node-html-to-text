@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 const { Picker } = require('selderee');
 
-const { trimCharacter } = require('./helper');
 const {
 // eslint-disable-next-line no-unused-vars
   StackItem, BlockStackItem,
@@ -10,6 +9,7 @@ const {
   TransformerStackItem, ListStackItem, ListItemStackItem
 } = require('./stack-item');
 const { tableToString } = require('./table-printer');
+const { trimCharacter } = require('./util');
 const { WhitespaceProcessor } = require('./whitespace-processor');
 
 // eslint-disable-next-line import/no-unassigned-import

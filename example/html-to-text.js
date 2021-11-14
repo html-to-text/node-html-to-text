@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const { htmlToText } = require('../lib/html-to-text');
+const { htmlToText } = require('../packages/html-to-text/src/html-to-text');
+// const { htmlToText } = require('../packages/html-to-text/lib/html-to-text'); // build it first
 
 
 console.log('From string:');

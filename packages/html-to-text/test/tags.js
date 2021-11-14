@@ -1,7 +1,7 @@
 
 const { expect } = require('chai');
 
-const { htmlToText } = require('..');
+const { htmlToText } = require('../src/html-to-text');
 
 
 describe('tags', function () {

@@ -3,7 +3,7 @@ const path = require('path');
 
 const { expect } = require('chai');
 
-const { compile, convert } = require('..');
+const { compile, convert } = require('../src/html-to-text');
 
 
 const defaultConvert = compile();

@@ -133,7 +133,7 @@ module.exports = {
 
     // Import
     'import/no-deprecated': 'error',
-    'import/no-extraneous-dependencies': 'error',
+    'import/no-extraneous-dependencies': 'off',
     'import/no-mutable-exports': 'error',
     'import/no-amd': 'error',
     'import/no-nodejs-modules': 'error',
@@ -152,7 +152,7 @@ module.exports = {
     'mocha/valid-test-description': 'error',
 
     // Filenames
-    'filenames/match-regex': ['error', '^[a-z][a-z0-9\\-]+$'],
+    'filenames/match-regex': ['error', '^[a-z][a-z0-9\\.\\-]+$'],
     'filenames/match-exported': 'error'
   },
   overrides: [
@@ -161,7 +161,7 @@ module.exports = {
       'rules': { 'import/no-nodejs-modules': 'off' }
     },
     {
-      'files': ['test/*.js'],
+      'files': ['**/test/*.js'],
       'env': { mocha: true },
       'rules': {
         'import/no-nodejs-modules': 'off',

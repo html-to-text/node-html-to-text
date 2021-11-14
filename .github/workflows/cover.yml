@@ -42,3 +42,5 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: npm run cover
+          coverageLocations: |
+            ${{github.workspace}}/packages/*/coverage/lcov.info:lcov
