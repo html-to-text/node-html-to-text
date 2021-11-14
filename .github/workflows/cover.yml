@@ -40,10 +40,11 @@ jobs:
       - run: npm ci
 
       - name: Publish coverage results
-        uses: paambaati/codeclimate-action@v3
+        uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: npm run cover
-          coverageLocations: ${{github.workspace}}/packages/*/coverage/lcov.info:lcov
+          coverageLocations: |
+            ${{github.workspace}}/packages/html-to-text/coverage/lcov.info:lcov
           debug: true
