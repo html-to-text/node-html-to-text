@@ -13,11 +13,12 @@ If you use CLI then install that package instead: (WIP, to be provided before re
 ### Dependency updates
 
 * `htmlparser2` updated from 6.1.0 to 7.2.0 ([Release notes](https://github.com/fb55/htmlparser2/releases));
-* dev dependencies are bumped.
+* `he` dependency is removed. It was needed at the time it was introduced, apparently, but at this point `htmlparser2` seems to do a better job itself.
 
-### Deprecated features removed
+### Removed features
 
 * Options deprecated in version 6 are now removed;
+* `decodeOptions` section removed with `he` dependency;
 * `fromString` method removed;
 * positional arguments in `BlockTextBuilder` methods are now removed.
 

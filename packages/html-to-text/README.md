@@ -79,7 +79,6 @@ Option                  | Default      | Description
 `baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
 `baseElements.orderBy`  | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
 `baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
-`decodeOptions`         | `{ isAttributeValue: false, strict: false }` | Text decoding options given to `he.decode`. For more information see the [he](https://github.com/mathiasbynens/he) module.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
 `limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
@@ -100,6 +99,7 @@ Option                  | Default      | Description
 Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
 -------------------------- | --- | ----- | -----------------
 `baseElement`              | 8.0 |       | `baseElements: { selectors: [ 'body' ] }`
+`decodeOptions`            |     |  9.0  | Entity decoding is now handled by [htmlparser2](https://github.com/fb55/htmlparser2) itself and [entities](https://github.com/fb55/entities) internally. No user-configurable parts compared to [he](https://github.com/mathiasbynens/he).
 `format`                   |     |  6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
 `hideLinkHrefIfSameAsText` | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
 `ignoreHref`               | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`

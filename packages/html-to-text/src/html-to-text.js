@@ -24,10 +24,6 @@ const DEFAULT_OPTIONS = {
     orderBy: 'selectors', // 'selectors' | 'occurrence'
     returnDomByDefault: true
   },
-  decodeOptions: {
-    isAttributeValue: false,
-    strict: false
-  },
   formatters: {},
   limits: {
     ellipsis: '...',

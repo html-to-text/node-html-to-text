@@ -6,11 +6,6 @@
  * @property { BaseElementsOptions }  [baseElements]
  * Options for narrowing down to informative parts of HTML document.
  *
- * @property { DecodeOptions }        [decodeOptions]
- * Text decoding options given to `he.decode`.
- *
- * For more information see the [he](https://github.com/mathiasbynens/he) module.
- *
  * @property { object.< string, FormatCallback > } [formatters = {}]
  * A dictionary with custom formatting functions for specific kinds of elements.
  *

@@ -1,6 +1,5 @@
 
 const { hp2Builder } = require('@selderee/plugin-htmlparser2');
-const he = require('he');
 const htmlparser = require('htmlparser2');
 const selderee = require('selderee');
 
@@ -73,7 +72,7 @@ function process (html, options, picker, findBaseElements, walk) {
   }
 
   const handler = new htmlparser.DomHandler();
-  new htmlparser.Parser(handler, { decodeEntities: false }).parseComplete(html);
+  new htmlparser.Parser(handler, { decodeEntities: true }).parseComplete(html);
 
   const bases = findBaseElements(handler.dom);
   const builder = new BlockTextBuilder(options, picker);
@@ -142,7 +141,7 @@ function recursiveWalk (walk, dom, builder) {
   for (const elem of dom) {
     switch (elem.type) {
       case 'text': {
-        builder.addInline(he.decode(elem.data, options.decodeOptions));
+        builder.addInline(elem.data);
         break;
       }
       case 'tag': {

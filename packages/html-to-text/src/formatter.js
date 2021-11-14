@@ -1,4 +1,3 @@
-const he = require('he');
 
 const { get, numberToLetterSequence, numberToRoman, splitClassesAndIds, trimCharacter } = require('./helper');
 
@@ -146,7 +145,7 @@ function withBrackets (str, brackets) {
 function formatImage (elem, walk, builder, formatOptions) {
   const attribs = elem.attribs || {};
   const alt = (attribs.alt)
-    ? he.decode(attribs.alt, builder.options.decodeOptions)
+    ? attribs.alt
     : '';
   const src = (!attribs.src)
     ? ''
@@ -176,7 +175,7 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     href = (formatOptions.baseUrl && href[0] === '/')
       ? formatOptions.baseUrl + href
       : href;
-    return he.decode(href, builder.options.decodeOptions);
+    return href;
   }
   const href = getHref();
   if (!href) {
