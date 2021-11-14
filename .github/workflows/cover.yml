@@ -16,6 +16,9 @@ jobs:
         with:
           node-version: 12.x
 
+      - name: Setup NPM v7
+        run: npm i -g npm@7
+
       - name: Get npm cache directory
         id: npm-cache-dir
         run: |
