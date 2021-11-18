@@ -11,7 +11,7 @@ const snapshotMacro = test.macro({
 });
 
 function tagsSequence (tagNames) {
-  return tagNames.map(s => `<${s}>${s}</${s}>`).join('');
+  return tagNames.map(s => `<${s}>${s}</${s}>`).join(' ');
 }
 
 test(
@@ -147,8 +147,7 @@ test(
       <img src="/media/image.jpg"
           alt="Alt test">
       <figcaption>Caption</figcaption>
-    </figure>
-  `
+    </figure>`
 );
 
 test(
@@ -159,8 +158,7 @@ test(
       <source srcset="/media/cc0-images/surfer-240-200.jpg"
               media="(min-width: 800px)">
       <img src="/media/cc0-images/painted-hand-298-332.jpg" alt="Alt text" />
-    </picture>
-  `
+    </picture>`
 );
 
 test(
@@ -174,8 +172,7 @@ test(
       <dt>Title 2b</dt>
       <dd>Definition 2a</dd>
       <dd>Definition 2b</dd>
-    </dl>
-  `
+    </dl>`
 );
 
 test(
@@ -193,8 +190,7 @@ test(
         <dd>Definition 2a</dd>
         <dd>Definition 2b</dd>
       </div>
-    </dl>
-  `
+    </dl>`
 );
 
 test(
@@ -208,8 +204,7 @@ test(
       <dt>Title 2b</dt>
       <dd>Definition 2a</dd>
       <dd>Definition 2b</dd>
-    </dl>
-  `,
+    </dl>`,
   {
     selectors: [
       { selector: 'dl', format: 'definitionList' }
@@ -225,8 +220,7 @@ test(
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
-    </ul>
-  `
+    </ul>`
 );
 
 test(
@@ -237,8 +231,7 @@ test(
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
-    </ol>
-  `
+    </ol>`
 );
 
 test(
@@ -249,6 +242,5 @@ test(
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
-    </ol>
-  `
+    </ol>`
 );
