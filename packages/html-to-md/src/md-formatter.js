@@ -260,7 +260,7 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     if (href === text) {
       builder.addInline(`<${href}>`, { noWordTransform: true });
     } else {
-      builder.addInline(`![`);
+      builder.addInline(`[`);
       walk(elem.children, builder);
       builder.addInline(`](${href}${title})`, { noWordTransform: true });
     }
