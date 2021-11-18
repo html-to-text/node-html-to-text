@@ -66,8 +66,70 @@ function mergeDuplicatesPreferLast (items, getKey) {
 
 const overwriteMerge = (acc, src, options) => [...src];
 
+/**
+ * Get a nested property from an object.
+ *
+ * @param   { object }   obj  The object to query for the value.
+ * @param   { string[] } path The path to the property.
+ * @returns { any }
+ */
+function get (obj, path) {
+  for (const key of path) {
+    if (!obj) { return undefined; }
+    obj = obj[key];
+  }
+  return obj;
+}
+
+/**
+ * Convert a number into alphabetic sequence representation (Sequence without zeroes).
+ *
+ * For example: `a, ..., z, aa, ..., zz, aaa, ...`.
+ *
+ * @param   { number } num              Number to convert. Must be >= 1.
+ * @param   { string } [baseChar = 'a'] Character for 1 in the sequence.
+ * @param   { number } [base = 26]      Number of characters in the sequence.
+ * @returns { string }
+ */
+function numberToLetterSequence (num, baseChar = 'a', base = 26) {
+  const digits = [];
+  do {
+    num -= 1;
+    digits.push(num % base);
+    num = (num / base) >> 0; // quick `floor`
+  } while (num > 0);
+  const baseCode = baseChar.charCodeAt(0);
+  return digits
+    .reverse()
+    .map(n => String.fromCharCode(baseCode + n))
+    .join('');
+}
+
+const I = ['I', 'X', 'C', 'M'];
+const V = ['V', 'L', 'D'];
+
+/**
+ * Convert a number to it's Roman representation. No large numbers extension.
+ *
+ * @param   { number } num Number to convert. `0 < num <= 3999`.
+ * @returns { string }
+ */
+function numberToRoman (num) {
+  return [...(num) + '']
+    .map(n => +n)
+    .reverse()
+    .map((v, i) => ((v % 5 < 4)
+      ? (v < 5 ? '' : V[i]) + I[i].repeat(v % 5)
+      : I[i] + (v < 5 ? V[i] : I[i + 1])))
+    .reverse()
+    .join('');
+}
+
 module.exports = {
+  get: get,
   limitedDepthRecursive: limitedDepthRecursive,
   mergeDuplicatesPreferLast: mergeDuplicatesPreferLast,
+  numberToLetterSequence: numberToLetterSequence,
+  numberToRoman: numberToRoman,
   trimCharacter: trimCharacter
 };

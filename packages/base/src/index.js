@@ -72,7 +72,7 @@ function process (html, options, picker, findBaseElements, walk) {
   }
 
   const handler = new htmlparser.DomHandler();
-  new htmlparser.Parser(handler, { decodeEntities: true }).parseComplete(html);
+  new htmlparser.Parser(handler, { decodeEntities: options.decodeEntities }).parseComplete(html);
 
   const bases = findBaseElements(handler.dom);
   const builder = new BlockTextBuilder(options, picker);

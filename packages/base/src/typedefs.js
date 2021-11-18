@@ -6,6 +6,9 @@
  * @property { BaseElementsOptions }  [baseElements]
  * Options for narrowing down to informative parts of HTML document.
  *
+ * @property { boolean } [decodeEntities]
+ * Specify whether HTML entities should be decoded in the text output.
+ *
  * @property { object.< string, FormatCallback > } [formatters = {}]
  * A dictionary with custom formatting functions for specific kinds of elements.
  *

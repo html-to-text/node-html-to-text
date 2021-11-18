@@ -28,6 +28,10 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 
 * Some logic for making lists is moved to BlockTextBuilder and can be reused for custom lists. Addresses [#238](https://github.com/html-to-text/node-html-to-text/issues/238).
 
+### New options
+
+* `decodeEntities` option - controls whether HTML entities found in the input HTML should be decoded or left as is in the output text.
+
 ## Version 8.1.0
 
 * Fix for too many newlines in certain cases when `preserveNewlines` option is used. Addresses [#232](https://github.com/html-to-text/node-html-to-text/issues/232);

@@ -1,11 +1,10 @@
 module.exports = {
-  plugins: [ 'filenames', 'jsdoc', 'mocha' ],
+  plugins: [ 'filenames', 'jsdoc' ],
   extends: [
     'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:jsdoc/recommended',
-    'plugin:mocha/recommended'
+    'plugin:jsdoc/recommended'
   ],
   parserOptions: { ecmaVersion: 2018 },
   env: {
@@ -145,11 +144,6 @@ module.exports = {
     'import/no-unassigned-import': 'error',
     'import/no-named-default': 'error',
     'import/group-exports': 'error',
-
-    // Mocha tests
-    'mocha/no-setup-in-describe': 'off', // using some dynamically generated tests
-    'mocha/valid-suite-description': 'error',
-    'mocha/valid-test-description': 'error',
 
     // Filenames
     'filenames/match-regex': ['error', '^[a-z][a-z0-9\\.\\-]+$'],

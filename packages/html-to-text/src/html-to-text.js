@@ -1,9 +1,9 @@
 
 const { compile: compile_ } = require('@html-to-text/base');
+const { get } = require('@html-to-text/base/src/util');
 const merge = require('deepmerge'); // default
 
-const defaultFormatters = require('./formatter');
-const { get } = require('./helper');
+const defaultFormatters = require('./text-formatter');
 
 
 // eslint-disable-next-line import/no-unassigned-import
@@ -24,6 +24,7 @@ const DEFAULT_OPTIONS = {
     orderBy: 'selectors', // 'selectors' | 'occurrence'
     returnDomByDefault: true
   },
+  decodeEntities: true,
   formatters: {},
   limits: {
     ellipsis: '...',

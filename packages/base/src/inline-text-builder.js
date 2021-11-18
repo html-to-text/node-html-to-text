@@ -1,3 +1,6 @@
+
+const { get } = require('./util');
+
 // eslint-disable-next-line import/no-unassigned-import
 require('./typedefs');
 
@@ -20,8 +23,8 @@ class InlineTextBuilder {
     this.nextLineWords = [];
     this.maxLineLength = maxLineLength || options.wordwrap || Number.MAX_VALUE;
     this.nextLineAvailableChars = this.maxLineLength;
-    this.wrapCharacters = options.longWordSplit.wrapCharacters || [];
-    this.forceWrapOnLimit = options.longWordSplit.forceWrapOnLimit || false;
+    this.wrapCharacters = get(options, ['longWordSplit', 'wrapCharacters']) || [];
+    this.forceWrapOnLimit = get(options, ['longWordSplit', 'forceWrapOnLimit']) || false;
 
     this.stashedSpace = false;
     this.wordBreakOpportunity = false;

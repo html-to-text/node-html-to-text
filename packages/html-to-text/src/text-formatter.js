@@ -1,5 +1,5 @@
 
-const { get, numberToLetterSequence, numberToRoman, splitClassesAndIds, trimCharacter } = require('./helper');
+const { get, numberToLetterSequence, numberToRoman, trimCharacter } = require('@html-to-text/base/src/util');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('@html-to-text/base/src/typedefs');
@@ -149,7 +149,7 @@ function formatImage (elem, walk, builder, formatOptions) {
     : '';
   const src = (!attribs.src)
     ? ''
-    : (formatOptions.baseUrl && attribs.src.indexOf('/') === 0)
+    : (formatOptions.baseUrl && attribs.src[0] === '/')
       ? formatOptions.baseUrl + attribs.src
       : attribs.src;
   const text = (!src)
@@ -158,7 +158,7 @@ function formatImage (elem, walk, builder, formatOptions) {
       ? withBrackets(src, formatOptions.linkBrackets)
       : alt + ' ' + withBrackets(src, formatOptions.linkBrackets);
 
-  builder.addInline(text);
+  builder.addInline(text, { noWordTransform: true });
 }
 
 /**
@@ -284,6 +284,26 @@ function getOrderedListIndexFunction (olType = '1') {
     case '1':
     default: return (i) => (i).toString();
   }
+}
+
+/**
+ * Given a list of class and ID selectors (prefixed with '.' and '#'),
+ * return them as separate lists of names without prefixes.
+ *
+ * @param { string[] } selectors Class and ID selectors (`[".class", "#id"]` etc).
+ * @returns { { classes: string[], ids: string[] } }
+ */
+function splitClassesAndIds (selectors) {
+  const classes = [];
+  const ids = [];
+  for (const selector of selectors) {
+    if (selector.startsWith('.')) {
+      classes.push(selector.substring(1));
+    } else if (selector.startsWith('#')) {
+      ids.push(selector.substring(1));
+    }
+  }
+  return { classes: classes, ids: ids };
 }
 
 function isDataTable (attr, tables) {
