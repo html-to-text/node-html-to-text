@@ -23,19 +23,23 @@ const DEFAULT_OPTIONS = {
     returnDomByDefault: true
   },
   decodeEntities: false,
-  // TODO: encodeCharacters: { 'c': '\\c' },
-  // \   backslash
-  // `   backtick
-  // \*  asterisk
-  // _   underscore
-  // {}  curly braces
-  // []  square brackets
-  // ()  parentheses
-  // #   hash mark
-  // +   plus sign
-  // -   minus sign (hyphen)
-  // .   dot
-  // \!  exclamation mark
+  encodeCharacters: {
+    '!': '&excl;',
+    '#': '&num;',
+    '(': '&lpar;',
+    ')': '&rpar;',
+    '*': '&ast;',
+    '+': '&plus;',
+    '-': '&#45;', // hyphen-minus
+    '.': '&period;',
+    '[': '&lbrack;',
+    '\\': '&bsol;',
+    ']': '&rbrack;',
+    '_': '&lowbar;',
+    '`': '&grave;',
+    '{': '&lbrace;',
+    '}': '&rbrace;',
+  },
   formatters: {},
   limits: {
     ellipsis: '...',

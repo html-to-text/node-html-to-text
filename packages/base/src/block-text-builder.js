@@ -66,9 +66,13 @@ class BlockTextBuilder {
 
   /** @returns { (str: string) => string } */
   _getCombinedWordTransformer () {
-    const applyTransformer = (str, transformer) =>
-      ((transformer) ? applyTransformer(transformer.transform(str), transformer.next) : str);
-    return (str) => applyTransformer(str, this._wordTransformer);
+    const wt = (this._wordTransformer)
+      ? ((str) => applyTransformer(str, this._wordTransformer))
+      : undefined;
+    const ce = this.options.encodeCharacters;
+    return (wt)
+      ? ((ce) ? (str) => ce(wt(str)) : wt)
+      : ce;
   }
 
   _popStackItem () {
@@ -153,7 +157,7 @@ class BlockTextBuilder {
     this.whitespaceProcessor.shrinkWrapAdd(
       str,
       this._stackItem.inlineTextBuilder,
-      (this._wordTransformer && !noWordTransform) ? this._getCombinedWordTransformer() : undefined
+      (noWordTransform) ? undefined : this._getCombinedWordTransformer()
     );
     this._stackItem.stashedLineBreaks = 0; // inline text doesn't introduce line breaks
   }
@@ -422,6 +426,15 @@ function addText (stackItem, text, leadingLineBreaks, trailingLineBreaks) {
     stackItem.leadingLineBreaks = lineBreaks;
   }
   stackItem.stashedLineBreaks = trailingLineBreaks;
+}
+
+/**
+ * @param { string } str A string to transform.
+ * @param { TransformerStackItem } transformer A transformer item (with possible continuation).
+ * @returns { string }
+ */
+function applyTransformer (str, transformer) {
+  return ((transformer) ? applyTransformer(transformer.transform(str), transformer.next) : str);
 }
 
 module.exports = { BlockTextBuilder: BlockTextBuilder };

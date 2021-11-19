@@ -1,6 +1,6 @@
 
 /**
- * @typedef { object } Options
+ * @typedef { Object } Options
  * HtmlToText options.
  *
  * @property { BaseElementsOptions }  [baseElements]
@@ -9,7 +9,11 @@
  * @property { boolean } [decodeEntities]
  * Specify whether HTML entities should be decoded in the text output.
  *
- * @property { object.< string, FormatCallback > } [formatters = {}]
+ * @property { Object.<string,string> | ((str: string) => string) | undefined } [encodeCharacters]
+ * A dictionary mapping from input text characters to escape sequences
+ * or a function that does the replacement.
+ *
+ * @property { Object.< string, FormatCallback > } [formatters = {}]
  * A dictionary with custom formatting functions for specific kinds of elements.
  *
  * Keys are custom string identifiers, values are callbacks.
@@ -44,7 +48,7 @@
  */
 
 /**
- * @typedef { object } BaseElementsOptions
+ * @typedef { Object } BaseElementsOptions
  * Options for narrowing down to informative parts of HTML document.
  *
  * @property { string[] } [selectors = ['body']]
@@ -64,7 +68,7 @@
  */
 
 /**
- * @typedef { object } DecodeOptions
+ * @typedef { Object } DecodeOptions
  * Text decoding options given to `he.decode`.
  *
  * For more information see the [he](https://github.com/mathiasbynens/he) module.
@@ -77,7 +81,7 @@
  */
 
 /**
- * @typedef { object } LimitsOptions
+ * @typedef { Object } LimitsOptions
  * Options for handling complex documents and limiting the output size.
  *
  * @property { string } [ellipsis = ...]
@@ -114,7 +118,7 @@
  */
 
 /**
- * @typedef { object } LongWordSplitOptions
+ * @typedef { Object } LongWordSplitOptions
  * Describes how to wrap long words.
  *
  * @property { boolean }  [forceWrapOnLimit = false]
@@ -125,7 +129,7 @@
  */
 
 /**
- * @typedef { object } SelectorDefinition
+ * @typedef { Object } SelectorDefinition
  * Describes how to handle tags matched by a selector.
  *
  * @property { string } selector
@@ -139,7 +143,7 @@
  */
 
 /**
- * @typedef { object } FormatOptions
+ * @typedef { Object } FormatOptions
  * Options specific to different formatters ({@link FormatCallback}).
  * This is an umbrella type definition. Each formatter supports it's own subset of options.
  *
@@ -219,7 +223,7 @@
  */
 
 /**
- * @typedef { object } DomNode
+ * @typedef { Object } DomNode
  * Simplified definition of [htmlparser2](https://github.com/fb55/htmlparser2) Node type.
  *
  * Makes no distinction between elements (tags) and data nodes (good enough for now).
@@ -227,7 +231,7 @@
  * @property { string }                 type       Type of node - "text", "tag", "comment", "script", etc.
  * @property { string }                 [data]     Content of a data node.
  * @property { string }                 [name]     Tag name.
- * @property { object.<string,string> } [attribs]  Tag attributes dictionary.
+ * @property { Object.<string,string> } [attribs]  Tag attributes dictionary.
  * @property { DomNode[] }              [children] Child nodes.
  * @property { DomNode }                [parent]   Parent node.
  */

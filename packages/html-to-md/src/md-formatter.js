@@ -32,7 +32,7 @@ function formatSkip (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineString (elem, walk, builder, formatOptions) {
-  builder.addInline(formatOptions.string || ''); // TODO: addLiteral ??? noWrap ???
+  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noWrap ???
 }
 
 /**
@@ -42,7 +42,7 @@ function formatInlineString (elem, walk, builder, formatOptions) {
  */
 function formatBlockString (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline(formatOptions.string || ''); // TODO: addLiteral ??? noWrap ???
+  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noWrap ???
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -86,9 +86,9 @@ function renderCloseTag (elem) {
  * @type { FormatCallback }
  */
 function formatInlineTag (elem, walk, builder, formatOptions) {
-  builder.addInline(renderOpenTag(elem, builder.options.decodeEntities));
+  builder.addInline(renderOpenTag(elem, builder.options.decodeEntities), { noWordTransform: true });
   walk(elem.children, builder);
-  builder.addInline(renderCloseTag(elem));
+  builder.addInline(renderCloseTag(elem), { noWordTransform: true });
 }
 
 /**
@@ -98,9 +98,9 @@ function formatInlineTag (elem, walk, builder, formatOptions) {
  */
 function formatBlockTag (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline(renderOpenTag(elem, builder.options.decodeEntities));
+  builder.addInline(renderOpenTag(elem, builder.options.decodeEntities), { noWordTransform: true });
   walk(elem.children, builder);
-  builder.addInline(renderCloseTag(elem));
+  builder.addInline(renderCloseTag(elem), { noWordTransform: true });
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -110,7 +110,10 @@ function formatBlockTag (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineHtml (elem, walk, builder, formatOptions) {
-  builder.addInline(render(elem, { decodeEntities: builder.options.decodeEntities }));
+  builder.addInline(
+    render(elem, { decodeEntities: builder.options.decodeEntities }),
+    { noWordTransform: true }
+  );
 }
 
 /**
@@ -120,7 +123,10 @@ function formatInlineHtml (elem, walk, builder, formatOptions) {
  */
 function formatBlockHtml (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline(render(elem, { decodeEntities: builder.options.decodeEntities }));
+  builder.addInline(
+    render(elem, { decodeEntities: builder.options.decodeEntities }),
+    { noWordTransform: true }
+  );
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -130,9 +136,9 @@ function formatBlockHtml (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineWrap (elem, walk, builder, formatOptions) {
-  builder.addInline(formatOptions.prefix || '');
+  builder.addInline(formatOptions.prefix || '', { noWordTransform: true });
   walk(elem.children, builder);
-  builder.addInline(formatOptions.suffix || '');
+  builder.addInline(formatOptions.suffix || '', { noWordTransform: true });
 }
 
 /**
@@ -172,7 +178,7 @@ function formatPre (elem, walk, builder, formatOptions) {
  */
 function formatHeading (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline('#'.repeat(formatOptions.level || 1) + ' ');
+  builder.addInline('#'.repeat(formatOptions.level || 1) + ' ', { noWordTransform: true });
   walk(elem.children, builder);
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
@@ -204,11 +210,11 @@ function formatBlockquote (elem, walk, builder, formatOptions) {
  */
 function formatCodeBlock (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline('```' + (formatOptions.language || ''));
+  builder.addInline('```' + (formatOptions.language || ''), { noWordTransform: true });
   builder.addLineBreak();
   walk(elem.children, builder);
   builder.addLineBreak();
-  builder.addInline('```');
+  builder.addInline('```', { noWordTransform: true });
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -231,7 +237,11 @@ function formatImage (elem, walk, builder, formatOptions) {
       ? formatOptions.baseUrl + attribs.src
       : attribs.src;
   // TODO: base64 src - insert as html
-  builder.addInline(`![${alt}](${src}${title})`, { noWordTransform: true }); // TODO: literal / noWrap
+  builder.addInline(`![`, { noWordTransform: true });
+  builder.addInline(alt);
+  builder.addInline(`](${src}`, { noWordTransform: true });
+  builder.addInline(title);
+  builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
 }
 
 /**
@@ -260,9 +270,11 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     if (href === text) {
       builder.addInline(`<${href}>`, { noWordTransform: true });
     } else {
-      builder.addInline(`[`);
+      builder.addInline(`[`, { noWordTransform: true });
       walk(elem.children, builder);
-      builder.addInline(`](${href}${title})`, { noWordTransform: true });
+      builder.addInline(`](${href}`, { noWordTransform: true });
+      builder.addInline(`${title}`);
+      builder.addInline(`)`, { noWordTransform: true });
     }
   }
 }
@@ -427,9 +439,9 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
 
     for (const titleItem of group.titleItems) {
       builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-      builder.addInline('**');
+      builder.addInline('**', { noWordTransform: true });
       walk(titleItem.children, builder);
-      builder.addInline('**');
+      builder.addInline('**', { noWordTransform: true });
       builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
     }
 

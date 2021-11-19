@@ -25,6 +25,7 @@ const DEFAULT_OPTIONS = {
     returnDomByDefault: true
   },
   decodeEntities: true,
+  encodeCharacters: {},
   formatters: {},
   limits: {
     ellipsis: '...',

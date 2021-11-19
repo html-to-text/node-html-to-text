@@ -30,7 +30,8 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 
 ### New options
 
-* `decodeEntities` option - controls whether HTML entities found in the input HTML should be decoded or left as is in the output text.
+* `decodeEntities` - controls whether HTML entities found in the input HTML should be decoded or left as is in the output text;
+* `encodeCharacters` - a dictionary with characters that should be replaced in the output text and corresponding escape sequences.
 
 ## Version 8.1.0
 

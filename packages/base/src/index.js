@@ -28,6 +28,10 @@ function compile (options = {}) {
     uniqueSelectors.map(s => [s.selector, s])
   ).build(hp2Builder);
 
+  if (typeof options.encodeCharacters !== 'function') {
+    options.encodeCharacters = makeReplacerFromDict(options.encodeCharacters);
+  }
+
   const baseSelectorsPicker = new selderee.DecisionTree(
     options.baseElements.selectors.map((s, i) => [s, i + 1])
   ).build(hp2Builder);
@@ -157,6 +161,29 @@ function recursiveWalk (walk, dom, builder) {
   }
 
   return;
+}
+
+/**
+ * @param { Object.<string,string> } dict
+ * A dictionary where keys are characters to replace
+ * and values are replacement strings.
+ *
+ * @returns { ((str: string) => string) | undefined }
+ */
+function makeReplacerFromDict (dict) {
+  if (!dict || Object.keys(dict).length === 0) {
+    return undefined;
+  }
+  const entries = [...Object.entries(dict)];
+  const regex = new RegExp(
+    entries
+      .map(([c]) => `(\\u${(c.charCodeAt(0).toString(16).padStart(4, '0'))})`)
+      .join('|'),
+    'g'
+  );
+  const values = entries.map(([, v]) => v);
+  const replacer = (m, ...cgs) => values[cgs.findIndex(cg => cg)];
+  return (str) => str.replace(regex, replacer);
 }
 
 
