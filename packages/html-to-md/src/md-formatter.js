@@ -86,9 +86,13 @@ function renderCloseTag (elem) {
  * @type { FormatCallback }
  */
 function formatInlineTag (elem, walk, builder, formatOptions) {
+  builder.startNoWrap();
   builder.addInline(renderOpenTag(elem, builder.options.decodeEntities), { noWordTransform: true });
+  builder.stopNoWrap();
   walk(elem.children, builder);
+  builder.startNoWrap();
   builder.addInline(renderCloseTag(elem), { noWordTransform: true });
+  builder.stopNoWrap();
 }
 
 /**
@@ -98,9 +102,13 @@ function formatInlineTag (elem, walk, builder, formatOptions) {
  */
 function formatBlockTag (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
+  builder.startNoWrap();
   builder.addInline(renderOpenTag(elem, builder.options.decodeEntities), { noWordTransform: true });
+  builder.stopNoWrap();
   walk(elem.children, builder);
+  builder.startNoWrap();
   builder.addInline(renderCloseTag(elem), { noWordTransform: true });
+  builder.stopNoWrap();
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -110,10 +118,12 @@ function formatBlockTag (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineHtml (elem, walk, builder, formatOptions) {
+  builder.startNoWrap();
   builder.addInline(
     render(elem, { decodeEntities: builder.options.decodeEntities }),
     { noWordTransform: true }
   );
+  builder.stopNoWrap();
 }
 
 /**
@@ -123,10 +133,12 @@ function formatInlineHtml (elem, walk, builder, formatOptions) {
  */
 function formatBlockHtml (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
+  builder.startNoWrap();
   builder.addInline(
     render(elem, { decodeEntities: builder.options.decodeEntities }),
     { noWordTransform: true }
   );
+  builder.stopNoWrap();
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -226,10 +238,12 @@ function formatCodeBlock (elem, walk, builder, formatOptions) {
 function formatImage (elem, walk, builder, formatOptions) {
   const attribs = elem.attribs || {};
   if (attribs.src && attribs.src.startsWith('data:')) {
+    builder.startNoWrap();
     builder.addInline(
       render(elem, { decodeEntities: builder.options.decodeEntities }),
       { noWordTransform: true }
     );
+    builder.stopNoWrap();
     return;
   }
   const alt = (attribs.alt)
@@ -243,11 +257,13 @@ function formatImage (elem, walk, builder, formatOptions) {
     : (formatOptions.baseUrl && attribs.src[0] === '/')
       ? formatOptions.baseUrl + attribs.src
       : attribs.src;
+  builder.startNoWrap();
   builder.addInline(`![`, { noWordTransform: true });
   builder.addInline(alt);
   builder.addInline(`](${src}`, { noWordTransform: true });
   builder.addInline(title);
-  builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
+  builder.addInline(`)`, { noWordTransform: true });
+  builder.stopNoWrap();
 }
 
 /**
@@ -258,10 +274,12 @@ function formatImage (elem, walk, builder, formatOptions) {
 function formatAnchor (elem, walk, builder, formatOptions) {
   const attribs = elem.attribs || {};
   if (attribs.name && !attribs.href) {
+    builder.startNoWrap();
     builder.addInline(
       render(elem, { decodeEntities: builder.options.decodeEntities }),
       { noWordTransform: true }
     );
+    builder.stopNoWrap();
     return;
   }
   const title = (attribs.title)
@@ -273,6 +291,7 @@ function formatAnchor (elem, walk, builder, formatOptions) {
       ? formatOptions.baseUrl + attribs.href
       : attribs.href;
   const text = innerText(elem);
+  builder.startNoWrap();
   if (href === text && text.length) {
     builder.addInline(`<${href}>`, { noWordTransform: true });
   } else {
@@ -280,8 +299,9 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     walk(elem.children, builder);
     builder.addInline(`](${href}`, { noWordTransform: true });
     builder.addInline(`${title}`);
-    builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
+    builder.addInline(`)`, { noWordTransform: true });
   }
+  builder.stopNoWrap();
 }
 
 /**

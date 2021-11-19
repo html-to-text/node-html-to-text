@@ -17,6 +17,7 @@ class BlockStackItem extends StackItem {
     this.rawText = '';
     this.stashedLineBreaks = 0;
     this.isPre = next && next.isPre;
+    this.isNoWrap = next && next.isNoWrap;
   }
 }
 
@@ -59,6 +60,7 @@ class TableStackItem extends StackItem {
     super(next);
     this.rows = [];
     this.isPre = next && next.isPre;
+    this.isNoWrap = next && next.isNoWrap;
   }
 }
 
@@ -67,6 +69,7 @@ class TableRowStackItem extends StackItem {
     super(next);
     this.cells = [];
     this.isPre = next && next.isPre;
+    this.isNoWrap = next && next.isNoWrap;
   }
 }
 
@@ -77,6 +80,7 @@ class TableCellStackItem extends StackItem {
     this.rawText = '';
     this.stashedLineBreaks = 0;
     this.isPre = next && next.isPre;
+    this.isNoWrap = next && next.isNoWrap;
   }
 }
 

@@ -34,14 +34,15 @@ class InlineTextBuilder {
    * Add a new word.
    *
    * @param { string } word A word to add.
+   * @param { boolean } [noWrap] Don't wrap text even if the line is too long.
    */
-  pushWord (word) {
+  pushWord (word, noWrap = false) {
     if (this.nextLineAvailableChars <= 0) {
       this.startNewLine();
     }
     const isLineStart = this.nextLineWords.length === 0;
     const cost = word.length + (isLineStart ? 0 : 1);
-    if (cost <= this.nextLineAvailableChars) { // Fits into available budget
+    if ((cost <= this.nextLineAvailableChars) || noWrap) { // Fits into available budget
 
       this.nextLineWords.push(word);
       this.nextLineAvailableChars -= cost;
@@ -83,14 +84,15 @@ class InlineTextBuilder {
    * Adds a new word in case there are no words yet in the last line.
    *
    * @param { string } word A word to be concatenated.
+   * @param { boolean } [noWrap] Don't wrap text even if the line is too long.
    */
-  concatWord (word) {
+  concatWord (word, noWrap = false) {
     if (this.wordBreakOpportunity && word.length > this.nextLineAvailableChars) {
-      this.pushWord(word);
+      this.pushWord(word, noWrap);
       this.wordBreakOpportunity = false;
     } else {
       const lastWord = this.popWord();
-      this.pushWord((lastWord) ? lastWord.concat(word) : word);
+      this.pushWord((lastWord) ? lastWord.concat(word) : word, noWrap);
     }
   }
 

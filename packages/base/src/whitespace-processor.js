@@ -45,8 +45,9 @@ class WhitespaceProcessor {
        * @param { string }                  text              Input text.
        * @param { InlineTextBuilder }       inlineTextBuilder A builder to receive processed text.
        * @param { (str: string) => string } [ transform ]     A transform to be applied to words.
+       * @param { boolean }                 [noWrap] Don't wrap text even if the line is too long.
        */
-      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str)) {
+      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str), noWrap = false) {
         if (!text) { return; }
         const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
         let anyMatch = false;
@@ -56,15 +57,15 @@ class WhitespaceProcessor {
           if (m[0] === '\n') {
             inlineTextBuilder.startNewLine();
           } else if (previouslyStashedSpace || this.testLeadingWhitespace(text)) {
-            inlineTextBuilder.pushWord(transform(m[0]));
+            inlineTextBuilder.pushWord(transform(m[0]), noWrap);
           } else {
-            inlineTextBuilder.concatWord(transform(m[0]));
+            inlineTextBuilder.concatWord(transform(m[0]), noWrap);
           }
           while ((m = wordOrNewlineRe.exec(text)) !== null) {
             if (m[0] === '\n') {
               inlineTextBuilder.startNewLine();
             } else {
-              inlineTextBuilder.pushWord(transform(m[0]));
+              inlineTextBuilder.pushWord(transform(m[0]), noWrap);
             }
           }
         }
@@ -77,7 +78,7 @@ class WhitespaceProcessor {
 
       const wordRe = new RegExp(`[^${whitespaceCodes}]+`, 'g');
 
-      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str)) {
+      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str), noWrap = false) {
         if (!text) { return; }
         const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
         let anyMatch = false;
@@ -85,12 +86,12 @@ class WhitespaceProcessor {
         if (m) {
           anyMatch = true;
           if (previouslyStashedSpace || this.testLeadingWhitespace(text)) {
-            inlineTextBuilder.pushWord(transform(m[0]));
+            inlineTextBuilder.pushWord(transform(m[0]), noWrap);
           } else {
-            inlineTextBuilder.concatWord(transform(m[0]));
+            inlineTextBuilder.concatWord(transform(m[0]), noWrap);
           }
           while ((m = wordRe.exec(text)) !== null) {
-            inlineTextBuilder.pushWord(transform(m[0]));
+            inlineTextBuilder.pushWord(transform(m[0]), noWrap);
           }
         }
         inlineTextBuilder.stashedSpace = (previouslyStashedSpace && !anyMatch) || this.testTrailingWhitespace(text);

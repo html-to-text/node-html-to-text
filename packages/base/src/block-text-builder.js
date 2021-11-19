@@ -64,6 +64,20 @@ class BlockTextBuilder {
     return transform;
   }
 
+  /**
+   * Ignore wordwrap option in followup inline additions and disable automatic wrapping.
+   */
+  startNoWrap () {
+    this._stackItem.isNoWrap = true;
+  }
+
+  /**
+   * Return automatic wrapping to behavior defined by options.
+   */
+  stopNoWrap () {
+    this._stackItem.isNoWrap = false;
+  }
+
   /** @returns { (str: string) => string } */
   _getCombinedWordTransformer () {
     const wt = (this._wordTransformer)
@@ -159,7 +173,8 @@ class BlockTextBuilder {
     this.whitespaceProcessor.shrinkWrapAdd(
       str,
       this._stackItem.inlineTextBuilder,
-      (noWordTransform) ? undefined : this._getCombinedWordTransformer()
+      (noWordTransform) ? undefined : this._getCombinedWordTransformer(),
+      this._stackItem.isNoWrap
     );
     this._stackItem.stashedLineBreaks = 0; // inline text doesn't introduce line breaks
   }
