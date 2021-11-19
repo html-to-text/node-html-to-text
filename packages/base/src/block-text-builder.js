@@ -121,6 +121,8 @@ class BlockTextBuilder {
    *
    * @param { boolean } [param1.noWordTransform]
    * Ignore word transformers if there are any.
+   * Don't encode characters as well.
+   * (Use this for markup rather than input text).
    */
   addInline (str, { noWordTransform = false } = {}) {
     if (!(
