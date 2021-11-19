@@ -110,6 +110,18 @@ test(
 );
 
 test(
+  'link with title',
+  snapshotMacro,
+  '<a href="/test.html" title="Click me">test</a>'
+);
+
+test(
+  'named anchor',
+  snapshotMacro,
+  '<a name="foo"></a>'
+);
+
+test(
   'bold, strong',
   snapshotMacro,
   '<b>bold</b>, <strong>strong</strong>'

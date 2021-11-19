@@ -256,32 +256,31 @@ function formatImage (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatAnchor (elem, walk, builder, formatOptions) {
-  function getHref () {
-    if (!elem.attribs || !elem.attribs.href) { return ''; }
-    let href = elem.attribs.href;
-    if (formatOptions.noAnchorUrl && href[0] === '#') {
-      // TODO: <a name="foo"></a> anchor or [](){:name='foo'}
-    }
-    href = (formatOptions.baseUrl && href[0] === '/') // TODO: url overwrite function
-      ? formatOptions.baseUrl + href
-      : href;
-    return href;
+  const attribs = elem.attribs || {};
+  if (attribs.name && !attribs.href) {
+    builder.addInline(
+      render(elem, { decodeEntities: builder.options.decodeEntities }),
+      { noWordTransform: true }
+    );
+    return;
   }
-  const href = getHref();
-  const title = ''; // TODO: title
-  if (!href) {
-    walk(elem.children, builder);
+  const title = (attribs.title)
+    ? ` "${attribs.title}"`
+    : '';
+  const href = (!attribs.href) // TODO: url overwrite function
+    ? ''
+    : (formatOptions.baseUrl && attribs.href[0] === '/')
+      ? formatOptions.baseUrl + attribs.href
+      : attribs.href;
+  const text = innerText(elem);
+  if (href === text && text.length) {
+    builder.addInline(`<${href}>`, { noWordTransform: true });
   } else {
-    const text = innerText(elem);
-    if (href === text) {
-      builder.addInline(`<${href}>`, { noWordTransform: true });
-    } else {
-      builder.addInline(`[`, { noWordTransform: true });
-      walk(elem.children, builder);
-      builder.addInline(`](${href}`, { noWordTransform: true });
-      builder.addInline(`${title}`);
-      builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
-    }
+    builder.addInline(`[`, { noWordTransform: true });
+    walk(elem.children, builder);
+    builder.addInline(`](${href}`, { noWordTransform: true });
+    builder.addInline(`${title}`);
+    builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
   }
 }
 
