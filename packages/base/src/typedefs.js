@@ -42,7 +42,7 @@
  * Default is according to HTML specifications.
  *
  * @property { number | boolean | null } [wordwrap = 80]
- * After how many chars a line break should follow in `p` elements.
+ * After how many chars a line break should follow in blocks.
  *
  * Set to `null` or `false` to disable word-wrapping.
  */
