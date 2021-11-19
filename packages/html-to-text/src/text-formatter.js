@@ -44,7 +44,7 @@ function formatLineBreak (elem, walk, builder, formatOptions) {
 }
 
 /**
- * Process a `wbk` tag (word break opportunity).
+ * Process a `wbr` tag (word break opportunity).
  *
  * @type { FormatCallback }
  */
