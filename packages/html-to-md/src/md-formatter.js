@@ -32,7 +32,7 @@ function formatSkip (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineString (elem, walk, builder, formatOptions) {
-  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noWrap ???
+  builder.addInline(formatOptions.string || '', { noWordTransform: true });
 }
 
 /**
@@ -42,7 +42,7 @@ function formatInlineString (elem, walk, builder, formatOptions) {
  */
 function formatBlockString (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noWrap ???
+  builder.addInline(formatOptions.string || '', { noWordTransform: true });
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -225,6 +225,13 @@ function formatCodeBlock (elem, walk, builder, formatOptions) {
  */
 function formatImage (elem, walk, builder, formatOptions) {
   const attribs = elem.attribs || {};
+  if (attribs.src && attribs.src.startsWith('data:')) {
+    builder.addInline(
+      render(elem, { decodeEntities: builder.options.decodeEntities }),
+      { noWordTransform: true }
+    );
+    return;
+  }
   const alt = (attribs.alt)
     ? attribs.alt
     : '';
@@ -236,7 +243,6 @@ function formatImage (elem, walk, builder, formatOptions) {
     : (formatOptions.baseUrl && attribs.src[0] === '/')
       ? formatOptions.baseUrl + attribs.src
       : attribs.src;
-  // TODO: base64 src - insert as html
   builder.addInline(`![`, { noWordTransform: true });
   builder.addInline(alt);
   builder.addInline(`](${src}`, { noWordTransform: true });
@@ -274,7 +280,7 @@ function formatAnchor (elem, walk, builder, formatOptions) {
       walk(elem.children, builder);
       builder.addInline(`](${href}`, { noWordTransform: true });
       builder.addInline(`${title}`);
-      builder.addInline(`)`, { noWordTransform: true });
+      builder.addInline(`)`, { noWordTransform: true }); // TODO: noWrap
     }
   }
 }
