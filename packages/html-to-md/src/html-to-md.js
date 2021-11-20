@@ -55,7 +55,7 @@ const DEFAULT_OPTIONS = {
     { selector: 'aside', format: 'block' },
     { selector: 'b', format: 'inlineWrap', options: { prefix: '**', suffix: '**' } },
     { selector: 'blockquote', format: 'blockquote', options: { trimEmptyLines: true } },
-    { selector: 'br', format: 'inlineString', options: { string: '<br>\n' } },
+    { selector: 'br', format: 'inlineString', options: { string: '<br>' } },
     { selector: 'code', format: 'inlineWrap', options: { prefix: '`', suffix: '`' } },
     { selector: 'del', format: 'inlineWrap', options: { prefix: '~~', suffix: '~~' } },
     { selector: 'div', format: 'block' },

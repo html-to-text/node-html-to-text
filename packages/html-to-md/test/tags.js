@@ -51,6 +51,12 @@ test(
 );
 
 test(
+  'line breaks',
+  snapshotMacro,
+  `a<br>b<br />c`
+);
+
+test(
   'horizontal lines (default)',
   snapshotMacro,
   `a<hr>b\n<hr />\nc`
