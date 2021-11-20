@@ -1,7 +1,9 @@
 
 const { get, numberToLetterSequence, numberToRoman, trimCharacter } = require('@html-to-text/base/src/util');
 const render = require('dom-serializer').default;
-const { innerText } = require('domutils');
+const { existsOne, innerText } = require('domutils');
+
+const { tableToString } = require('./table-printer');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('@html-to-text/base/src/typedefs');
@@ -32,7 +34,7 @@ function formatSkip (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineString (elem, walk, builder, formatOptions) {
-  builder.addInline(formatOptions.string || '', { noWordTransform: true });
+  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noTrim
 }
 
 /**
@@ -489,20 +491,6 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
   }
 }
 
-// TODO: dataTable
-// ...
-// colspan: <td colspan> or || flavor or copy or first
-// rowspan: similar
-
-// each cell can only contain single-row content
-// (replace \n*N with BR*(N-1) for N>1, replace \n with ' ')
-
-// content representable inside table cells
-// query stack (StackItem.tagName) ?
-// isTable - similar to isPre ?
-// separate list of selectors ? !!
-
-
 /**
  * Process a data table.
  *
@@ -511,12 +499,14 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
 function formatDataTable (elem, walk, builder, formatOptions) {
   builder.openTable();
   elem.children.forEach(walkTable);
+  const hasHeader = existsOne(
+    (el) => el.name === 'thead' || el.name === 'th',
+    elem.children
+  );
   builder.closeTable({
-    colSpacing: formatOptions.colSpacing,
+    tableToString: (rows) => tableToString(rows, hasHeader, formatOptions.spanMode || 'repeat') || render(elem),
     leadingLineBreaks: formatOptions.leadingLineBreaks,
-    rowSpacing: formatOptions.rowSpacing,
     trailingLineBreaks: formatOptions.trailingLineBreaks,
-    // TODO: provide table printer implementation
   });
 
   function formatCell (cellNode) {
@@ -530,14 +520,6 @@ function formatDataTable (elem, walk, builder, formatOptions) {
   function walkTable (elem) {
     if (elem.type !== 'tag') { return; }
 
-    const formatHeaderCell = (formatOptions.uppercaseHeaderCells !== false)
-      ? (cellNode) => {
-        builder.pushWordTransform(str => str.toUpperCase());
-        formatCell(cellNode);
-        builder.popWordTransform();
-      }
-      : formatCell;
-
     switch (elem.name) {
       case 'thead':
       case 'tbody':
@@ -548,15 +530,12 @@ function formatDataTable (elem, walk, builder, formatOptions) {
 
       case 'tr': {
         builder.openTableRow();
-        for (const childOfTr of elem.children) {
-          if (childOfTr.type !== 'tag') { continue; }
-          switch (childOfTr.name) {
-            case 'th': {
-              formatHeaderCell(childOfTr);
-              break;
-            }
+        for (const cellElem of elem.children) {
+          if (cellElem.type !== 'tag') { continue; }
+          switch (cellElem.name) {
+            case 'th':
             case 'td': {
-              formatCell(childOfTr);
+              formatCell(cellElem);
               break;
             }
             default:

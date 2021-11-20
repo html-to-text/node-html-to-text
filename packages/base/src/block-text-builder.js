@@ -8,7 +8,6 @@ const {
   TableCellStackItem, TableRowStackItem, TableStackItem,
   TransformerStackItem, ListStackItem, ListItemStackItem
 } = require('./stack-item');
-const { tableToString } = require('./table-printer');
 const { trimCharacter } = require('./util');
 const { WhitespaceProcessor } = require('./whitespace-processor');
 
@@ -380,11 +379,8 @@ class BlockTextBuilder {
    * @param { object } [param0]
    * Object holding the parameters of the table.
    *
-   * @param { number } [param0.colSpacing]
-   * Number of spaces between table columns.
-   *
-   * @param { number } [param0.rowSpacing]
-   * Number of empty lines between table rows.
+   * @param { TablePrinter } param0.tableToString
+   * A function to convert a table of stringified cells into a complete table.
    *
    * @param { number } [param0.leadingLineBreaks]
    * This table should have at least this number of line breaks to separate if from any preceding block.
@@ -392,9 +388,9 @@ class BlockTextBuilder {
    * @param { number } [param0.trailingLineBreaks]
    * This table should have at least this number of line breaks to separate it from any following block.
    */
-  closeTable ({ colSpacing = 3, rowSpacing = 0, leadingLineBreaks = 2, trailingLineBreaks = 2 } = {}) {
+  closeTable ({ tableToString, leadingLineBreaks = 2, trailingLineBreaks = 2 } = {}) {
     const table = this._popStackItem();
-    const output = tableToString(table.rows, rowSpacing, colSpacing);
+    const output = tableToString(table.rows);
     if (output) {
       addText(this._stackItem, output, leadingLineBreaks, trailingLineBreaks);
     }

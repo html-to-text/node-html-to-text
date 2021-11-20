@@ -1,4 +1,8 @@
 
+// eslint-disable-next-line import/no-unassigned-import
+require('@html-to-text/base/src/typedefs');
+
+
 function getRow (matrix, j) {
   if (!matrix[j]) { matrix[j] = []; }
   return matrix[j];
@@ -38,16 +42,7 @@ function updateOffset (offsets, base, span, value) {
 }
 
 /**
- * @typedef { object } TablePrinterCell
- * Cell definition for the table printer.
- *
- * @property { number } colspan Number of columns this cell occupies.
- * @property { number } rowspan Number of rows this cell occupies.
- * @property { string } text Cell contents (pre-wrapped).
- */
-
-/**
- * Render a table into string.
+ * Render a table into a string.
  * Cells can contain multiline text and span across multiple rows and columns.
  *
  * Modifies cells to add lines array.

@@ -262,3 +262,111 @@ test(
       <li>Item 3</li>
     </ol>`
 );
+
+test(
+  'table with header cells in the first row',
+  snapshotMacro,
+  /*html*/`
+    <table>
+      <tr><th>a</th><th>b</th><th>c</th></tr>
+      <tr><td>d</td><td>e</td><td>f</td></tr>
+      <tr><td>g<br>g</td><td>h<br><br>h</td><td>i<br><br><br>i</td></tr>
+      <tr><td><p>j</p></td><td><p>k</p><p>k</p></td><td>l</td></tr>
+    </table>`
+);
+
+test(
+  'table with thead, tbody, tfoot',
+  snapshotMacro,
+  /*html*/`
+    <table>
+      <thead><tr><td>a</td><td>b</td><td>c</td></tr></thead>
+      <tbody><tr><td>d</td><td>e</td><td>f</td></tr></tbody>
+      <tfoot><tr><td>g</td><td>h</td><td>i</td></tr></tfoot>
+    </table>`
+);
+
+test(
+  'table without a header',
+  snapshotMacro,
+  /*html*/`
+    <table>
+      <tr><td>a</td><td>b</td><td>c</td></tr>
+      <tr><td>d</td><td>e</td><td>f</td></tr>
+      <tr><td>g</td><td>h</td><td>i</td></tr>
+    </table>`
+);
+
+const tableWithSpannedCells = /*html*/`
+  <table>
+    <tr><th colspan="2">a</th><th>c</th></tr>
+    <tr><td>d</td><td colspan="2" rowspan="2">e</td></tr>
+    <tr><td rowspan="2">g</td></tr>
+    <tr><td>k</td><td>l</td></tr>
+  </table>`;
+
+test(
+  'table with colspans and rowspans (repeat value by default)',
+  snapshotMacro,
+  tableWithSpannedCells
+);
+
+test(
+  'table with colspans and rowspans (value in first cell only)',
+  snapshotMacro,
+  tableWithSpannedCells,
+  {
+    selectors: [
+      { selector: 'table', options: { spanMode: 'first' } }
+    ]
+  }
+);
+
+test(
+  'table with colspans and rowspans (value repeated in cells of the first row only)',
+  snapshotMacro,
+  tableWithSpannedCells,
+  {
+    selectors: [
+      { selector: 'table', options: { spanMode: 'firstRow' } }
+    ]
+  }
+);
+
+test(
+  'table with colspans and rowspans (value repeated in cells of the first column only)',
+  snapshotMacro,
+  tableWithSpannedCells,
+  {
+    selectors: [
+      { selector: 'table', options: { spanMode: 'firstCol' } }
+    ]
+  }
+);
+
+test(
+  'table with colspans and rowspans (use HTML tag for spanned cells)',
+  snapshotMacro,
+  /*html*/`
+  <table>
+    <tr><td>a</td><td colspan="2">b</td><td rowspan="2">c</td></tr>
+    <tr><td>d</td><td colspan="2" rowspan="2">e</td></tr>
+    <tr><td>g</td><td>i</td></tr>
+  </table>`,
+  {
+    selectors: [
+      { selector: 'table', options: { spanMode: 'tag' } }
+    ]
+  }
+);
+
+test(
+  'table with colspans and rowspans (fallback to HTML from "tag" mode)',
+  snapshotMacro,
+  tableWithSpannedCells,
+  {
+    selectors: [
+      { selector: 'table', options: { spanMode: 'tag' } }
+    ]
+  }
+);

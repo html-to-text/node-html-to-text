@@ -1,6 +1,8 @@
 
 const { get, numberToLetterSequence, numberToRoman, trimCharacter } = require('@html-to-text/base/src/util');
 
+const { tableToString } = require('./table-printer');
+
 // eslint-disable-next-line import/no-unassigned-import
 require('@html-to-text/base/src/typedefs');
 
@@ -337,9 +339,8 @@ function formatDataTable (elem, walk, builder, formatOptions) {
   builder.openTable();
   elem.children.forEach(walkTable);
   builder.closeTable({
-    colSpacing: formatOptions.colSpacing,
+    tableToString: (rows) => tableToString(rows, formatOptions.rowSpacing || 0, formatOptions.colSpacing || 3),
     leadingLineBreaks: formatOptions.leadingLineBreaks,
-    rowSpacing: formatOptions.rowSpacing,
     trailingLineBreaks: formatOptions.trailingLineBreaks
   });
 

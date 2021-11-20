@@ -256,3 +256,24 @@
  * @param   { DomNode[] }        [nodes] DOM nodes array.
  * @param   { BlockTextBuilder } builder Passed around to accumulate output text. Contains options object.
  */
+
+/**
+ * @typedef { object } TablePrinterCell
+ * Cell definition for a table printer.
+ *
+ * @property { number } colspan Number of columns this cell occupies.
+ * @property { number } rowspan Number of rows this cell occupies.
+ * @property { string } text Cell contents (pre-wrapped).
+ */
+
+/**
+ * Render a table into a string.
+ * Cells can contain multiline text and span across multiple rows and columns.
+ *
+ * Can modify cells.
+ *
+ * @callback TablePrinter
+ *
+ * @param { TablePrinterCell[][] } tableRows Table to render.
+ * @returns { string }
+ */
