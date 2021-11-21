@@ -366,8 +366,8 @@ function formatUnorderedList (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatOrderedList (elem, walk, builder, formatOptions) {
-  let nextIndex = Number(elem.attribs.start || '1');
-  const indexFunction = getOrderedListIndexFunction(elem.attribs.type);
+  let nextIndex = Number(formatOptions.start || elem.attribs.start || '1');
+  const indexFunction = getOrderedListIndexFunction(formatOptions.numberingType || elem.attribs.type);
   const nextPrefixCallback = () => indexFunction(nextIndex++) + '. ';
   return formatList(elem, walk, builder, formatOptions, nextPrefixCallback);
 }

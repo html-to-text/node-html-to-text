@@ -270,6 +270,22 @@ test(
 );
 
 test(
+  'ordered list with overridden numbering type and start number',
+  snapshotMacro,
+  /*html*/`
+    <ol type="i" start="11">
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </ol>`,
+  {
+    selectors: [
+      { selector: 'ol', options: { numberingType: '1', start: 22 } }
+    ]
+  }
+);
+
+test(
   'table with header cells in the first row',
   snapshotMacro,
   /*html*/`
