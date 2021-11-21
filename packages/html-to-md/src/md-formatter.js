@@ -149,7 +149,7 @@ function formatBlockHtml (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatInlineWrap (elem, walk, builder, formatOptions) {
+function formatInlineSurround (elem, walk, builder, formatOptions) {
   builder.addInline(formatOptions.prefix || '', { noWordTransform: true });
   walk(elem.children, builder);
   builder.addInline(formatOptions.suffix || '', { noWordTransform: true });
@@ -570,8 +570,8 @@ module.exports = {
   inline: formatInline,
   inlineHtml: formatInlineHtml,
   inlineString: formatInlineString,
+  inlineSurround: formatInlineSurround,
   inlineTag: formatInlineTag,
-  inlineWrap: formatInlineWrap,
   orderedList: formatOrderedList,
   pre: formatPre,
   skip: formatSkip,
