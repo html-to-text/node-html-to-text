@@ -1,5 +1,5 @@
 
-const { get, numberToLetterSequence, numberToRoman, trimCharacter } = require('@html-to-text/base/src/util');
+const { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
 const render = require('dom-serializer').default;
 const { existsOne, innerText } = require('domutils');
 
@@ -34,7 +34,7 @@ function formatSkip (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatInlineString (elem, walk, builder, formatOptions) {
-  builder.addInline(formatOptions.string || '', { noWordTransform: true }); // TODO: noTrim
+  builder.addInline(formatOptions.string || '', { noWordTransform: true });
 }
 
 /**
@@ -232,6 +232,15 @@ function formatCodeBlock (elem, walk, builder, formatOptions) {
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
+function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
+  const modifiedPath = (typeof rewriter === 'function')
+    ? rewriter(path, metadata, elem)
+    : path;
+  return (modifiedPath[0] === '/' && baseUrl)
+    ? trimCharacterEnd(baseUrl, '/') + modifiedPath
+    : modifiedPath;
+}
+
 /**
  * Process an image.
  *
@@ -254,11 +263,9 @@ function formatImage (elem, walk, builder, formatOptions) {
   const title = (attribs.title)
     ? ` "${attribs.title}"`
     : '';
-  const src = (!attribs.src) // TODO: url overwrite function
+  const src = (!attribs.src)
     ? ''
-    : (formatOptions.baseUrl && attribs.src[0] === '/')
-      ? formatOptions.baseUrl + attribs.src
-      : attribs.src;
+    : pathRewrite(attribs.src, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
   builder.startNoWrap();
   builder.addInline(`![`, { noWordTransform: true });
   builder.addInline(alt);
@@ -287,11 +294,9 @@ function formatAnchor (elem, walk, builder, formatOptions) {
   const title = (attribs.title)
     ? ` "${attribs.title}"`
     : '';
-  const href = (!attribs.href) // TODO: url overwrite function
+  const href = (!attribs.href)
     ? ''
-    : (formatOptions.baseUrl && attribs.href[0] === '/')
-      ? formatOptions.baseUrl + attribs.href
-      : attribs.href;
+    : pathRewrite(attribs.href, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
   const text = innerText(elem);
   builder.startNoWrap();
   if (href === text && text.length) {

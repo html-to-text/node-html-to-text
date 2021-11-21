@@ -232,6 +232,20 @@ describe('tags', function () {
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
+    it('should rewrite image source path with provided metadata', function () {
+      const html = '<img src="pictures/test.png">';
+      const expected = '[assets/test.png]';
+      const options = {
+        selectors: [
+          {
+            selector: 'img',
+            options: { pathRewrite: (path, meta) => path.replace('pictures/', meta.assetsPath) }
+          }
+        ]
+      };
+      expect(htmlToText(html, options, { assetsPath: 'assets/' })).to.equal(expected);
+    });
+
   });
 
   describe('a', function () {
@@ -248,7 +262,7 @@ describe('tags', function () {
       expect(htmlToText(html)).to.equal(expected);
     });
 
-    it('should update relatively sourced links with linkHrefBaseUrl', function () {
+    it('should update relatively sourced links with baseUrl', function () {
       const html = '<a href="/test.html">test</a>';
       const options = {
         selectors: [
@@ -348,6 +362,23 @@ describe('tags', function () {
         ]
       };
       expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should rewrite link href path with provided metadata', function () {
+      const html = '<a href="/test.html">test</a>';
+      const options = {
+        selectors: [
+          {
+            selector: 'a',
+            options: {
+              baseUrl: 'https://example.com',
+              pathRewrite: (path, meta) => meta.path + path
+            }
+          }
+        ]
+      };
+      const expected = 'test [https://example.com/foo/bar/test.html]';
+      expect(htmlToText(html, options, { path: '/foo/bar' })).to.equal(expected);
     });
 
   });

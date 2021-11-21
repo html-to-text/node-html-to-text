@@ -1,5 +1,5 @@
 
-const { get, numberToLetterSequence, numberToRoman, trimCharacter } = require('@html-to-text/base/src/util');
+const { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
 
 const { tableToString } = require('./table-printer');
 
@@ -139,6 +139,15 @@ function withBrackets (str, brackets) {
   return lbr + str + rbr;
 }
 
+function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
+  const modifiedPath = (typeof rewriter === 'function')
+    ? rewriter(path, metadata, elem)
+    : path;
+  return (modifiedPath[0] === '/' && baseUrl)
+    ? trimCharacterEnd(baseUrl, '/') + modifiedPath
+    : modifiedPath;
+}
+
 /**
  * Process an image.
  *
@@ -151,9 +160,7 @@ function formatImage (elem, walk, builder, formatOptions) {
     : '';
   const src = (!attribs.src)
     ? ''
-    : (formatOptions.baseUrl && attribs.src[0] === '/')
-      ? formatOptions.baseUrl + attribs.src
-      : attribs.src;
+    : pathRewrite(attribs.src, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
   const text = (!src)
     ? alt
     : (!alt)
@@ -174,9 +181,7 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     if (!elem.attribs || !elem.attribs.href) { return ''; }
     let href = elem.attribs.href.replace(/^mailto:/, '');
     if (formatOptions.noAnchorUrl && href[0] === '#') { return ''; }
-    href = (formatOptions.baseUrl && href[0] === '/')
-      ? formatOptions.baseUrl + href
-      : href;
+    href = pathRewrite(href, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
     return href;
   }
   const href = getHref();

@@ -27,10 +27,12 @@ class BlockTextBuilder {
    *
    * @param { Options } options HtmlToText options.
    * @param { Picker<DomNode, TagDefinition> } picker Selectors decision tree picker.
+   * @param { any} [metadata] Optional metadata for HTML document, for use in formatters.
    */
-  constructor (options, picker) {
+  constructor (options, picker, metadata = undefined) {
     this.options = options;
     this.picker = picker;
+    this.metadata = metadata;
     this.whitespaceProcessor = new WhitespaceProcessor(options);
     /** @type { StackItem } */
     this._stackItem = new BlockStackItem(options);

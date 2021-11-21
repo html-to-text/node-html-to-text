@@ -5,8 +5,8 @@ const { htmlToMarkdown } = require('../src/html-to-md');
 
 
 const snapshotMacro = test.macro({
-  exec: function (t, html, options = undefined) {
-    t.snapshot(htmlToMarkdown(html, options), '```html\n' + html + '\n```');
+  exec: function (t, html, options = undefined, metadata = undefined) {
+    t.snapshot(htmlToMarkdown(html, options, metadata), '```html\n' + html + '\n```');
   }
 });
 
@@ -92,6 +92,21 @@ test(
 );
 
 test(
+  'img with rewritten path',
+  snapshotMacro,
+  '<img src="pictures/test.png">',
+  {
+    selectors: [
+      {
+        selector: 'img',
+        options: { pathRewrite: (path, meta) => path.replace('pictures/', meta.assetsPath) }
+      }
+    ]
+  },
+  { assetsPath: 'assets/' } // metadata
+);
+
+test(
   'img with source encoded as data url',
   snapshotMacro,
   '<img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />'
@@ -119,6 +134,24 @@ test(
   'link with title',
   snapshotMacro,
   '<a href="/test.html" title="Click me">test</a>'
+);
+
+test(
+  'link with rewritten path and baseUrl',
+  snapshotMacro,
+  '<a href="/test.html">test</a>',
+  {
+    selectors: [
+      {
+        selector: 'a',
+        options: {
+          baseUrl: 'https://example.com/',
+          pathRewrite: (path, meta) => meta.path + path
+        }
+      }
+    ]
+  },
+  { path: '/foo/bar' } // metadata
 );
 
 test(

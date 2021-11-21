@@ -12,7 +12,7 @@ const { limitedDepthRecursive, mergeDuplicatesPreferLast } = require('./util');
  * return a function intended for batch processing.
  *
  * @param   { Options } [options = {}]   HtmlToText options (defaults, formatters, user options merged).
- * @returns { (html: string) => string } Pre-configured converter function.
+ * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
 function compile (options = {}) {
@@ -47,8 +47,8 @@ function compile (options = {}) {
     }
   );
 
-  return function (html) {
-    return process(html, options, picker, findBaseElements, limitedWalk);
+  return function (html, metadata = undefined) {
+    return process(html, metadata, options, picker, findBaseElements, limitedWalk);
   };
 }
 
@@ -57,6 +57,7 @@ function compile (options = {}) {
  * Convert given HTML according to preprocessed options.
  *
  * @param { string } html HTML content to convert.
+ * @param { any } metadata Optional metadata for HTML document, for use in formatters.
  * @param { Options } options HtmlToText options (preprocessed).
  * @param { Picker<DomNode, TagDefinition> } picker
  * Tag definition picker for DOM nodes processing.
@@ -66,7 +67,7 @@ function compile (options = {}) {
  * @param { RecursiveCallback } walk Recursive callback.
  * @returns { string }
  */
-function process (html, options, picker, findBaseElements, walk) {
+function process (html, metadata, options, picker, findBaseElements, walk) {
   const maxInputLength = options.limits.maxInputLength;
   if (maxInputLength && html && html.length > maxInputLength) {
     console.warn(
@@ -79,7 +80,7 @@ function process (html, options, picker, findBaseElements, walk) {
   new htmlparser.Parser(handler, { decodeEntities: options.decodeEntities }).parseComplete(html);
 
   const bases = findBaseElements(handler.dom);
-  const builder = new BlockTextBuilder(options, picker);
+  const builder = new BlockTextBuilder(options, picker, metadata);
   walk(bases, builder);
   return builder.toString();
 }

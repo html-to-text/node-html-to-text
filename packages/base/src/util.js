@@ -23,7 +23,8 @@ function limitedDepthRecursive (n, f, g = () => undefined) {
 }
 
 /**
- * Return the same string or a substring with the given character occurrences removed from each end if any.
+ * Return the same string or a substring with
+ * the given character occurrences removed from each side.
  *
  * @param   { string } str  A string to trim.
  * @param   { string } char A character to be trimmed.
@@ -36,6 +37,22 @@ function trimCharacter (str, char) {
   while (end > start && str[end - 1] === char) { --end; }
   return (start > 0 || end < str.length)
     ? str.substring(start, end)
+    : str;
+}
+
+/**
+ * Return the same string or a substring with
+ * the given character occurrences removed from the end only.
+ *
+ * @param   { string } str  A string to trim.
+ * @param   { string } char A character to be trimmed.
+ * @returns { string }
+ */
+function trimCharacterEnd (str, char) {
+  let end = str.length;
+  while (end > 0 && str[end - 1] === char) { --end; }
+  return (end < str.length)
+    ? str.substring(0, end)
     : str;
 }
 
@@ -131,5 +148,6 @@ module.exports = {
   mergeDuplicatesPreferLast: mergeDuplicatesPreferLast,
   numberToLetterSequence: numberToLetterSequence,
   numberToRoman: numberToRoman,
-  trimCharacter: trimCharacter
+  trimCharacter: trimCharacter,
+  trimCharacterEnd: trimCharacterEnd
 };

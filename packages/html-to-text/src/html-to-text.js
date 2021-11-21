@@ -127,7 +127,7 @@ const selectorsMerge = (acc, src, options) => (
  * return a function intended for batch processing.
  *
  * @param   { Options } [options = {}]   HtmlToText options.
- * @returns { (html: string) => string } Pre-configured converter function.
+ * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
 function compile (options = {}) {
@@ -151,6 +151,7 @@ function compile (options = {}) {
  *
  * @param   { string }  html           HTML content to convert.
  * @param   { Options } [options = {}] HtmlToText options.
+ * @param   { any }     [metadata]     Optional metadata for HTML document, for use in formatters.
  * @returns { string }                 Plain text string.
  * @static
  *
@@ -161,8 +162,8 @@ function compile (options = {}) {
  * });
  * console.log(text); // HELLO WORLD
  */
-function convert (html, options = {}) {
-  return compile(options)(html);
+function convert (html, options = {}, metadata = undefined) {
+  return compile(options)(html, metadata);
 }
 
 /**
