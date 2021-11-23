@@ -219,7 +219,7 @@ test(
 );
 
 test(
-  'definition lists (default compatible mode)',
+  'definition lists',
   snapshotMacro,
   /*html*/`
     <dl>
@@ -251,7 +251,7 @@ test(
 );
 
 test(
-  'definition lists (native syntax for supported systems)',
+  'definition lists (compatible syntax)',
   snapshotMacro,
   /*html*/`
     <dl>
@@ -264,7 +264,7 @@ test(
     </dl>`,
   {
     selectors: [
-      { selector: 'dl', format: 'definitionList' }
+      { selector: 'dl', format: 'definitionListCompatible' }
     ]
   }
 );

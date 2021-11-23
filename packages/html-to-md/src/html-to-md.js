@@ -59,7 +59,7 @@ const DEFAULT_OPTIONS = {
     { selector: 'code', format: 'inlineSurround', options: { prefix: '`', suffix: '`' } },
     { selector: 'del', format: 'inlineSurround', options: { prefix: '~~', suffix: '~~' } },
     { selector: 'div', format: 'block' },
-    { selector: 'dl', format: 'definitionListCompatible' },
+    { selector: 'dl', format: 'definitionList' },
     { selector: 'em', format: 'inlineSurround', options: { prefix: '*', suffix: '*' } },
     { selector: 'figure', format: 'block' },
     { selector: 'figcaption', format: 'block' },

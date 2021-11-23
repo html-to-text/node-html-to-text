@@ -464,7 +464,7 @@ function formatDefinitionList (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
-  const definitionPrefix = (formatOptions.marker || '*') + ' '; // can be any of [-*+]
+  const definitionPrefix = (formatOptions.marker || '-') + ' '; // can be any of [-*+]
   const groups = collectDefinitionGroups(elem);
   for (const group of groups) {
     builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
@@ -480,8 +480,7 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
     builder.openList({
       interRowLineBreaks: formatOptions.interRowLineBreaks || 1,
       leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
-      maxPrefixLength: 0,
-      prefixAlign: 'left'
+      maxPrefixLength: definitionPrefix.length
     });
 
     for (const definition of group.definitions) {
