@@ -37,7 +37,7 @@ class InlineTextBuilder {
    * @param { boolean } [noWrap] Don't wrap text even if the line is too long.
    */
   pushWord (word, noWrap = false) {
-    if (this.nextLineAvailableChars <= 0) {
+    if (this.nextLineAvailableChars <= 0 && !noWrap) {
       this.startNewLine();
     }
     const isLineStart = this.nextLineWords.length === 0;
