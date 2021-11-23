@@ -1,8 +1,9 @@
 
 const { compile: compile_ } = require('@html-to-text/base');
+const genericFormatters = require('@html-to-text/base/src/generic-formatters');
 const merge = require('deepmerge'); // default
 
-const defaultFormatters = require('./md-formatter');
+const markdownFormatters = require('./md-formatters');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('@html-to-text/base/src/typedefs');
@@ -122,7 +123,7 @@ function compile (options = {}) {
       customMerge: (key) => ((key === 'selectors') ? selectorsMerge : undefined)
     }
   );
-  options.formatters = Object.assign({}, defaultFormatters, options.formatters);
+  options.formatters = Object.assign({}, genericFormatters, markdownFormatters, options.formatters);
 
   return compile_(options);
 }

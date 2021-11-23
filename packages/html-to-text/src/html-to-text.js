@@ -1,9 +1,10 @@
 
 const { compile: compile_ } = require('@html-to-text/base');
+const genericFormatters = require('@html-to-text/base/src/generic-formatters');
 const { get } = require('@html-to-text/base/src/util');
 const merge = require('deepmerge'); // default
 
-const defaultFormatters = require('./text-formatter');
+const textFormatters = require('./text-formatters');
 
 
 // eslint-disable-next-line import/no-unassigned-import
@@ -52,24 +53,24 @@ const DEFAULT_OPTIONS = {
         noAnchorUrl: true
       }
     },
-    { selector: 'article', format: 'block' },
-    { selector: 'aside', format: 'block' },
+    { selector: 'article', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
+    { selector: 'aside', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
     {
       selector: 'blockquote',
       format: 'blockquote',
       options: { leadingLineBreaks: 2, trailingLineBreaks: 2, trimEmptyLines: true }
     },
     { selector: 'br', format: 'lineBreak' },
-    { selector: 'div', format: 'block' },
-    { selector: 'footer', format: 'block' },
-    { selector: 'form', format: 'block' },
+    { selector: 'div', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
+    { selector: 'footer', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
+    { selector: 'form', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
     { selector: 'h1', format: 'heading', options: { leadingLineBreaks: 3, trailingLineBreaks: 2, uppercase: true } },
     { selector: 'h2', format: 'heading', options: { leadingLineBreaks: 3, trailingLineBreaks: 2, uppercase: true } },
     { selector: 'h3', format: 'heading', options: { leadingLineBreaks: 3, trailingLineBreaks: 2, uppercase: true } },
     { selector: 'h4', format: 'heading', options: { leadingLineBreaks: 2, trailingLineBreaks: 2, uppercase: true } },
     { selector: 'h5', format: 'heading', options: { leadingLineBreaks: 2, trailingLineBreaks: 2, uppercase: true } },
     { selector: 'h6', format: 'heading', options: { leadingLineBreaks: 2, trailingLineBreaks: 2, uppercase: true } },
-    { selector: 'header', format: 'block' },
+    { selector: 'header', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
     {
       selector: 'hr',
       format: 'horizontalLine',
@@ -80,8 +81,8 @@ const DEFAULT_OPTIONS = {
       format: 'image',
       options: { baseUrl: null, linkBrackets: ['[', ']'] }
     },
-    { selector: 'main', format: 'block' },
-    { selector: 'nav', format: 'block' },
+    { selector: 'main', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
+    { selector: 'nav', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
     {
       selector: 'ol',
       format: 'orderedList',
@@ -89,7 +90,7 @@ const DEFAULT_OPTIONS = {
     },
     { selector: 'p', format: 'paragraph', options: { leadingLineBreaks: 2, trailingLineBreaks: 2 } },
     { selector: 'pre', format: 'pre', options: { leadingLineBreaks: 2, trailingLineBreaks: 2 } },
-    { selector: 'section', format: 'block' },
+    { selector: 'section', format: 'block', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },
     {
       selector: 'table',
       format: 'table',
@@ -139,7 +140,7 @@ function compile (options = {}) {
       customMerge: (key) => ((key === 'selectors') ? selectorsMerge : undefined)
     }
   );
-  options.formatters = Object.assign({}, defaultFormatters, options.formatters);
+  options.formatters = Object.assign({}, genericFormatters, textFormatters, options.formatters);
 
   handleDeprecatedOptions(options);
 

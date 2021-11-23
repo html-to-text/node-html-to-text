@@ -1,49 +1,13 @@
 
 const { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
+const render = require('dom-serializer').default;
+const { existsOne, innerText } = require('domutils');
 
 const { tableToString } = require('./table-printer');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('@html-to-text/base/src/typedefs');
 
-
-/**
- * Dummy formatter that discards the input and does nothing.
- *
- * @type { FormatCallback }
- */
-function formatSkip (elem, walk, builder, formatOptions) {
-  /* do nothing */
-}
-
-/**
- * Process an inline-level element.
- *
- * @type { FormatCallback }
- */
-function formatInline (elem, walk, builder, formatOptions) {
-  walk(elem.children, builder);
-}
-
-/**
- * Process a block-level container.
- *
- * @type { FormatCallback }
- */
-function formatBlock (elem, walk, builder, formatOptions) {
-  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks });
-  walk(elem.children, builder);
-  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks });
-}
-
-/**
- * Process a line-break.
- *
- * @type { FormatCallback }
- */
-function formatLineBreak (elem, walk, builder, formatOptions) {
-  builder.addLineBreak();
-}
 
 /**
  * Process a `wbr` tag (word break opportunity).
@@ -55,28 +19,6 @@ function formatWbr (elem, walk, builder, formatOptions) {
 }
 
 /**
- * Process a horizontal line.
- *
- * @type { FormatCallback }
- */
-function formatHorizontalLine (elem, walk, builder, formatOptions) {
-  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline('-'.repeat(formatOptions.length || builder.options.wordwrap || 40));
-  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
-}
-
-/**
- * Process a paragraph.
- *
- * @type { FormatCallback }
- */
-function formatParagraph (elem, walk, builder, formatOptions) {
-  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  walk(elem.children, builder);
-  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
-}
-
-/**
  * Process a preformatted content.
  *
  * @type { FormatCallback }
@@ -84,10 +26,17 @@ function formatParagraph (elem, walk, builder, formatOptions) {
 function formatPre (elem, walk, builder, formatOptions) {
   builder.openBlock({
     isPre: true,
-    leadingLineBreaks: formatOptions.leadingLineBreaks || 2
+    leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
+    reservedLineLength: 2
   });
   walk(elem.children, builder);
-  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
+  builder.closeBlock({
+    trailingLineBreaks: formatOptions.trailingLineBreaks || 2,
+    blockTransform: str => str
+      .split('\n')
+      .map(line => '    ' + line)
+      .join('\n')
+  });
 }
 
 /**
@@ -97,13 +46,8 @@ function formatPre (elem, walk, builder, formatOptions) {
  */
 function formatHeading (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  if (formatOptions.uppercase !== false) {
-    builder.pushWordTransform(str => str.toUpperCase());
-    walk(elem.children, builder);
-    builder.popWordTransform();
-  } else {
-    walk(elem.children, builder);
-  }
+  builder.addInline('#'.repeat(formatOptions.level || 1) + ' ', { noWordTransform: true });
+  walk(elem.children, builder);
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -127,16 +71,19 @@ function formatBlockquote (elem, walk, builder, formatOptions) {
   });
 }
 
-function withBrackets (str, brackets) {
-  if (!brackets) { return str; }
-
-  const lbr = (typeof brackets[0] === 'string')
-    ? brackets[0]
-    : '[';
-  const rbr = (typeof brackets[1] === 'string')
-    ? brackets[1]
-    : ']';
-  return lbr + str + rbr;
+/**
+ * Render code block.
+ *
+ * @type { FormatCallback }
+ */
+function formatCodeBlock (elem, walk, builder, formatOptions) {
+  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
+  builder.addInline('```' + (formatOptions.language || ''), { noWordTransform: true });
+  builder.addLineBreak();
+  walk(elem.children, builder);
+  builder.addLineBreak();
+  builder.addInline('```', { noWordTransform: true });
+  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
 function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
@@ -155,59 +102,67 @@ function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
  */
 function formatImage (elem, walk, builder, formatOptions) {
   const attribs = elem.attribs || {};
+  if (attribs.src && attribs.src.startsWith('data:')) {
+    builder.startNoWrap();
+    builder.addInline(
+      render(elem, { decodeEntities: builder.options.decodeEntities }),
+      { noWordTransform: true }
+    );
+    builder.stopNoWrap();
+    return;
+  }
   const alt = (attribs.alt)
     ? attribs.alt
+    : '';
+  const title = (attribs.title)
+    ? ` "${attribs.title}"`
     : '';
   const src = (!attribs.src)
     ? ''
     : pathRewrite(attribs.src, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
-  const text = (!src)
-    ? alt
-    : (!alt)
-      ? withBrackets(src, formatOptions.linkBrackets)
-      : alt + ' ' + withBrackets(src, formatOptions.linkBrackets);
-
-  builder.addInline(text, { noWordTransform: true });
+  builder.startNoWrap();
+  builder.addInline(`![`, { noWordTransform: true });
+  builder.addInline(alt);
+  builder.addInline(`](${src}`, { noWordTransform: true });
+  builder.addInline(title);
+  builder.addInline(`)`, { noWordTransform: true });
+  builder.stopNoWrap();
 }
 
 /**
- * Process an anchor.
+ * Process a link/anchor.
  *
  * @type { FormatCallback }
  */
 function formatAnchor (elem, walk, builder, formatOptions) {
-  function getHref () {
-    if (formatOptions.ignoreHref) { return ''; }
-    if (!elem.attribs || !elem.attribs.href) { return ''; }
-    let href = elem.attribs.href.replace(/^mailto:/, '');
-    if (formatOptions.noAnchorUrl && href[0] === '#') { return ''; }
-    href = pathRewrite(href, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
-    return href;
-  }
-  const href = getHref();
-  if (!href) {
-    walk(elem.children, builder);
-  } else {
-    let text = '';
-    builder.pushWordTransform(
-      str => {
-        if (str) { text += str; }
-        return str;
-      }
+  const attribs = elem.attribs || {};
+  if (attribs.name && !attribs.href) {
+    builder.startNoWrap();
+    builder.addInline(
+      render(elem, { decodeEntities: builder.options.decodeEntities }),
+      { noWordTransform: true }
     );
-    walk(elem.children, builder);
-    builder.popWordTransform();
-
-    const hideSameLink = formatOptions.hideLinkHrefIfSameAsText && href === text;
-    if (!hideSameLink) {
-      builder.addInline(
-        (!text)
-          ? href
-          : ' ' + withBrackets(href, formatOptions.linkBrackets),
-        { noWordTransform: true }
-      );
-    }
+    builder.stopNoWrap();
+    return;
   }
+  const title = (attribs.title)
+    ? ` "${attribs.title}"`
+    : '';
+  const href = (!attribs.href)
+    ? ''
+    : pathRewrite(attribs.href, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
+  const text = innerText(elem);
+  builder.startNoWrap();
+  if (href === text && text.length) {
+    builder.addInline(`<${href}>`, { noWordTransform: true });
+  } else {
+    builder.addInline(`[`, { noWordTransform: true });
+    walk(elem.children, builder);
+    builder.addInline(`](${href}`, { noWordTransform: true });
+    builder.addInline(`${title}`);
+    builder.addInline(`)`, { noWordTransform: true });
+  }
+  builder.stopNoWrap();
 }
 
 /**
@@ -239,7 +194,7 @@ function formatList (elem, walk, builder, formatOptions, nextPrefixCallback) {
   if (!listItems.length) { return; }
 
   builder.openList({
-    interRowLineBreaks: 1,
+    interRowLineBreaks: formatOptions.interRowLineBreaks || 1,
     leadingLineBreaks: isNestedList ? 1 : (formatOptions.leadingLineBreaks || 2),
     maxPrefixLength: maxPrefixLength,
     prefixAlign: 'left'
@@ -260,7 +215,7 @@ function formatList (elem, walk, builder, formatOptions, nextPrefixCallback) {
  * @type { FormatCallback }
  */
 function formatUnorderedList (elem, walk, builder, formatOptions) {
-  const prefix = formatOptions.itemPrefix || ' * ';
+  const prefix = (formatOptions.marker || '-') + ' '; // can be any of [-*+]
   return formatList(elem, walk, builder, formatOptions, () => prefix);
 }
 
@@ -270,9 +225,9 @@ function formatUnorderedList (elem, walk, builder, formatOptions) {
  * @type { FormatCallback }
  */
 function formatOrderedList (elem, walk, builder, formatOptions) {
-  let nextIndex = Number(elem.attribs.start || '1');
-  const indexFunction = getOrderedListIndexFunction(elem.attribs.type);
-  const nextPrefixCallback = () => ' ' + indexFunction(nextIndex++) + '. ';
+  let nextIndex = Number(formatOptions.start || elem.attribs.start || '1');
+  const indexFunction = getOrderedListIndexFunction(formatOptions.numberingType || elem.attribs.type);
+  const nextPrefixCallback = () => indexFunction(nextIndex++) + '. ';
   return formatList(elem, walk, builder, formatOptions, nextPrefixCallback);
 }
 
@@ -293,46 +248,105 @@ function getOrderedListIndexFunction (olType = '1') {
   }
 }
 
-/**
- * Given a list of class and ID selectors (prefixed with '.' and '#'),
- * return them as separate lists of names without prefixes.
- *
- * @param { string[] } selectors Class and ID selectors (`[".class", "#id"]` etc).
- * @returns { { classes: string[], ids: string[] } }
- */
-function splitClassesAndIds (selectors) {
-  const classes = [];
-  const ids = [];
-  for (const selector of selectors) {
-    if (selector.startsWith('.')) {
-      classes.push(selector.substring(1));
-    } else if (selector.startsWith('#')) {
-      ids.push(selector.substring(1));
+function collectDefinitionGroups (elem) {
+  const defItems = [];
+  function handleDtDd (el) {
+    if (el.name === 'dt' || el.name === 'dd') {
+      defItems.push(el);
     }
   }
-  return { classes: classes, ids: ids };
-}
-
-function isDataTable (attr, tables) {
-  if (tables === true) { return true; }
-  if (!attr) { return false; }
-
-  const { classes, ids } = splitClassesAndIds(tables);
-  const attrClasses = (attr['class'] || '').split(' ');
-  const attrIds = (attr['id'] || '').split(' ');
-
-  return attrClasses.some(x => classes.includes(x)) || attrIds.some(x => ids.includes(x));
+  for (const child of (elem.children || [])) {
+    if (child.name === 'div') {
+      (child.children || []).forEach(handleDtDd);
+    } else {
+      handleDtDd(child);
+    }
+  }
+  const groups = [];
+  let group = null;
+  for (const item of defItems) {
+    if (item.name === 'dt') {
+      if (group && group.definitions.length === 0) {
+        group.titleItems.push(item);
+      } else {
+        group = { titleItems: [item], definitions: [] };
+        groups.push(group);
+      }
+    } else { // dd
+      group.definitions.push(item);
+    }
+  }
+  return groups;
 }
 
 /**
- * Process a table (either as a container or as a data table, depending on options).
+ * Render a definition list in a form supported by some markdown systems
+ * (each definition starts with ": ").
  *
  * @type { FormatCallback }
  */
-function formatTable (elem, walk, builder, formatOptions) {
-  return isDataTable(elem.attribs, builder.options.tables)
-    ? formatDataTable(elem, walk, builder, formatOptions)
-    : formatBlock(elem, walk, builder, formatOptions);
+function formatDefinitionList (elem, walk, builder, formatOptions) {
+  const groups = collectDefinitionGroups(elem);
+  for (const group of groups) {
+    builder.openList({
+      interRowLineBreaks: 1,
+      leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
+      maxPrefixLength: 0,
+      prefixAlign: 'left'
+    });
+
+    for (const titleItem of group.titleItems) {
+      builder.openListItem({ prefix: '' });
+      walk([titleItem], builder);
+      builder.closeListItem();
+    }
+
+    for (const definition of group.definitions) {
+      builder.openListItem({ prefix: ': ' });
+      walk([definition], builder);
+      builder.closeListItem();
+    }
+
+    builder.closeList({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
+  }
+}
+
+/**
+ * Render a definition list in a compatible form
+ * (substitute with bold titles and regular lists).
+ *
+ * @type { FormatCallback }
+ */
+function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
+  const definitionPrefix = (formatOptions.marker || '-') + ' '; // can be any of [-*+]
+  const groups = collectDefinitionGroups(elem);
+  for (const group of groups) {
+    builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
+
+    for (const titleItem of group.titleItems) {
+      builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
+      builder.addInline('**', { noWordTransform: true });
+      walk(titleItem.children, builder);
+      builder.addInline('**', { noWordTransform: true });
+      builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
+    }
+
+    builder.openList({
+      interRowLineBreaks: formatOptions.interRowLineBreaks || 1,
+      leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
+      maxPrefixLength: definitionPrefix.length
+    });
+
+    for (const definition of group.definitions) {
+      builder.openListItem({ prefix: definitionPrefix });
+      walk([definition], builder);
+      builder.closeListItem();
+    }
+
+    builder.closeList({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
+
+    builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
+  }
 }
 
 /**
@@ -343,10 +357,14 @@ function formatTable (elem, walk, builder, formatOptions) {
 function formatDataTable (elem, walk, builder, formatOptions) {
   builder.openTable();
   elem.children.forEach(walkTable);
+  const hasHeader = existsOne(
+    (el) => el.name === 'thead' || el.name === 'th',
+    elem.children
+  );
   builder.closeTable({
-    tableToString: (rows) => tableToString(rows, formatOptions.rowSpacing || 0, formatOptions.colSpacing || 3),
+    tableToString: (rows) => tableToString(rows, hasHeader, formatOptions.spanMode || 'repeat') || render(elem),
     leadingLineBreaks: formatOptions.leadingLineBreaks,
-    trailingLineBreaks: formatOptions.trailingLineBreaks
+    trailingLineBreaks: formatOptions.trailingLineBreaks,
   });
 
   function formatCell (cellNode) {
@@ -360,14 +378,6 @@ function formatDataTable (elem, walk, builder, formatOptions) {
   function walkTable (elem) {
     if (elem.type !== 'tag') { return; }
 
-    const formatHeaderCell = (formatOptions.uppercaseHeaderCells !== false)
-      ? (cellNode) => {
-        builder.pushWordTransform(str => str.toUpperCase());
-        formatCell(cellNode);
-        builder.popWordTransform();
-      }
-      : formatCell;
-
     switch (elem.name) {
       case 'thead':
       case 'tbody':
@@ -378,15 +388,12 @@ function formatDataTable (elem, walk, builder, formatOptions) {
 
       case 'tr': {
         builder.openTableRow();
-        for (const childOfTr of elem.children) {
-          if (childOfTr.type !== 'tag') { continue; }
-          switch (childOfTr.name) {
-            case 'th': {
-              formatHeaderCell(childOfTr);
-              break;
-            }
+        for (const cellElem of elem.children) {
+          if (cellElem.type !== 'tag') { continue; }
+          switch (cellElem.name) {
+            case 'th':
             case 'td': {
-              formatCell(childOfTr);
+              formatCell(cellElem);
               break;
             }
             default:
@@ -403,21 +410,18 @@ function formatDataTable (elem, walk, builder, formatOptions) {
   }
 }
 
+
 module.exports = {
   anchor: formatAnchor,
-  block: formatBlock,
   blockquote: formatBlockquote,
+  codeBlock: formatCodeBlock,
   dataTable: formatDataTable,
+  definitionList: formatDefinitionList,
+  definitionListCompatible: formatDefinitionListCompatible,
   heading: formatHeading,
-  horizontalLine: formatHorizontalLine,
   image: formatImage,
-  inline: formatInline,
-  lineBreak: formatLineBreak,
   orderedList: formatOrderedList,
-  paragraph: formatParagraph,
   pre: formatPre,
-  skip: formatSkip,
-  table: formatTable,
   unorderedList: formatUnorderedList,
   wbr: formatWbr
 };

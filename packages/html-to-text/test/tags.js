@@ -864,7 +864,7 @@ describe('tags', function () {
 
     it('should allow to define basic support for block-level tags', function () {
       const html = /*html*/`<widget><gadget>a</gadget><fidget>b</fidget></widget>c<budget>d</budget>e`;
-      const expected = 'a\nb\nc\nd\ne';
+      const expected = 'a\n\nb\n\nc\n\nd\n\ne';
       const options = {
         selectors: [
           { selector: 'budget', format: 'block' },
