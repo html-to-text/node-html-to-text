@@ -292,7 +292,7 @@ test(
 );
 
 test(
-  'ordered list with start index and type',
+  'ordered list with start number (numbering type is ignored)',
   snapshotMacro,
   /*html*/`
     <ol type="i" start="11">
@@ -303,17 +303,17 @@ test(
 );
 
 test(
-  'ordered list with overridden numbering type and start number',
+  'ordered list with overridden start number',
   snapshotMacro,
   /*html*/`
-    <ol type="i" start="11">
+    <ol start="11">
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
     </ol>`,
   {
     selectors: [
-      { selector: 'ol', options: { numberingType: '1', start: 22 } }
+      { selector: 'ol', options: { start: 22 } }
     ]
   }
 );

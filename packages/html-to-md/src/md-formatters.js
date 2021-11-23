@@ -1,5 +1,5 @@
 
-const { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
+const { get, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
 const render = require('dom-serializer').default;
 const { existsOne, innerText } = require('domutils');
 
@@ -226,26 +226,8 @@ function formatUnorderedList (elem, walk, builder, formatOptions) {
  */
 function formatOrderedList (elem, walk, builder, formatOptions) {
   let nextIndex = Number(formatOptions.start || elem.attribs.start || '1');
-  const indexFunction = getOrderedListIndexFunction(formatOptions.numberingType || elem.attribs.type);
-  const nextPrefixCallback = () => indexFunction(nextIndex++) + '. ';
+  const nextPrefixCallback = () => `${nextIndex++}. `;
   return formatList(elem, walk, builder, formatOptions, nextPrefixCallback);
-}
-
-/**
- * Return a function that can be used to generate index markers of a specified format.
- *
- * @param   { string } [olType='1'] Marker type.
- * @returns { (i: number) => string }
- */
-function getOrderedListIndexFunction (olType = '1') {
-  switch (olType) {
-    case 'a': return (i) => numberToLetterSequence(i, 'a');
-    case 'A': return (i) => numberToLetterSequence(i, 'A');
-    case 'i': return (i) => numberToRoman(i).toLowerCase();
-    case 'I': return (i) => numberToRoman(i);
-    case '1':
-    default: return (i) => (i).toString();
-  }
 }
 
 function collectDefinitionGroups (elem) {
