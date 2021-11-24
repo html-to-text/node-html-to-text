@@ -36,8 +36,8 @@ function putCellIntoLayout (cell, layout, baseRow, baseCol) {
 
 function linearizeText (text) {
   return text
-    .replace(/\n{2,}/g, (m) => '<br>'.repeat(m.length - 1))
-    .replace(/\n/g, ' ');
+    .replace(/(?: *\n){2,} */g, (m) => '<br>'.repeat((m.match(/\n/g) || []).length - 1))
+    .replace(/ *\n */g, ' ');
 }
 
 function createLayout (tableRows) {

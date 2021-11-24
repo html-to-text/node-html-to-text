@@ -137,7 +137,7 @@ class BlockTextBuilder {
    * @param { boolean } [param1.noWordTransform]
    * Ignore word transformers if there are any.
    * Don't encode characters as well.
-   * (Use this for markup rather than input text).
+   * (Use this for things like URL addresses).
    */
   addInline (str, { noWordTransform = false } = {}) {
     if (!(
@@ -178,6 +178,39 @@ class BlockTextBuilder {
       this._stackItem.isNoWrap
     );
     this._stackItem.stashedLineBreaks = 0; // inline text doesn't introduce line breaks
+  }
+
+  /**
+   * Add a string inline into the currently built block.
+   *
+   * Use this for markup elements that don't have to adhere
+   * to text layout rules.
+   *
+   * @param { string } str Text to add.
+   */
+  addLiteral (str) {
+    if (!(
+      this._stackItem instanceof BlockStackItem
+      || this._stackItem instanceof ListItemStackItem
+      || this._stackItem instanceof TableCellStackItem
+    )) { return; }
+
+    if (str.length === 0) { return; }
+
+    if (this._stackItem.isPre) {
+      this._stackItem.rawText += str;
+      return;
+    }
+
+    if (this._stackItem.stashedLineBreaks) {
+      this._stackItem.inlineTextBuilder.startNewLine(this._stackItem.stashedLineBreaks);
+    }
+    this.whitespaceProcessor.addLiteral(
+      str,
+      this._stackItem.inlineTextBuilder,
+      this._stackItem.isNoWrap
+    );
+    this._stackItem.stashedLineBreaks = 0;
   }
 
   /**

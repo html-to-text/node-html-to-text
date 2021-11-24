@@ -34,6 +34,7 @@ class WhitespaceProcessor {
     this.trailingWhitespaceRe = new RegExp(`[${whitespaceCodes}]$`);
     this.allWhitespaceOrEmptyRe = new RegExp(`^[${whitespaceCodes}]*$`);
     this.newlineOrNonWhitespaceRe = new RegExp(`(\\n|[^\\n${whitespaceCodes}])`, 'g');
+    this.newlineOrNonNewlineStringRe = new RegExp(`(\\n|[^\\n]+)`, 'g');
 
     if (options.preserveNewlines) {
 
@@ -98,6 +99,44 @@ class WhitespaceProcessor {
       };
 
     }
+  }
+
+  /**
+   * Add text with only minimal processing.
+   * Everything between newlines considered a single word.
+   * No whitespace is trimmed.
+   * Not affected by preserveNewlines option - `\n` always starts a new line.
+   *
+   * `noWrap` argument is `true` by default - this won't start a new line
+   * even if there is not enough space left in the current line.
+   *
+   * @param { string }            text              Input text.
+   * @param { InlineTextBuilder } inlineTextBuilder A builder to receive processed text.
+   * @param { boolean }           [noWrap] Don't wrap text even if the line is too long.
+   */
+  addLiteral (text, inlineTextBuilder, noWrap = true) {
+    if (!text) { return; }
+    const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
+    let anyMatch = false;
+    let m = this.newlineOrNonNewlineStringRe.exec(text);
+    if (m) {
+      anyMatch = true;
+      if (m[0] === '\n') {
+        inlineTextBuilder.startNewLine();
+      } else if (previouslyStashedSpace) {
+        inlineTextBuilder.pushWord(m[0], noWrap);
+      } else {
+        inlineTextBuilder.concatWord(m[0], noWrap);
+      }
+      while ((m = this.newlineOrNonNewlineStringRe.exec(text)) !== null) {
+        if (m[0] === '\n') {
+          inlineTextBuilder.startNewLine();
+        } else {
+          inlineTextBuilder.pushWord(m[0], noWrap);
+        }
+      }
+    }
+    inlineTextBuilder.stashedSpace = (previouslyStashedSpace && !anyMatch);
   }
 
   /**

@@ -46,7 +46,7 @@ function formatPre (elem, walk, builder, formatOptions) {
  */
 function formatHeading (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline('#'.repeat(formatOptions.level || 1) + ' ', { noWordTransform: true });
+  builder.addLiteral('#'.repeat(formatOptions.level || 1) + ' ');
   walk(elem.children, builder);
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
@@ -78,11 +78,9 @@ function formatBlockquote (elem, walk, builder, formatOptions) {
  */
 function formatCodeBlock (elem, walk, builder, formatOptions) {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-  builder.addInline('```' + (formatOptions.language || ''), { noWordTransform: true });
-  builder.addLineBreak();
+  builder.addLiteral('```' + (formatOptions.language || '') + '\n');
   walk(elem.children, builder);
-  builder.addLineBreak();
-  builder.addInline('```', { noWordTransform: true });
+  builder.addLiteral('\n```');
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
@@ -111,21 +109,20 @@ function formatImage (elem, walk, builder, formatOptions) {
     builder.stopNoWrap();
     return;
   }
-  const alt = (attribs.alt)
-    ? attribs.alt
-    : '';
-  const title = (attribs.title)
-    ? ` "${attribs.title}"`
-    : '';
   const src = (!attribs.src)
     ? ''
     : pathRewrite(attribs.src, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
   builder.startNoWrap();
-  builder.addInline(`![`, { noWordTransform: true });
-  builder.addInline(alt);
-  builder.addInline(`](${src}`, { noWordTransform: true });
-  builder.addInline(title);
-  builder.addInline(`)`, { noWordTransform: true });
+  builder.addLiteral(`![`);
+  builder.addInline(attribs.alt || '');
+  builder.addLiteral(`](`);
+  builder.addInline(src, { noWordTransform: true });
+  if (attribs.title) {
+    builder.addLiteral(` "`);
+    builder.addInline(attribs.title);
+    builder.addLiteral(`"`);
+  }
+  builder.addLiteral(`)`);
   builder.stopNoWrap();
 }
 
@@ -145,9 +142,6 @@ function formatAnchor (elem, walk, builder, formatOptions) {
     builder.stopNoWrap();
     return;
   }
-  const title = (attribs.title)
-    ? ` "${attribs.title}"`
-    : '';
   const href = (!attribs.href)
     ? ''
     : pathRewrite(attribs.href, formatOptions.pathRewrite, formatOptions.baseUrl, builder.metadata, elem);
@@ -156,11 +150,16 @@ function formatAnchor (elem, walk, builder, formatOptions) {
   if (href === text && text.length) {
     builder.addInline(`<${href}>`, { noWordTransform: true });
   } else {
-    builder.addInline(`[`, { noWordTransform: true });
+    builder.addLiteral(`[`);
     walk(elem.children, builder);
-    builder.addInline(`](${href}`, { noWordTransform: true });
-    builder.addInline(`${title}`);
-    builder.addInline(`)`, { noWordTransform: true });
+    builder.addLiteral(`](`);
+    builder.addInline(href, { noWordTransform: true });
+    if (attribs.title) {
+      builder.addLiteral(` "`);
+      builder.addInline(attribs.title);
+      builder.addLiteral(`"`);
+    }
+    builder.addLiteral(`)`);
   }
   builder.stopNoWrap();
 }
@@ -307,9 +306,9 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
 
     for (const titleItem of group.titleItems) {
       builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
-      builder.addInline('**', { noWordTransform: true });
+      builder.addLiteral('**');
       walk(titleItem.children, builder);
-      builder.addInline('**', { noWordTransform: true });
+      builder.addLiteral('**');
       builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
     }
 

@@ -51,9 +51,31 @@ test(
 );
 
 test(
-  'line breaks',
+  'line breaks (HTML tags by default)',
   snapshotMacro,
-  `a<br>b<br />c`
+  `a<br>b<br/><br />c<br><br><br>d`
+);
+
+test(
+  'line breaks (two spaces)',
+  snapshotMacro,
+  `a<br>b<br/><br />c<br><br><br>d`,
+  {
+    selectors: [
+      { selector: 'br', options: { string: '  \n' } }
+    ]
+  }
+);
+
+test(
+  'line breaks (backslash)',
+  snapshotMacro,
+  `a<br>b<br/><br />c<br><br><br>d`,
+  {
+    selectors: [
+      { selector: 'br', options: { string: '\\\n' } }
+    ]
+  }
 );
 
 test(
