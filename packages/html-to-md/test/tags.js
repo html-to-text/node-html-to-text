@@ -379,7 +379,8 @@ const tableWithSpannedCells = /*html*/`
     <tr><th colspan="2">a</th><th>c</th></tr>
     <tr><td>d</td><td colspan="2" rowspan="2">e</td></tr>
     <tr><td rowspan="2">g</td></tr>
-    <tr><td>k</td><td>l</td></tr>
+    <tr><td>k</td><td rowspan="2">l</td></tr>
+    <tr><td>m</td></tr>
   </table>`;
 
 test(
@@ -426,9 +427,10 @@ test(
   snapshotMacro,
   /*html*/`
   <table>
-    <tr><td>a</td><td colspan="2">b</td><td rowspan="2">c</td></tr>
+    <tr><td>a</td><td colspan="2">b</td><td rowspan="4">c</td></tr>
     <tr><td>d</td><td colspan="2" rowspan="2">e</td></tr>
-    <tr><td>g</td><td>i</td></tr>
+    <tr><td>g</td></tr>
+    <tr><td>j</td></tr>
   </table>`,
   {
     selectors: [

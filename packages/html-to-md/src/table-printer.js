@@ -90,7 +90,12 @@ function renderRowsRepeat (layout, colNumber, rowNumber) {
   const outputLines = [];
   for (let x = 0; x < colNumber; x++) {
     for (let y = 0; y < rowNumber; y++) {
-      addCellText(outputLines, y, layout[x][y].line);
+      const cell = layout[x][y];
+      if (cell) {
+        addCellText(outputLines, y, layout[x][y].line);
+      } else {
+        addEmptyCell(outputLines, y);
+      }
     }
   }
   return outputLines;
@@ -101,7 +106,7 @@ function renderRowsFirst (layout, colNumber, rowNumber) {
   for (let x = 0; x < colNumber; x++) {
     for (let y = 0; y < rowNumber; y++) {
       const cell = layout[x][y];
-      if (cell.rendered) {
+      if (!cell || cell.rendered) {
         addEmptyCell(outputLines, y);
       } else {
         addCellText(outputLines, y, cell.line);
@@ -117,7 +122,7 @@ function renderRowsFirstCol (layout, colNumber, rowNumber) {
   for (let x = 0; x < colNumber; x++) {
     for (let y = 0; y < rowNumber; y++) {
       const cell = layout[x][y];
-      if (cell.renderedCol !== undefined && cell.renderedCol !== x) {
+      if (!cell || (cell.renderedCol !== undefined && cell.renderedCol !== x)) {
         addEmptyCell(outputLines, y);
       } else {
         addCellText(outputLines, y, cell.line);
@@ -133,7 +138,7 @@ function renderRowsFirstRow (layout, colNumber, rowNumber) {
   for (let x = 0; x < colNumber; x++) {
     for (let y = 0; y < rowNumber; y++) {
       const cell = layout[x][y];
-      if (cell.renderedRow !== undefined && cell.renderedRow !== y) {
+      if (!cell || (cell.renderedRow !== undefined && cell.renderedRow !== y)) {
         addEmptyCell(outputLines, y);
       } else {
         addCellText(outputLines, y, cell.line);
@@ -149,7 +154,7 @@ function renderRowsTag (layout, colNumber, rowNumber) {
   for (let x = 0; x < colNumber; x++) {
     for (let y = 0; y < rowNumber; y++) {
       const cell = layout[x][y];
-      if (!cell.rendered) {
+      if (cell && !cell.rendered) {
         const separator = (cell.colspan === 1 && cell.rowspan === 1)
           ? '|'
           : cellOpenTag(cell);
