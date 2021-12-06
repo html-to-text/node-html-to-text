@@ -32,9 +32,9 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.7.0",
+    "@selderee/plugin-htmlparser2": "^0.8.1",
     "deepmerge": "^4.2.2",
     "htmlparser2": "^7.2.0",
-    "selderee": "^0.7.0"
+    "selderee": "^0.8.1"
   }
 }
