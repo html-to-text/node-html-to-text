@@ -6,6 +6,12 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:jsdoc/recommended'
   ],
+  ignorePatterns: [
+    '.vscode',
+    '**/lib',
+    '**/node_modules',
+    '**/__*.*'
+  ],
   parserOptions: { ecmaVersion: 2018 },
   env: {
     es6: true,
