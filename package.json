@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "Advanced html to plain text converter",
   "license": "MIT",
   "author": {
@@ -42,7 +42,7 @@
     "deepmerge": "^4.2.2",
     "he": "^1.2.0",
     "htmlparser2": "^6.1.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "selderee": "^0.6.0"
   },
   "devDependencies": {

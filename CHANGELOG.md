@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 8.1.1
+
+Bump `minimist` dependency, regenerate `package-lock.json`.
+
 ## Version 8.1.0
 
 * Fix for too many newlines in certain cases when `preserveNewlines` option is used. Addresses [#232](https://github.com/html-to-text/node-html-to-text/issues/232);
