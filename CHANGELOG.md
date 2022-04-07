@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 8.2.0
+
+Fix for the issue [#249](https://github.com/html-to-text/node-html-to-text/issues/249) and possibly other obscure issues when some selector options are ignored. `options.selectors` array was not fully processed before.
+
 ## Version 8.1.1
 
 Bump `minimist` dependency, regenerate `package-lock.json`.

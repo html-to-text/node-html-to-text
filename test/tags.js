@@ -271,6 +271,17 @@ describe('tags', function () {
       expect(htmlToText(html)).to.equal(expected);
     });
 
+    it('should return link without brackets if noLinkBrackets is set to true (deprecated option)', function () {
+      const html = '<a href="http://my.link">test</a>';
+      const expected = 'test http://my.link';
+      const options = {
+        selectors: [
+          { selector: 'a', options: { noLinkBrackets: true } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
     it('should return link without brackets if linkBrackets is set to false', function () {
       const html = '<a href="http://my.link">test</a>';
       const expected = 'test http://my.link';
