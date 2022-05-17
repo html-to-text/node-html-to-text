@@ -4,20 +4,19 @@ const htmlparser = require('htmlparser2');
 const selderee = require('selderee');
 
 const { BlockTextBuilder } = require('./block-text-builder');
-const { limitedDepthRecursive, mergeDuplicatesPreferLast } = require('./util');
+const { limitedDepthRecursive } = require('./util');
 
 
 /**
  * Compile selectors into a decision tree,
  * return a function intended for batch processing.
  *
- * @param   { Options } [options = {}]   HtmlToText options (defaults, formatters, user options merged).
+ * @param   { Options } [options = {}]   HtmlToText options (defaults, formatters, user options merged, deduplicated).
  * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
 function compile (options = {}) {
-  const uniqueSelectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
-  const selectorsWithoutFormat = uniqueSelectors.filter(s => !s.format);
+  const selectorsWithoutFormat = options.selectors.filter(s => !s.format);
   if (selectorsWithoutFormat.length) {
     throw new Error(
       'Following selectors have no specified format: ' +
@@ -25,7 +24,7 @@ function compile (options = {}) {
     );
   }
   const picker = new selderee.DecisionTree(
-    uniqueSelectors.map(s => [s.selector, s])
+    options.selectors.map(s => [s.selector, s])
   ).build(hp2Builder);
 
   if (typeof options.encodeCharacters !== 'function') {
@@ -165,7 +164,7 @@ function recursiveWalk (walk, dom, builder) {
 }
 
 /**
- * @param { Object.<string,string> } dict
+ * @param { Object<string,string> } dict
  * A dictionary where keys are characters to replace
  * and values are replacement strings.
  *

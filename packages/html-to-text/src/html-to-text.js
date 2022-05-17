@@ -1,7 +1,7 @@
 
 const { compile: compile_ } = require('@html-to-text/base');
 const genericFormatters = require('@html-to-text/base/src/generic-formatters');
-const { get } = require('@html-to-text/base/src/util');
+const { get, mergeDuplicatesPreferLast } = require('@html-to-text/base/src/util');
 const merge = require('deepmerge'); // default
 
 const textFormatters = require('./text-formatters');
@@ -141,6 +141,7 @@ function compile (options = {}) {
     }
   );
   options.formatters = Object.assign({}, genericFormatters, textFormatters, options.formatters);
+  options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
 
   handleDeprecatedOptions(options);
 

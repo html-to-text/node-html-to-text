@@ -1,6 +1,7 @@
 
 const { compile: compile_ } = require('@html-to-text/base');
 const genericFormatters = require('@html-to-text/base/src/generic-formatters');
+const { mergeDuplicatesPreferLast } = require('@html-to-text/base/src/util');
 const merge = require('deepmerge'); // default
 
 const markdownFormatters = require('./md-formatters');
@@ -124,6 +125,7 @@ function compile (options = {}) {
     }
   );
   options.formatters = Object.assign({}, genericFormatters, markdownFormatters, options.formatters);
+  options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
 
   return compile_(options);
 }
