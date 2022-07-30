@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 7.1.2
+
+Bump `minimist` dependency and dev dependencies, regenerate `package-lock.json`.
+
 ## Version 7.1.1
 
 Regenerate `package-lock.json`.
