@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 8.2.1
+
+No changes in the package. Bumped dev dependencies and regenerated `package-lock.json`.
+
 ## Version 8.2.0
 
 Fix for the issue [#249](https://github.com/html-to-text/node-html-to-text/issues/249) and possibly other obscure issues when some selector options are ignored. `options.selectors` array was not fully processed before.
@@ -63,6 +67,10 @@ Since options preprocessing is getting more involved with selectors compilation,
 Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
 
 No previously deprecated stuff is removed in this version. Significant cleanup is planned for version 9 instead.
+
+## Version ~~7.1.2~~ 7.1.3
+
+Bump `minimist` dependency and dev dependencies, regenerate `package-lock.json`.
 
 ## Version 7.1.1
 
