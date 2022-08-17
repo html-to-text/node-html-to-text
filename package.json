@@ -39,6 +39,6 @@
     "mocha": "^9.2.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.73.0",
-    "rollup-plugin-cjs-es": "^1.0.1"
+    "rollup-plugin-cjs-es": "^1.1.0"
   }
 }
