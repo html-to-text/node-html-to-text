@@ -13,13 +13,13 @@
   },
   "homepage": "https://github.com/html-to-text/node-html-to-text#readme",
   "engines": {
-    "node": ">=12.22.0"
+    "node": ">=14"
   },
   "main": "src/index.js",
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.8.1",
+    "@selderee/plugin-htmlparser2": "^0.9.0",
     "deepmerge": "^4.2.2",
-    "htmlparser2": "^7.2.0",
-    "selderee": "^0.8.1"
+    "htmlparser2": "^8.0.1",
+    "selderee": "^0.9.0"
   }
 }

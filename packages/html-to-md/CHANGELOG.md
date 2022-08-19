@@ -4,4 +4,4 @@
 
 Initial release.
 
-Targeting Node.js version >= 12.22.
+Targeting Node.js version >= 14.

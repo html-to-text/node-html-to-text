@@ -27,6 +27,8 @@ Version 7 contains an important change for custom formatters.
 
 Version 8 brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
 
+Version 9 ...
+
 ## Installation
 
 ```
@@ -116,8 +118,8 @@ Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
 
 Other things removed:
 
-* `fromString` method;
-* positional arguments in `BlockTextBuilder` methods.
+* `fromString` method - use `convert` or `htmlToText` instead;
+* positional arguments in `BlockTextBuilder` methods - pass option objects instead.
 
 #### Selectors
 

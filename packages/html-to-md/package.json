@@ -28,7 +28,7 @@
     "require": "./lib/html-to-md.cjs"
   },
   "engines": {
-    "node": ">=12.22.0"
+    "node": ">=14"
   },
   "scripts": {
     "build:rollup": "rollup -c",
@@ -38,12 +38,12 @@
     "test": "ava"
   },
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.8.1",
+    "@selderee/plugin-htmlparser2": "^0.9.0",
     "deepmerge": "^4.2.2",
-    "dom-serializer": "^1.3.2",
-    "domutils": "^2.8.0",
-    "htmlparser2": "^7.2.0",
-    "selderee": "^0.8.1"
+    "dom-serializer": "^2.0.0",
+    "domutils": "^3.0.1",
+    "htmlparser2": "^8.0.1",
+    "selderee": "^0.9.0"
   },
   "ava": {
     "files": ["test/**/*.js"]

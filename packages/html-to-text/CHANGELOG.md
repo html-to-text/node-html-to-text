@@ -2,9 +2,17 @@
 
 ## Version 9.0.0 (WIP)
 
+All commits: TODO
+
+Version 9 roadmap issue: [#240](https://github.com/html-to-text/node-html-to-text/issues/240)
+
 ### Node version
 
-Required Node version is now >=12.22.0.
+Required Node version is now >=14.
+
+### CommonJS and ES Module
+
+Package now provides `cjs` and `mjs` exports.
 
 ### CLI is no longer built in
 
@@ -12,7 +20,7 @@ If you use CLI then install that package instead: (WIP, to be provided before re
 
 ### Dependency updates
 
-* `htmlparser2` updated from 6.1.0 to 7.2.0 ([Release notes](https://github.com/fb55/htmlparser2/releases));
+* `htmlparser2` updated from 6.1.0 to 8.0.1 ([Release notes](https://github.com/fb55/htmlparser2/releases));
 * `he` dependency is removed. It was needed at the time it was introduced, apparently, but at this point `htmlparser2` seems to do a better job itself.
 
 ### Removed features
@@ -20,7 +28,7 @@ If you use CLI then install that package instead: (WIP, to be provided before re
 * Options deprecated in version 6 are now removed;
 * `decodeOptions` section removed with `he` dependency;
 * `fromString` method removed;
-* positional arguments in `BlockTextBuilder` methods are now removed.
+* deprecated positional arguments in `BlockTextBuilder` methods are now removed.
 
 Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
 
@@ -32,6 +40,18 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 
 * `decodeEntities` - controls whether HTML entities found in the input HTML should be decoded or left as is in the output text;
 * `encodeCharacters` - a dictionary with characters that should be replaced in the output text and corresponding escape sequences.
+
+## Version 8.2.1
+
+No changes in published package. Bumped dev dependencies and regenerated `package-lock.json`.
+
+## Version 8.2.0
+
+Fix for the issue [#249](https://github.com/html-to-text/node-html-to-text/issues/249) and possibly other obscure issues when some selector options are ignored. `options.selectors` array was not fully processed before.
+
+## Version 8.1.1
+
+Bump `minimist` dependency, regenerate `package-lock.json`.
 
 ## Version 8.1.0
 
@@ -88,6 +108,10 @@ Since options preprocessing is getting more involved with selectors compilation,
 Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
 
 No previously deprecated stuff is removed in this version. Significant cleanup is planned for version 9 instead.
+
+## Version ~~7.1.2~~ 7.1.3
+
+Bump `minimist` dependency and dev dependencies, regenerate `package-lock.json`.
 
 ## Version 7.1.1
 
