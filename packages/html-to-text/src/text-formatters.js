@@ -321,7 +321,7 @@ function formatDataTable (elem, walk, builder, formatOptions) {
   builder.openTable();
   elem.children.forEach(walkTable);
   builder.closeTable({
-    tableToString: (rows) => tableToString(rows, formatOptions.rowSpacing || 0, formatOptions.colSpacing || 3),
+    tableToString: (rows) => tableToString(rows, formatOptions.rowSpacing ?? 0, formatOptions.colSpacing ?? 3),
     leadingLineBreaks: formatOptions.leadingLineBreaks,
     trailingLineBreaks: formatOptions.trailingLineBreaks
   });

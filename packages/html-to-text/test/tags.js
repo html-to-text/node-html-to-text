@@ -714,12 +714,42 @@ describe('tags', function () {
       const expected =
         'aa  b\n' +
         'aa\n' +
+        '\n' +
         '    c\n' +
+        '\n' +
         '\n' +
         'd e f';
       const options = {
         selectors: [
-          { selector: 'table', format: 'dataTable', options: { colSpacing: 1, rowSpacing: 1 } }
+          { selector: 'table', format: 'dataTable', options: { colSpacing: 1, rowSpacing: 2 } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
+    it('should support zero column spacing', function () {
+      const html = /*html*/`
+<table>
+    <tr>
+        <td colspan="2" rowspan="2">aa<br/>aa</td>
+        <td>b</td>
+    </tr>
+    <tr>
+        <td>c</td>
+    </tr>
+    <tr>
+        <td>d</td>
+        <td>e</td>
+        <td>f</td>
+    </tr>
+</table>`;
+      const expected =
+        'aab\n' +
+        'aac\n' +
+        'def';
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable', options: { colSpacing: 0 } }
         ]
       };
       expect(htmlToText(html, options)).to.equal(expected);
