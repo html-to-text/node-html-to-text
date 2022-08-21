@@ -1,10 +1,10 @@
 
-const { hp2Builder } = require('@selderee/plugin-htmlparser2');
-const htmlparser = require('htmlparser2');
-const selderee = require('selderee');
+import { hp2Builder } from '@selderee/plugin-htmlparser2';
+import { parseDocument } from 'htmlparser2';
+import { DecisionTree } from 'selderee';
 
-const { BlockTextBuilder } = require('./block-text-builder');
-const { limitedDepthRecursive } = require('./util');
+import { BlockTextBuilder } from './block-text-builder';
+import { limitedDepthRecursive } from './util';
 
 
 /**
@@ -23,7 +23,7 @@ function compile (options = {}) {
       selectorsWithoutFormat.map(s => `\`${s.selector}\``).join(', ')
     );
   }
-  const picker = new selderee.DecisionTree(
+  const picker = new DecisionTree(
     options.selectors.map(s => [s.selector, s])
   ).build(hp2Builder);
 
@@ -31,7 +31,7 @@ function compile (options = {}) {
     options.encodeCharacters = makeReplacerFromDict(options.encodeCharacters);
   }
 
-  const baseSelectorsPicker = new selderee.DecisionTree(
+  const baseSelectorsPicker = new DecisionTree(
     options.baseElements.selectors.map((s, i) => [s, i + 1])
   ).build(hp2Builder);
   function findBaseElements (dom) {
@@ -75,10 +75,8 @@ function process (html, metadata, options, picker, findBaseElements, walk) {
     html = html.substring(0, maxInputLength);
   }
 
-  const handler = new htmlparser.DomHandler();
-  new htmlparser.Parser(handler, { decodeEntities: options.decodeEntities }).parseComplete(html);
-
-  const bases = findBaseElements(handler.dom);
+  const document = parseDocument(html, { decodeEntities: options.decodeEntities });
+  const bases = findBaseElements(document.children);
   const builder = new BlockTextBuilder(options, picker, metadata);
   walk(bases, builder);
   return builder.toString();
@@ -187,4 +185,4 @@ function makeReplacerFromDict (dict) {
 }
 
 
-module.exports = { compile: compile };
+export { compile };

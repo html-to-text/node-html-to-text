@@ -1,12 +1,12 @@
 
-const { get, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
-const render = require('dom-serializer').default;
-const { existsOne, innerText } = require('domutils');
+import { get, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util';
+import { render } from 'dom-serializer';
+import { existsOne, innerText } from 'domutils';
 
-const { tableToString } = require('./table-printer');
+import { tableToString } from './table-printer';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('@html-to-text/base/src/typedefs');
+import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -392,17 +392,17 @@ function formatDataTable (elem, walk, builder, formatOptions) {
 }
 
 
-module.exports = {
-  anchor: formatAnchor,
-  blockquote: formatBlockquote,
-  codeBlock: formatCodeBlock,
-  dataTable: formatDataTable,
-  definitionList: formatDefinitionList,
-  definitionListCompatible: formatDefinitionListCompatible,
-  heading: formatHeading,
-  image: formatImage,
-  orderedList: formatOrderedList,
-  pre: formatPre,
-  unorderedList: formatUnorderedList,
-  wbr: formatWbr
+export {
+  formatAnchor as anchor,
+  formatBlockquote as blockquote,
+  formatCodeBlock as codeBlock,
+  formatDataTable as dataTable,
+  formatDefinitionList as definitionList,
+  formatDefinitionListCompatible as definitionListCompatible,
+  formatHeading as heading,
+  formatImage as image,
+  formatOrderedList as orderedList,
+  formatPre as pre,
+  formatUnorderedList as unorderedList,
+  formatWbr as wbr,
 };

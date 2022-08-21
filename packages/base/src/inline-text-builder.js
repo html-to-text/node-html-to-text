@@ -1,8 +1,8 @@
 
-const { get } = require('./util');
+import { get } from './util';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./typedefs');
+import './typedefs';
 
 /**
  * Helps to build text from words.
@@ -190,4 +190,4 @@ class InlineTextBuilder {
   }
 }
 
-module.exports = { InlineTextBuilder: InlineTextBuilder };
+export { InlineTextBuilder };

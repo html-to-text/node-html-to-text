@@ -9,6 +9,7 @@
     "packages/html-to-text",
     "packages/html-to-md"
   ],
+  "type": "module",
   "scripts": {
     "build:html-to-text": "cd ./packages/html-to-text/ && npm run build",
     "build:html-to-md": "cd ./packages/html-to-md/ && npm run build",
@@ -16,7 +17,8 @@
     "cover:html-to-text": "cd ./packages/html-to-text/ && npm run cover",
     "cover:html-to-md": "cd ./packages/html-to-md/ && npm run cover",
     "cover": "concurrently npm:cover:*",
-    "example": "node ./example/html-to-text.js",
+    "example:md": "node --experimental-specifier-resolution=node ./example/html-to-md.js",
+    "example:text": "node --experimental-specifier-resolution=node ./example/html-to-text.js",
     "install:base": "cd ./packages/base/ && npm i",
     "install:html-to-text": "cd ./packages/html-to-text/ && npm i",
     "install:html-to-md": "cd ./packages/html-to-md/ && npm i",
@@ -39,7 +41,6 @@
     "eslint-plugin-jsdoc": "^39.3.6",
     "mocha": "^10.0.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.78.1",
-    "rollup-plugin-cjs-es": "^1.1.0"
+    "rollup": "^2.78.1"
   }
 }

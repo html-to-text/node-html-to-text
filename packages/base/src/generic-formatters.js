@@ -1,8 +1,8 @@
 
-const render = require('dom-serializer').default;
+import { render } from 'dom-serializer';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./typedefs');
+import './typedefs';
 
 
 /**
@@ -139,15 +139,15 @@ function formatInlineSurround (elem, walk, builder, formatOptions) {
 }
 
 
-module.exports = {
-  block: formatBlock,
-  blockHtml: formatBlockHtml,
-  blockString: formatBlockString,
-  blockTag: formatBlockTag,
-  inline: formatInline,
-  inlineHtml: formatInlineHtml,
-  inlineString: formatInlineString,
-  inlineSurround: formatInlineSurround,
-  inlineTag: formatInlineTag,
-  skip: formatSkip,
+export {
+  formatBlock as block,
+  formatBlockHtml as blockHtml,
+  formatBlockString as blockString,
+  formatBlockTag as blockTag,
+  formatInline as inline,
+  formatInlineHtml as inlineHtml,
+  formatInlineString as inlineString,
+  formatInlineSurround as inlineSurround,
+  formatInlineTag as inlineTag,
+  formatSkip as skip,
 };

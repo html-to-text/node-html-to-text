@@ -12,7 +12,10 @@ module.exports = {
     '**/node_modules',
     '**/__*.*'
   ],
-  parserOptions: { ecmaVersion: 2018 },
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module'
+  },
   env: {
     es6: true,
     node: true,
@@ -143,13 +146,16 @@ module.exports = {
     'import/no-amd': 'error',
     'import/no-nodejs-modules': 'error',
     'import/first': 'error',
-    'import/no-namespace': 'error',
+    'import/no-namespace': 'off',
+    'import/namespace': 'error',
     'import/extensions': 'error',
     'import/order': ['error', { 'newlines-between': 'always', 'alphabetize': { 'order': 'asc', 'caseInsensitive': true } }],
     'import/newline-after-import': ['error', { 'count': 2 }],
     'import/no-unassigned-import': 'error',
     'import/no-named-default': 'error',
+    'import/no-named-as-default': 'error',
     'import/group-exports': 'error',
+    'import/no-unresolved': 'off',
 
     // Filenames
     'filenames/match-regex': ['error', '^[a-z][a-z0-9\\.\\-]+$'],
@@ -170,7 +176,7 @@ module.exports = {
       }
     },
     {
-      'files': ['.eslintrc.js'],
+      'files': ['.eslintrc.cjs'],
       'rules': {
         'sort-keys': 'off',
         'filenames/match-regex': 'off',

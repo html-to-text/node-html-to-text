@@ -1,22 +1,11 @@
 
-const { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } = require('@html-to-text/base/src/util');
+import { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util';
 
-const { tableToString } = require('./table-printer');
+import { tableToString } from './table-printer';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('@html-to-text/base/src/typedefs');
+import '@html-to-text/base/src/typedefs';
 
-
-/**
- * Process a block-level container.
- *
- * @type { FormatCallback }
- */
-function formatBlock (elem, walk, builder, formatOptions) {
-  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks });
-  walk(elem.children, builder);
-  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks });
-}
 
 /**
  * Process a line-break.
@@ -317,6 +306,12 @@ function formatTable (elem, walk, builder, formatOptions) {
     : formatBlock(elem, walk, builder, formatOptions);
 }
 
+function formatBlock (elem, walk, builder, formatOptions) {
+  builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks });
+  walk(elem.children, builder);
+  builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks });
+}
+
 /**
  * Process a data table.
  *
@@ -386,18 +381,18 @@ function formatDataTable (elem, walk, builder, formatOptions) {
 }
 
 
-module.exports = {
-  anchor: formatAnchor,
-  blockquote: formatBlockquote,
-  dataTable: formatDataTable,
-  heading: formatHeading,
-  horizontalLine: formatHorizontalLine,
-  image: formatImage,
-  lineBreak: formatLineBreak,
-  orderedList: formatOrderedList,
-  paragraph: formatParagraph,
-  pre: formatPre,
-  table: formatTable,
-  unorderedList: formatUnorderedList,
-  wbr: formatWbr
+export {
+  formatAnchor as anchor,
+  formatBlockquote as blockquote,
+  formatDataTable as dataTable,
+  formatHeading as heading,
+  formatHorizontalLine as horizontalLine,
+  formatImage as image,
+  formatLineBreak as lineBreak,
+  formatOrderedList as orderedList,
+  formatParagraph as paragraph,
+  formatPre as pre,
+  formatTable as table,
+  formatUnorderedList as unorderedList,
+  formatWbr as wbr,
 };

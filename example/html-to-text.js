@@ -1,7 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+import { readFileSync } from 'fs';
 
-const { htmlToText } = require('../packages/html-to-text/src/html-to-text');
+import { htmlToText } from '../packages/html-to-text/src/html-to-text';
 // const { htmlToText } = require('../packages/html-to-text/lib/html-to-text'); // build it first
 
 
@@ -14,8 +13,8 @@ console.log(text);
 console.log();
 
 console.log('From file:');
-const filePath = path.join(__dirname, 'test.html');
+const filePath = new URL('test.html', import.meta.url);
 /** @type { Options } */
 const options = { tables: ['#invoice', '.address'] };
-const text2 = htmlToText(fs.readFileSync(filePath, 'utf8'), options);
+const text2 = htmlToText(readFileSync(filePath, 'utf8'), options);
 console.log(text2);

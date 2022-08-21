@@ -1,6 +1,6 @@
 
 // eslint-disable-next-line import/no-unassigned-import
-require('@html-to-text/base/src/typedefs');
+import '@html-to-text/base/src/typedefs';
 
 
 function getRow (matrix, j) {
@@ -230,4 +230,4 @@ function tableToString (tableRows, firstRowIsHeader, spanMode) {
   return outputLines.join('\n');
 }
 
-module.exports = { tableToString: tableToString };
+export { tableToString };

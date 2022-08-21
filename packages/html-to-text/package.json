@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/html-to-text/node-html-to-text/issues"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "./lib/html-to-text.cjs",
   "module": "./lib/html-to-text.mjs",
   "exports": {
@@ -42,5 +42,10 @@
     "deepmerge": "^4.2.2",
     "htmlparser2": "^8.0.1",
     "selderee": "^0.9.0"
+  },
+  "mocha": {
+    "node-option": [
+      "experimental-specifier-resolution=node"
+    ]
   }
 }

@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/html-to-text/node-html-to-text/issues"
   },
-  "type": "commonjs",
+  "type": "module",
   "main": "./lib/html-to-md.cjs",
   "module": "./lib/html-to-md.mjs",
   "exports": {
@@ -46,6 +46,9 @@
     "selderee": "^0.9.0"
   },
   "ava": {
-    "files": ["test/**/*.js"]
+    "files": ["test/**/*.js"],
+    "nodeArguments": [
+      "--experimental-specifier-resolution=node"
+    ]
   }
 }

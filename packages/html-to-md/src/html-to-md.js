@@ -1,13 +1,13 @@
 
-const { compile: compile_ } = require('@html-to-text/base');
-const genericFormatters = require('@html-to-text/base/src/generic-formatters');
-const { mergeDuplicatesPreferLast } = require('@html-to-text/base/src/util');
-const merge = require('deepmerge'); // default
+import { compile as compile_ } from '@html-to-text/base';
+import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
+import { mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
+import merge from 'deepmerge'; // default
 
-const markdownFormatters = require('./md-formatters');
+import * as markdownFormatters from './md-formatters';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('@html-to-text/base/src/typedefs');
+import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -148,8 +148,8 @@ function convert (html, options = {}, metadata = undefined) {
   return compile(options)(html, metadata);
 }
 
-module.exports = {
-  compile: compile,
-  convert: convert,
-  htmlToMarkdown: convert
+export {
+  compile,
+  convert,
+  convert as htmlToMarkdown
 };

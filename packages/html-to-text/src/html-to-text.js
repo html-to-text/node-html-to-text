@@ -1,14 +1,14 @@
 
-const { compile: compile_ } = require('@html-to-text/base');
-const genericFormatters = require('@html-to-text/base/src/generic-formatters');
-const { get, mergeDuplicatesPreferLast } = require('@html-to-text/base/src/util');
-const merge = require('deepmerge'); // default
+import { compile as compile_ } from '@html-to-text/base';
+import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
+import { get, mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
+import merge from 'deepmerge'; // default
 
-const textFormatters = require('./text-formatters');
+import * as textFormatters from './text-formatters';
 
 
 // eslint-disable-next-line import/no-unassigned-import
-require('@html-to-text/base/src/typedefs');
+import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -216,8 +216,8 @@ function handleDeprecatedOptions (options) {
   }
 }
 
-module.exports = {
-  compile: compile,
-  convert: convert,
-  htmlToText: convert
+export {
+  compile,
+  convert,
+  convert as htmlToText
 };

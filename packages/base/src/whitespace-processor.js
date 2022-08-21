@@ -1,9 +1,9 @@
 
 // eslint-disable-next-line no-unused-vars
-const { InlineTextBuilder } = require('./inline-text-builder');
+import { InlineTextBuilder } from './inline-text-builder';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./typedefs');
+import './typedefs';
 
 
 function charactersToCodes (str) {
@@ -193,4 +193,4 @@ class WhitespaceProcessor {
 
 }
 
-module.exports = { WhitespaceProcessor: WhitespaceProcessor };
+export { WhitespaceProcessor };

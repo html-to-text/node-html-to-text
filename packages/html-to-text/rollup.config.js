@@ -1,6 +1,5 @@
 
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const cjs = require('rollup-plugin-cjs-es');
 
 
 module.exports = {
@@ -10,7 +9,6 @@ module.exports = {
     { file: 'lib/html-to-text.cjs', format: 'cjs' },
   ],
   plugins: [
-    nodeResolve({ resolveOnly: ['@html-to-text/base'] }),
-    cjs({ cache: false })
+    nodeResolve({ resolveOnly: ['@html-to-text/base'] })
   ],
 };

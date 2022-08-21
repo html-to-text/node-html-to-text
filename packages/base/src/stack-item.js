@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-const { InlineTextBuilder } = require('./inline-text-builder');
+import { InlineTextBuilder } from './inline-text-builder';
 
 
 class StackItem {
@@ -91,13 +91,13 @@ class TransformerStackItem extends StackItem {
   }
 }
 
-module.exports = {
-  BlockStackItem: BlockStackItem,
-  ListItemStackItem: ListItemStackItem,
-  ListStackItem: ListStackItem,
-  StackItem: StackItem,
-  TableCellStackItem: TableCellStackItem,
-  TableRowStackItem: TableRowStackItem,
-  TableStackItem: TableStackItem,
-  TransformerStackItem: TransformerStackItem,
+export {
+  BlockStackItem,
+  ListItemStackItem,
+  ListStackItem,
+  StackItem,
+  TableCellStackItem,
+  TableRowStackItem,
+  TableStackItem,
+  TransformerStackItem,
 };

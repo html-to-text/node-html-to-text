@@ -1,18 +1,18 @@
 
 // eslint-disable-next-line no-unused-vars
-const { Picker } = require('selderee');
+import { Picker } from 'selderee';
 
-const {
-// eslint-disable-next-line no-unused-vars
+import {
+  // eslint-disable-next-line no-unused-vars
   StackItem, BlockStackItem,
   TableCellStackItem, TableRowStackItem, TableStackItem,
   TransformerStackItem, ListStackItem, ListItemStackItem
-} = require('./stack-item');
-const { trimCharacter } = require('./util');
-const { WhitespaceProcessor } = require('./whitespace-processor');
+} from './stack-item';
+import { trimCharacter } from './util';
+import { WhitespaceProcessor } from './whitespace-processor';
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./typedefs');
+import './typedefs';
 
 
 /**
@@ -485,4 +485,4 @@ function applyTransformer (str, transformer) {
   return ((transformer) ? applyTransformer(transformer.transform(str), transformer.next) : str);
 }
 
-module.exports = { BlockTextBuilder: BlockTextBuilder };
+export { BlockTextBuilder };

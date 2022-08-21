@@ -1,9 +1,8 @@
-const fs = require('fs');
-const path = require('path');
+import { readFileSync } from 'fs';
 
-const { expect } = require('chai');
+import { expect } from 'chai';
 
-const { compile, convert } = require('../src/html-to-text');
+import { compile, convert } from '../src/html-to-text';
 
 
 const defaultConvert = compile();
@@ -233,8 +232,8 @@ describe('html-to-text', function () {
   describe('base element', function () {
 
     it('should retrieve and convert the entire document under `body` by default', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test.txt', import.meta.url), 'utf8');
       const options = {
         selectors: [
           { selector: 'table#invoice', format: 'dataTable' },
@@ -245,8 +244,8 @@ describe('html-to-text', function () {
     });
 
     it('should only retrieve and convert content under the specified base element if found', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test-address.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test-address.txt', import.meta.url), 'utf8');
       const options = {
         baseElements: { selectors: ['table.address'] },
         selectors: [
@@ -257,8 +256,8 @@ describe('html-to-text', function () {
     });
 
     it('should not repeat the same base element', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test-address.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test-address.txt', import.meta.url), 'utf8');
       const options = {
         baseElements: { selectors: ['table.address', 'table.address'] },
         selectors: [
@@ -269,8 +268,8 @@ describe('html-to-text', function () {
     });
 
     it('should retrieve base elements in order of occurrence', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test-orderby-occurrence.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test-orderby-occurrence.txt', import.meta.url), 'utf8');
       const options = {
         baseElements: {
           selectors: ['p.normal-space.small', 'table.address'],
@@ -284,8 +283,8 @@ describe('html-to-text', function () {
     });
 
     it('should retrieve base elements in order of selectors', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test-orderby-selectors.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test-orderby-selectors.txt', import.meta.url), 'utf8');
       const options = {
         baseElements: {
           selectors: ['p.normal-space.small', 'table.address'],
@@ -299,8 +298,8 @@ describe('html-to-text', function () {
     });
 
     it('should retrieve all different base elements matched the same selector', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test-multiple-elements.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test-multiple-elements.txt', import.meta.url), 'utf8');
       const options = { baseElements: { selectors: ['p.normal-space'] } };
       expect(convert(html, options)).to.equal(expected);
     });
@@ -316,8 +315,8 @@ describe('html-to-text', function () {
     });
 
     it('should retrieve and convert the entire document by default if no base element is found', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
-      const expected = fs.readFileSync(path.join(__dirname, 'test.txt'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
+      const expected = readFileSync(new URL('test.txt', import.meta.url), 'utf8');
       const options = {
         baseElements: { selectors: ['table.notthere'] },
         selectors: [
@@ -329,7 +328,7 @@ describe('html-to-text', function () {
     });
 
     it('should return null if the base element isn\'t found and we\'re not returning the DOM by default', function () {
-      const html = fs.readFileSync(path.join(__dirname, 'test.html'), 'utf8');
+      const html = readFileSync(new URL('test.html', import.meta.url), 'utf8');
       const expected = '';
       const options = {
         baseElements: {

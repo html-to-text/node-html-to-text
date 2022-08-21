@@ -135,7 +135,7 @@
 		<hr />
 		<h2>Pretty printed Source Code</h2>
 		<pre>
-htmlToText.fromFile(path.join(__dirname, 'test.html'), {
+htmlToText.fromFile(new URL('test.html', import.meta.url), {
 	tables: ['#invoice', '.address']
 }, function(err, text) {
 	if (err) return console.error(err);

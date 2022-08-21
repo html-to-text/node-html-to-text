@@ -1,7 +1,7 @@
 
-const test = require('ava');
+import test from 'ava';
 
-const { htmlToMarkdown } = require('../src/html-to-md');
+import { htmlToMarkdown } from '../src/html-to-md';
 
 
 const snapshotMacro = test.macro({

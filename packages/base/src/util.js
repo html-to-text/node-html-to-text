@@ -1,5 +1,5 @@
 
-const merge = require('deepmerge'); // default
+import merge from 'deepmerge'; // default
 
 /**
  * Make a recursive function that will only run to a given depth
@@ -142,12 +142,12 @@ function numberToRoman (num) {
     .join('');
 }
 
-module.exports = {
-  get: get,
-  limitedDepthRecursive: limitedDepthRecursive,
-  mergeDuplicatesPreferLast: mergeDuplicatesPreferLast,
-  numberToLetterSequence: numberToLetterSequence,
-  numberToRoman: numberToRoman,
-  trimCharacter: trimCharacter,
-  trimCharacterEnd: trimCharacterEnd
+export {
+  get,
+  limitedDepthRecursive,
+  mergeDuplicatesPreferLast,
+  numberToLetterSequence,
+  numberToRoman,
+  trimCharacter,
+  trimCharacterEnd
 };
