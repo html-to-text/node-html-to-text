@@ -41,7 +41,7 @@
     "@selderee/plugin-htmlparser2": "^0.6.0",
     "deepmerge": "^4.2.2",
     "he": "^1.2.0",
-    "htmlparser2": "^6.1.0",
+    "htmlparser2": "^8.0.1",
     "minimist": "^1.2.6",
     "selderee": "^0.6.0"
   },
