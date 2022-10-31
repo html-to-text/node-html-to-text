@@ -4,14 +4,6 @@
   "private": true,
   "description": "Base package for html-to-x converters",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/html-to-text/node-html-to-text.git"
-  },
-  "bugs": {
-    "url": "https://github.com/html-to-text/node-html-to-text/issues"
-  },
-  "homepage": "https://github.com/html-to-text/node-html-to-text#readme",
   "engines": {
     "node": ">=14"
   },

@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "9.0.0-next1",
+  "version": "9.0.0-preview1",
   "description": "Advanced html to plain text converter",
   "keywords": [
     "html",
@@ -12,6 +12,9 @@
   ],
   "license": "MIT",
   "author": "Malte Legenhausen <legenhausen@werk85.de>",
+  "contributors": [
+    "KillyMXI <killy@mxii.eu.org>"
+  ],
   "homepage": "https://github.com/html-to-text/node-html-to-text",
   "repository": {
     "type": "git",
