@@ -19,15 +19,17 @@ Advanced converter that parses HTML and returns beautiful text.
 
 ## Changelog
 
-Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/CHANGELOG.md)
+~~Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/CHANGELOG.md)~~
 
-Version 6 contains a ton of changes, so it worth to take a look.
+Version 6 contains a ton of changes, so it worth to take a look at the full changelog.
 
 Version 7 contains an important change for custom formatters.
 
 Version 8 brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
 
-Version 9 ...
+Version 9 gets a significant internal rework, drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters.
+
+Version 9 WIP [GitHub branch](https://github.com/html-to-text/node-html-to-text/tree/v9), [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/v9/packages/html-to-text/CHANGELOG.md).
 
 ## Installation
 
@@ -81,6 +83,8 @@ Option                  | Default      | Description
 `baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
 `baseElements.orderBy`  | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
 `baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
+`decodeEntities`        | `true`       | Decode HTML entities found in the input HTML if `true`. Otherwise preserve in output text.
+`encodeCharacters`      | `{}`         | A dictionary with characters that should be replaced in the output text and corresponding escape sequences.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
 `limits`                |              | Describes how to limit the output text in case of large HTML documents.
 `limits.ellipsis`       | `'...'`      | A string to insert in place of skipped content.
@@ -200,8 +204,17 @@ Selector      | Default&nbsp;format | Notes
 
 More formatters also available for use:
 
-* `dataTable` - for visually-accurate tables. Note that this might be not search-friendly (output text will look like gibberish to a machine when there is any wrapped cell contents) and also better to be avoided for tables used as a page layout tool;
-* `skip` - as the name implies it skips the given tag with it's contents without printing anything.
+Format           | Description
+---------------- | -----------
+`dataTable`      | For visually-accurate tables. Note that this might be not search-friendly (output text will look like gibberish to a machine when there is any wrapped cell contents) and also better to be avoided for tables used as a page layout tool.
+`skip`           | Skips the given tag with it's contents without printing anything.
+`blockString`    | Insert a block with the given string literal (`formatOptions.string`) instead of the tag.
+`blockTag`       | Render an element as HTML block bag, convert it's contents to text.
+`blockHtml`      | Render an element with all it's children as HTML block.
+`inlineString`   | Insert the given string literal (`formatOptions.string`) inline instead of the tag.
+`inlineSurround` | Render inline element wrapped with given strings (`formatOptions.prefix` and `formatOptions.suffix`).
+`inlineTag`      | Render an element as inline HTML tag, convert it's contents to text.
+`inlineHtml`     | Render an element with all it's children as inline HTML.
 
 ##### Format options
 
@@ -213,6 +226,7 @@ Option              | Default     | Applies&nbsp;to    | Description
 `trailingLineBreaks` | `1` or `2` | all block-level formatters | Number of line breaks to separate this block from the next one.<br/>Note that N+1 line breaks are needed to make N empty lines.
 `baseUrl`           | `null`      | `anchor`, `image`  | Server host for link `href` attributes and image `src` attributes relative to the root (the ones that start with `/`).<br/>For example, with `baseUrl = 'http://asdf.com'` and `<a href='/dir/subdir'>...</a>` the link in the text will be `http://asdf.com/dir/subdir`.
 `linkBrackets`     | `['[', ']']` | `anchor`, `image`  | Surround links with these brackets.<br/>Set to `false` or `['', '']` to disable.
+`pathRewrite`      | `undefined`  | `anchor`, `image`  | A function to rewrite link `href` attributes and image `src` attributes. Optional second argument is the metadata object.<br/>Applied before `baseUrl`.
 `hideLinkHrefIfSameAsText` | `false` | `anchor`        | By default links are translated in the following way:<br/>`<a href='link'>text</a>` => becomes => `text [link]`.<br/>If this option is set to `true` and `link` and `text` are the same, `[link]` will be omitted and only `text` will be present.
 `ignoreHref`        | `false`     | `anchor`           | Ignore all links. Only process internal text of anchor tags.
 `noAnchorUrl`       | `true`      | `anchor`           | Ignore anchor links (where `href='#...'`).
@@ -269,6 +283,8 @@ const text = convert(html, {
 });
 console.log(text); // Hello World!
 ```
+
+New in version 9: metadata object can be provided as the last optional argument of the `convert` function (or the function returned by `compile` function). It can be accessed by formatters as `builder.metadata`.
 
 Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples. The easiest way to write your own is to pick an existing one and customize.
 

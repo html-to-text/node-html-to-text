@@ -12,7 +12,7 @@ This is a monorepo.
 
     Folder: [/packages/html-to-text](/packages/html-to-text)
 
-    Docs: [readme](/packages/html-to-text/README.md), [changelog](/packages/html-to-text/CHANGELOG.md)
+    Docs: [README.md](/packages/html-to-text/README.md), [CHANGELOG.md](/packages/html-to-text/CHANGELOG.md)
 
 - **@html-to/md**
 
@@ -20,11 +20,11 @@ This is a monorepo.
 
     Folder: [/packages/html-to-md](/packages/html-to-md)
 
-    Docs: [readme](/packages/html-to-md/README.md), [changelog](/packages/html-to-md/CHANGELOG.md)
+    Docs: [README.md](/packages/html-to-md/README.md), [CHANGELOG.md](/packages/html-to-md/CHANGELOG.md)
 
 - **base**
 
-    Shared code for all "html-to-" converters.
+    Shared code. Only exists in the monorepo and bundled into published packages.
 
     Folder: [/packages/base](/packages/base)
 

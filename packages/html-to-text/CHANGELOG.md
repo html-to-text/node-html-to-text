@@ -1,10 +1,12 @@
 # Changelog
 
-## Version 9.0.0 (WIP)
+## Version 9.0.0-preview1 (WIP)
 
-All commits: TODO
+README location before full release: [v9/packages/html-to-text/README.md](https://github.com/html-to-text/node-html-to-text/blob/v9/packages/html-to-text/README.md)
 
-Version 9 roadmap issue: [#240](https://github.com/html-to-text/node-html-to-text/issues/240)
+All commits: [8.2.1...v9](https://github.com/html-to-text/node-html-to-text/compare/8.2.1...v9)
+
+Version 9 roadmap: [#240](https://github.com/html-to-text/node-html-to-text/issues/240)
 
 ### Node version
 
@@ -16,7 +18,7 @@ Package now provides `cjs` and `mjs` exports.
 
 ### CLI is no longer built in
 
-If you use CLI then install that package instead: (WIP, to be provided before release)
+If you use CLI then install that package instead: _(WIP, to be provided before full release)_
 
 ### Dependency updates
 
@@ -32,14 +34,26 @@ If you use CLI then install that package instead: (WIP, to be provided before re
 
 Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
 
-### Improvements for writing custom formatters
-
-* Some logic for making lists is moved to BlockTextBuilder and can be reused for custom lists. Addresses [#238](https://github.com/html-to-text/node-html-to-text/issues/238).
-
 ### New options
 
 * `decodeEntities` - controls whether HTML entities found in the input HTML should be decoded or left as is in the output text;
 * `encodeCharacters` - a dictionary with characters that should be replaced in the output text and corresponding escape sequences.
+
+### New built-in formatters
+
+### Changes to existing built-in formatters
+
+* `anchor` and `image` got `pathRewrite` option;
+* `dataTable` formatter allows zero `colSpacing`.
+
+### Improvements for writing custom formatters
+
+* Some logic for making lists is moved to BlockTextBuilder and can be reused for custom lists (`openList`, `openListItem`, `closeListItem`, `closeList`). Addresses [#238](https://github.com/html-to-text/node-html-to-text/issues/238);
+* `startNoWrap`, `stopNoWrap` - allows to keep local inline content in a single line regardless of wrapping options;
+* `addLiteral` - it's like `addInline` but circumvents most of the text processing logic. This should be preferred when inserting markup elements;
+* It is now possible to provide a metadata object along with the HTML string to convert. Metadata object is available for custom formatters via `builder.metadata`. This allows to compile the converter once and still being able to supply per-document data. Metadata object is supplied as the last optional argument to `convert` function and the function returned by `compile` function.
+
+----
 
 ## Version 8.2.1
 
@@ -109,6 +123,8 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 
 No previously deprecated stuff is removed in this version. Significant cleanup is planned for version 9 instead.
 
+----
+
 ## Version ~~7.1.2~~ 7.1.3
 
 Bump `minimist` dependency and dev dependencies, regenerate `package-lock.json`.
@@ -151,6 +167,8 @@ See the commit [f50f10f](https://github.com/html-to-text/node-html-to-text/commi
 All commits: [6.0.0...7.0.0](https://github.com/html-to-text/node-html-to-text/compare/6.0.0...7.0.0)
 
 Version 7 roadmap issue: [#222](https://github.com/html-to-text/node-html-to-text/issues/222)
+
+----
 
 ## Version 6.0.0
 
@@ -202,6 +220,8 @@ GitHub should handle all redirects from the old url, so it shouldn't break anyth
 
 Version 6 roadmap issue: [#200](https://github.com/html-to-text/node-html-to-text/issues/200)
 
+----
+
 ## Version 5.1.1
 
 * `preserveNewLines` whitespace issue fixed [#162](https://github.com/html-to-text/node-html-to-text/pull/162)
@@ -247,11 +267,15 @@ const fromFileSync = (file, options) => fromString(fs.readFileSync(file, 'utf8')
 
 Node versions < 6 are no longer supported.
 
+----
+
 ## Version 4.0.0
 
 * Support dropped for node version < 4.
 * New option `unorderedListItemPrefix` added.
 * HTML entities in links are not supported.
+
+----
 
 ## Version 3.3.0
 
@@ -274,6 +298,8 @@ Node versions < 6 are no longer supported.
 * Switched from `htmlparser` to `htmlparser2` #113
 * Treat non-numeric colspans as zero and handle them gracefully #105
 
+----
+
 ## Version 2.1.1
 
 * Extra space problem fixed. #88
@@ -293,6 +319,8 @@ Node versions < 6 are no longer supported.
 Breaking Changes:
 
 * Minimum node version increased to >=0.10.0
+
+----
 
 ## Version 1.6.2
 
