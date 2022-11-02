@@ -175,13 +175,12 @@ function convert (html, options = {}, metadata = undefined) {
  * @param { Options } options HtmlToText options.
  */
 function handleDeprecatedOptions (options) {
-  const selectorDefinitions = options.selectors;
-
   if (options.tags) {
     const tagDefinitions = Object.entries(options.tags).map(
       ([selector, definition]) => ({ ...definition, selector: selector || '*' })
     );
-    selectorDefinitions.push(...tagDefinitions);
+    options.selectors.push(...tagDefinitions);
+    options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
   }
 
   function set (obj, path, value) {
@@ -209,7 +208,7 @@ function handleDeprecatedOptions (options) {
     set(options, ['baseElements', 'returnDomByDefault'], options['returnDomByDefault']);
   }
 
-  for (const definition of selectorDefinitions) {
+  for (const definition of options.selectors) {
     if (definition.format === 'anchor' && get(definition, ['options', 'noLinkBrackets'])) {
       set(definition, ['options', 'linkBrackets'], false);
     }

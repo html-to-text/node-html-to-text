@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 9.0.0-preview2 (WIP)
+
+Fix deprecated `tags` option support.
+
 ## Version 9.0.0-preview1 (WIP)
 
 README location before full release: [v9/packages/html-to-text/README.md](https://github.com/html-to-text/node-html-to-text/blob/v9/packages/html-to-text/README.md)
