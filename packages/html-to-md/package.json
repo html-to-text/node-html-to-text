@@ -27,6 +27,12 @@
     "import": "./lib/html-to-md.mjs",
     "require": "./lib/html-to-md.cjs"
   },
+  "files": [
+    "lib",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=14"
   },
@@ -34,7 +40,10 @@
     "build:rollup": "rollup -c",
     "build": "npm run clean && npm run build:rollup",
     "clean": "rimraf lib",
+    "copy:license": "copyfiles -f ../../LICENSE .",
     "cover": "c8 --reporter=lcov --reporter=text-summary ava -t 20000",
+    "lint": "eslint ../../",
+    "prepublishOnly": "npm run copy:license && npm run lint && npm test",
     "test": "ava"
   },
   "dependencies": {
