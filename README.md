@@ -14,6 +14,14 @@ This is a monorepo.
 
     Docs: [README.md](/packages/html-to-text/README.md), [CHANGELOG.md](/packages/html-to-text/CHANGELOG.md)
 
+- **@html-to/text-cli**
+
+    CLI for html to text converter.
+
+    Folder: [/packages/html-to-text-cli](/packages/html-to-text-cli)
+
+    Docs: [README.md](/packages/html-to-text-cli/README.md), [CHANGELOG.md](/packages/html-to-text-cli/CHANGELOG.md)
+
 - **@html-to/md**
 
     Advanced html to markdown converter.

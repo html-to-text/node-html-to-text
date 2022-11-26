@@ -12,6 +12,7 @@
   "type": "module",
   "scripts": {
     "build:html-to-text": "cd ./packages/html-to-text/ && npm run build",
+    "build:html-to-text-cli": "cd ./packages/html-to-text-cli/ && npm run build",
     "build:html-to-md": "cd ./packages/html-to-md/ && npm run build",
     "build": "concurrently npm:build:*",
     "cover:html-to-text": "cd ./packages/html-to-text/ && npm run cover",
@@ -21,6 +22,7 @@
     "example:text": "node --experimental-specifier-resolution=node ./example/html-to-text.js",
     "install:base": "cd ./packages/base/ && npm i",
     "install:html-to-text": "cd ./packages/html-to-text/ && npm i",
+    "install:html-to-text-cli": "cd ./packages/html-to-text-cli/ && npm i",
     "install:html-to-md": "cd ./packages/html-to-md/ && npm i",
     "lint": "eslint .",
     "postinstall": "concurrently npm:install:*",

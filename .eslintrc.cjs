@@ -163,6 +163,14 @@ module.exports = {
   },
   overrides: [
     {
+      'files': ['packages/html-to-text-cli/**/*.js'],
+      'rules': {
+        'sort-keys': 'off',
+        'import/extensions': [ 'error', 'never', { 'json': 'always' } ],
+        'import/no-nodejs-modules': [ 'error', { 'allow': ['node:process'] }]
+      }
+    },
+    {
       'files': ['example/*.js'],
       'rules': { 'import/no-nodejs-modules': 'off' }
     },
