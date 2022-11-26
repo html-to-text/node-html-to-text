@@ -2,6 +2,9 @@
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 
+/**
+ * @type {import('rollup').RollupOptions}
+ */
 module.exports = {
   input: 'src/html-to-text.js',
   output: [

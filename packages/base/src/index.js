@@ -58,7 +58,7 @@ function compile (options = {}) {
  * @param { string } html HTML content to convert.
  * @param { any } metadata Optional metadata for HTML document, for use in formatters.
  * @param { Options } options HtmlToText options (preprocessed).
- * @param { Picker<DomNode, TagDefinition> } picker
+ * @param { import('selderee').Picker<DomNode, TagDefinition> } picker
  * Tag definition picker for DOM nodes processing.
  * @param { (dom: DomNode[]) => DomNode[] } findBaseElements
  * Function to extract elements from HTML DOM

@@ -1,7 +1,4 @@
 
-// eslint-disable-next-line no-unused-vars
-import { Picker } from 'selderee';
-
 import {
   // eslint-disable-next-line no-unused-vars
   StackItem, BlockStackItem,
@@ -26,7 +23,7 @@ class BlockTextBuilder {
    * Creates an instance of BlockTextBuilder.
    *
    * @param { Options } options HtmlToText options.
-   * @param { Picker<DomNode, TagDefinition> } picker Selectors decision tree picker.
+   * @param { import('selderee').Picker<DomNode, TagDefinition> } picker Selectors decision tree picker.
    * @param { any} [metadata] Optional metadata for HTML document, for use in formatters.
    */
   constructor (options, picker, metadata = undefined) {
