@@ -105,7 +105,7 @@ Option                  | Default      | Description
 Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
 -------------------------- | --- | ----- | -----------------
 `baseElement`              | 8.0 |       | `baseElements: { selectors: [ 'body' ] }`
-`decodeOptions`            |     |  9.0  | Entity decoding is now handled by [htmlparser2](https://github.com/fb55/htmlparser2) itself and [entities](https://github.com/fb55/entities) internally. No user-configurable parts compared to [he](https://github.com/mathiasbynens/he).
+`decodeOptions`            |     |  9.0  | Entity decoding is now handled by [htmlparser2](https://github.com/fb55/htmlparser2) itself and [entities](https://github.com/fb55/entities) internally. No user-configurable parts compared to [he](https://github.com/mathiasbynens/he) besides boolean `decodeEntities`.
 `format`                   |     |  6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
 `hideLinkHrefIfSameAsText` | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
 `ignoreHref`               | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
@@ -303,4 +303,4 @@ Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/bl
 
 ## License
 
-[MIT License](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE-MIT)
+[MIT License](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE)
