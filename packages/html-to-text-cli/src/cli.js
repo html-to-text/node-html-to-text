@@ -4,7 +4,8 @@ import { handleArgv } from 'aspargvs';
 import deepmerge from 'deepmerge';
 import { htmlToText } from 'html-to-text';
 
-import { version } from '../package.json';
+import { version as httVersion } from '../../html-to-text/package.json';
+import { version as cliVersion } from '../package.json';
 
 
 const kebabToCamelCase = (str) => str
@@ -15,9 +16,13 @@ const camelToKebabCase = (str) => str
   .replace(/\B([a-z0-9])([A-Z])/g, '$1-$2')
   .toLowerCase();
 
+const versionText =
+`${cliVersion} - cli version
+${httVersion} - converter version`;
+
 const helpHeader =
 `Advanced html to plain text converter
-Version: ${version}
+${versionText.replace(/^/gm, '  ')}
 
 Usage:
   - send input HTML document to stdin;
@@ -40,7 +45,7 @@ handleArgv({
     key: kebabToCamelCase,
     unkey: camelToKebabCase,
     bin: () => 'html-to-text',
-    version: () => version,
+    version: () => versionText,
   },
   presets: {
     'human': {
