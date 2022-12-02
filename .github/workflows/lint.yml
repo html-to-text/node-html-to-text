@@ -21,8 +21,7 @@ jobs:
 
       - name: Get npm cache directory
         id: npm-cache-dir
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
         id: npm-cache
@@ -31,6 +30,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Touch cli file to prevent npm ci from freaking out
+        uses: DamianReeves/write-file-action@v1.2
+        with:
+          path: packages/html-to-text-cli/bin/cli.js
+          contents: '// placeholder'
 
       - run: npm ci
 

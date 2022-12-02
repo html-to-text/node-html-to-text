@@ -10,6 +10,11 @@ jobs:
       matrix:
         node-version: [14.x, 16.x]
         os: [ubuntu-latest, windows-latest]
+        include:
+          - os: windows-latest
+            get-cache-path: '"dir=$(npm config get cache)" >> $env:GITHUB_OUTPUT'
+          - os: ubuntu-latest
+            get-cache-path: 'echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT'
 
     runs-on: ${{ matrix.os }}
 
@@ -26,8 +31,7 @@ jobs:
 
       - name: Get npm cache directory
         id: npm-cache-dir
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
+        run: ${{ matrix.get-cache-path }}
 
       - uses: actions/cache@v3
         id: npm-cache
@@ -36,6 +40,12 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Touch cli file to prevent npm ci from freaking out
+        uses: DamianReeves/write-file-action@v1.2
+        with:
+          path: packages/html-to-text-cli/bin/cli.js
+          contents: '// placeholder'
 
       - run: npm ci
 
