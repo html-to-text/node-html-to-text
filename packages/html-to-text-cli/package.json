@@ -1,6 +1,6 @@
 {
   "name": "@html-to/text-cli",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "CLI html to plain text converter",
   "keywords": [
     "html",
@@ -40,7 +40,10 @@
     "copy:license": "copyfiles -f ../../LICENSE ."
   },
   "dependencies": {
+    "@selderee/plugin-htmlparser2": "^0.10.0",
+    "aspargvs": "^0.6.0",
     "deepmerge": "^4.2.2",
-    "aspargvs": "^0.6.0"
+    "htmlparser2": "^8.0.1",
+    "selderee": "^0.10.0"
   }
 }

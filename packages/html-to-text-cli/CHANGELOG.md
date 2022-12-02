@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+
+- Fix missing dependencies
+
 ## Version 0.5.0
 
 - Initial release
