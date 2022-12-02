@@ -10,9 +10,9 @@
   "type": "module",
   "main": "src/index.js",
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.9.0",
+    "@selderee/plugin-htmlparser2": "^0.10.0",
     "deepmerge": "^4.2.2",
     "htmlparser2": "^8.0.1",
-    "selderee": "^0.9.0"
+    "selderee": "^0.10.0"
   }
 }
