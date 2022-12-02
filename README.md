@@ -20,6 +20,8 @@ This is a monorepo.
 
 - **@html-to/text-cli**
 
+    [![npm](https://img.shields.io/npm/v/@html-to/text-cli?logo=npm)](https://www.npmjs.com/package/@html-to/text-cli)
+
     CLI for html to text converter.
 
     Folder: [/packages/html-to-text-cli](/packages/html-to-text-cli)
@@ -28,7 +30,7 @@ This is a monorepo.
 
 - **@html-to/md**
 
-    Advanced html to markdown converter.
+    Advanced html to markdown converter (WIP).
 
     Folder: [/packages/html-to-md](/packages/html-to-md)
 
