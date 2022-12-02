@@ -42,6 +42,6 @@
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
-    "aspargvs": "^0.5.0"
+    "aspargvs": "^0.6.0"
   }
 }

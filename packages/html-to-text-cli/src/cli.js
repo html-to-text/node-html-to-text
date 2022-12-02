@@ -1,12 +1,11 @@
 import process from 'node:process';
 
-import { htmlToText } from '@html-to-text/html-to-text';
 import { handleArgv } from 'aspargvs';
 import deepmerge from 'deepmerge';
+import { htmlToText } from 'html-to-text';
 
-// import { version } from '../package.json';
+import { version } from '../package.json';
 
-const version = '0.5.0';
 
 const kebabToCamelCase = (str) => str
   .replace(/-./g, x => x[1].toUpperCase());
@@ -16,11 +15,26 @@ const camelToKebabCase = (str) => str
   .replace(/\B([a-z0-9])([A-Z])/g, '$1-$2')
   .toLowerCase();
 
+const helpHeader =
+`Advanced html to plain text converter
+Version: ${version}
+
+Usage:
+  - send input HTML document to stdin;
+  - get plain text from stdout;
+  - use arguments to specify commands and options;
+  - refer to html-to-text package docs for all available options;
+  - all options except functions can be expressed in CLI args;
+  - below is the short summary of the args syntax;
+  - refer to @html-to/text-cli docs for further details.
+
+`;
+
 handleArgv({
   handlers: {
-    help: true,
+    help: (text) => helpHeader + text,
     unparse: true,
-    inspect: true,
+    inspect: { depth: 5, },
     json: businessLogic,
     merge: (acc, next) => deepmerge(acc, next),
     key: kebabToCamelCase,
@@ -40,7 +54,7 @@ handleArgv({
       }
     },
     'machine': {
-      description: 'Some options more suitable for machine search',
+      description: 'Some options more suitable for machine processing',
       json: {
         wordwrap: false,
         longWordSplit: { forceWrapOnLimit: false },

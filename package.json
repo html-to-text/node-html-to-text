@@ -7,6 +7,7 @@
   "workspaces": [
     "packages/base",
     "packages/html-to-text",
+    "packages/html-to-text-cli",
     "packages/html-to-md"
   ],
   "type": "module",
@@ -14,7 +15,7 @@
     "build:html-to-text": "cd ./packages/html-to-text/ && npm run build",
     "build:html-to-text-cli": "cd ./packages/html-to-text-cli/ && npm run build",
     "build:html-to-md": "cd ./packages/html-to-md/ && npm run build",
-    "build": "concurrently npm:build:*",
+    "build": "npm run build:html-to-text && npm run build:html-to-text-cli && npm run build:html-to-md",
     "cover:html-to-text": "cd ./packages/html-to-text/ && npm run cover",
     "cover:html-to-md": "cd ./packages/html-to-md/ && npm run cover",
     "cover": "concurrently npm:cover:*",
@@ -31,8 +32,9 @@
     "test": "concurrently npm:test:*"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-json": "^5.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/node": "14.18.34",
     "ava": "^4.3.3",
     "c8": "^7.12.0",
     "chai": "^4.3.7",

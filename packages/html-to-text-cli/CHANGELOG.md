@@ -4,4 +4,4 @@
 
 - Initial release
 - Requires Node.js version >= 14.13.1
-- Based on `html-to-text` version 9.0.0-preview2
+- Based on `html-to-text` version 9.0.0

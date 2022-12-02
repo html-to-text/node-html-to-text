@@ -1,9 +1,12 @@
 # @html-to/text-cli
 
-Command line interface for `html-to-text` Node.js package
+Command line interface for `html-to-text` Node.js package.
 
 
 ## Features
+
+- almost all `html-to-text` options can be specified via command line arguments or json config (the only exception is functions such as custom formatters);
+- a couple of presets for common use cases (human reading in terminal and machine indexing/search).
 
 
 ## Changelog
@@ -30,7 +33,54 @@ npm i -g @html-to/text-cli
 - Get plain text from `stdout`;
 - Pass converter options as command arguments.
 
-TODO
+### Command line arguments
+
+```shell
+> cat ./input.html | html-to-text [commands...] [keys and values...] > ./output.txt
+  ```
+
+### Available commands
+
+| Command   | Alias | Argument       | Description
+| --------- | ----- | -------------- | -----------
+| `json`    | `-j`  | \<file_name>   | Merge given json file contents with the parsed options object. This way you can provide all or some options from a file rather than explicitly from CLI.
+| `preset`  | `-p`  | \<preset_name> | Merge given preset into the parsed options object. Available presets listed below.
+| `inspect` | `-i`  |                | Pretty print the parsed options object and exit. Useful as a dry run to check how options are parsed.
+| `unparse` | `-u`  |                | Print the parsed options object back as args string and exit. Can be used to check what arguments produce the result equivalent to a given json file.
+| `help`    | `-h`  |                | Print help message end exit.
+| `version` | `-v`  |                | Print version number and exit.
+
+Note: short aliases cannot be merged.
+
+### Available presets
+
+| Preset    | Description
+| --------- | -----------
+| `human`   | Some options more suitable for human reading in terminal (ensure line length of 80 characters, format tables visually)
+| `machine` | Some options more suitable for machine processing (no line length limit, format tables and cells as blocks)
+
+### Options syntax
+
+Refer to `html-to-text help` output for brief syntax information.
+
+Refer to [aspargvs](https://github.com/mxxii/aspargvs) readme for more detailed information.
+
+Note: PowerShell requires to escape quotes and curly braces.
+
+### Option examples
+
+All options that are representable in JSON format (that is all except functions) can be specified via CLI arguments. Below are some examples.
+
+| JSON                  | CLI
+| --------------------- | ---
+| `{ preserveNewlines: true }` | `--preserveNewlines`
+| `{ wordwrap: 100 }`   | `--wordwrap=100`
+| `{ wordwrap: false }` | `--!wordwrap`
+| `{ baseElements: { orderBy: 'occurrence' } }` | `--baseElements.orderBy=occurrence`
+| `{ selectors: [`<br/>`{ selector: 'img', format: 'skip' }`<br/>`] }` | `--selectors[] {} :selector=img :format=skip`
+| `{ selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`{ selector: 'h2', options: { uppercase: false } }`<br/>`] }`| `--selectors[] {} :selector=h1 :!options.uppercase {} :selector=h2 :!options.uppercase`
+| `{ selectors: [`<br/>`{ selector: 'table', format: 'dataTable', options: { uppercaseHeaderCells: false } }`<br/>`] }` | `--selectors[] {} :selector=table :format=dataTable :options.uppercase-header-cells=false`
+| `{ selectors: [`<br/>`{ selector: 'a', options: { linkBrackets: ['<', '>'] } }`<br/>`] }` | `--selectors[] {} :selector=a :options.linkBrackets=['<','>']`
 
 
 ## License
