@@ -2,7 +2,7 @@
 
 [![lint status](https://github.com/html-to-text/node-html-to-text/workflows/lint/badge.svg)](https://github.com/html-to-text/node-html-to-text/actions/workflows/lint.yml)
 [![test status](https://github.com/html-to-text/node-html-to-text/workflows/test/badge.svg)](https://github.com/html-to-text/node-html-to-text/actions/workflows/test.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE-MIT)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/html-to-text/node-html-to-text/blob/master/LICENSE)
 [![npm](https://img.shields.io/npm/v/html-to-text?logo=npm)](https://www.npmjs.com/package/html-to-text)
 [![npm](https://img.shields.io/npm/dw/html-to-text?color=informational&logo=npm)](https://www.npmjs.com/package/html-to-text)
 
@@ -19,7 +19,7 @@ Advanced converter that parses HTML and returns beautiful text.
 
 ## Changelog
 
-~~Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/CHANGELOG.md)~~
+Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/CHANGELOG.md)
 
 Version 6 contains a ton of changes, so it worth to take a look at the full changelog.
 
@@ -27,9 +27,7 @@ Version 7 contains an important change for custom formatters.
 
 Version 8 brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
 
-Version 9 gets a significant internal rework, drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters.
-
-Version 9 WIP [GitHub branch](https://github.com/html-to-text/node-html-to-text/tree/v9), [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/v9/packages/html-to-text/CHANGELOG.md).
+Version 9 drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters. Now a dual-mode package (cjs and esm). CLI is moved to a [separate package](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/).
 
 ## Installation
 
@@ -238,6 +236,9 @@ Option              | Default     | Applies&nbsp;to    | Description
 `maxColumnWidth`    | `60`        | `dataTable`        | Data table cell content will be wrapped to fit this width instead of global `wordwrap` limit.<br/>Set this to `undefined` in order to fall back to `wordwrap` limit.
 `colSpacing`        | `3`         | `dataTable`        | Number of spaces between data table columns.
 `rowSpacing`        | `0`         | `dataTable`        | Number of empty lines between data table rows.
+`string`            | `''`        | `blockString`, `inlineString` | A string to be inserted in place of a tag.
+`prefix`            | `''`        | `inlineSurround`   | String prefix to be inserted before inline tag contents.
+`suffix`            | `''`        | `inlineSurround`   | String suffix to be inserted after inline tag contents.
 
 ##### Deprecated format options
 
@@ -253,7 +254,7 @@ Each formatter is a function of four arguments that returns nothing. Arguments a
 
 * `elem` - the HTML element to be processed by this formatter;
 * `walk` - recursive function to process the children of this element. Called as `walk(elem.children, builder)`;
-* `builder` - [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) object. Manipulate this object state to build the output text;
+* `builder` - [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/block-text-builder.js) object. Manipulate this object state to build the output text;
 * `formatOptions` - options that are specified for a tag, along with this formatter (Note: if you need general html-to-text [options](#general-options) - they are accessible via `builder.options`).
 
 Custom formatter example:
@@ -286,14 +287,14 @@ console.log(text); // Hello World!
 
 New in version 9: metadata object can be provided as the last optional argument of the `convert` function (or the function returned by `compile` function). It can be accessed by formatters as `builder.metadata`.
 
-Refer to [built-in formatters](https://github.com/html-to-text/node-html-to-text/blob/master/lib/formatter.js) for more examples. The easiest way to write your own is to pick an existing one and customize.
+Refer to [generic formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/formatter.js) of the base package and [text formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/src/text-formatters.js) of this package for more examples. The easiest way to write your own is to pick an existing one and customize.
 
-Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/lib/block-text-builder.js) for available functions and arguments.
+Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/block-text-builder.js) for available functions and arguments.
 
 ## Example
 
-* Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.html)
-* Output text: [test.txt](https://github.com/html-to-text/node-html-to-text/blob/master/test/test.txt)
+* Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/test/test.html)
+* Output text: [test.txt](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/test/test.txt)
 
 ## Contributors
 

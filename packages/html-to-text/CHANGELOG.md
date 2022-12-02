@@ -1,16 +1,12 @@
 # Changelog
 
-## Version 9.0.0-preview2 (WIP)
+## Version 9.0.0
 
-Fix deprecated `tags` option support.
-
-## Version 9.0.0-preview1 (WIP)
-
-README location before full release: [v9/packages/html-to-text/README.md](https://github.com/html-to-text/node-html-to-text/blob/v9/packages/html-to-text/README.md)
-
-All commits: [8.2.1...v9](https://github.com/html-to-text/node-html-to-text/compare/8.2.1...v9)
+All commits: [8.2.1...9.0.0](https://github.com/html-to-text/node-html-to-text/compare/8.2.1...9.0.0)
 
 Version 9 roadmap: [#240](https://github.com/html-to-text/node-html-to-text/issues/240)
+
+Request for comments: [#261 \[RFC\] Naming issue](https://github.com/html-to-text/node-html-to-text/discussions/261) - please take a look and share opinions while you're here
 
 ### Node version
 
@@ -22,7 +18,9 @@ Package now provides `cjs` and `mjs` exports.
 
 ### CLI is no longer built in
 
-If you use CLI then install that package instead: _(WIP, to be provided before full release)_
+If you use CLI then install [that package](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/) instead.
+
+The new package uses new arg parser [aspargvs](https://github.com/mxxii/aspargvs) instead of minimist in order to deal with the vast options space of `html-to-text`.
 
 ### Dependency updates
 
@@ -36,7 +34,7 @@ If you use CLI then install that package instead: _(WIP, to be provided before f
 * `fromString` method removed;
 * deprecated positional arguments in `BlockTextBuilder` methods are now removed.
 
-Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text#deprecated-or-removed-options).
+Refer to README for [migration instructions](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text#deprecated-or-removed-options).
 
 ### New options
 
@@ -44,6 +42,8 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 * `encodeCharacters` - a dictionary with characters that should be replaced in the output text and corresponding escape sequences.
 
 ### New built-in formatters
+
+New generic formatters `blockString`, `blockTag`, `blockHtml`, `inlineString`, `inlineSurround`, `inlineTag`, `inlineHtml` cover some common usage scenarios such as [#231](https://github.com/html-to-text/node-html-to-text/issues/231).
 
 ### Changes to existing built-in formatters
 
@@ -54,8 +54,13 @@ Refer to README for [migration instructions](https://github.com/html-to-text/nod
 
 * Some logic for making lists is moved to BlockTextBuilder and can be reused for custom lists (`openList`, `openListItem`, `closeListItem`, `closeList`). Addresses [#238](https://github.com/html-to-text/node-html-to-text/issues/238);
 * `startNoWrap`, `stopNoWrap` - allows to keep local inline content in a single line regardless of wrapping options;
-* `addLiteral` - it's like `addInline` but circumvents most of the text processing logic. This should be preferred when inserting markup elements;
+* `addLiteral` - it is like `addInline` but circumvents most of the text processing logic. This should be preferred when inserting markup elements;
 * It is now possible to provide a metadata object along with the HTML string to convert. Metadata object is available for custom formatters via `builder.metadata`. This allows to compile the converter once and still being able to supply per-document data. Metadata object is supplied as the last optional argument to `convert` function and the function returned by `compile` function.
+
+### Other
+
+* Fix deprecated `tags` option support. Addresses [#253](https://github.com/html-to-text/node-html-to-text/issues/253).
+
 
 ----
 
