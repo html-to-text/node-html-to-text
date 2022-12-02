@@ -38,12 +38,10 @@
   },
   "scripts": {
     "build:rollup": "rollup -c",
-    "build": "npm run clean && npm run build:rollup",
+    "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf lib",
     "copy:license": "copyfiles -f ../../LICENSE .",
     "cover": "c8 --reporter=lcov --reporter=text-summary ava -t 20000",
-    "lint": "eslint ../../",
-    "prepublishOnly": "npm run copy:license && npm run lint && npm test",
     "test": "ava"
   },
   "dependencies": {

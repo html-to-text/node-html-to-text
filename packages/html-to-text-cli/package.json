@@ -35,10 +35,9 @@
   },
   "scripts": {
     "build:rollup": "rollup -c",
-    "build": "npm run clean && npm run build:rollup",
+    "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf bin",
-    "copy:license": "copyfiles -f ../../LICENSE .",
-    "prepublishOnly": "npm run copy:license"
+    "copy:license": "copyfiles -f ../../LICENSE ."
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
