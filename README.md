@@ -8,7 +8,7 @@ This is a monorepo.
 
 ## Packages
 
-- **html-to-text (@html-to/text)**
+- **html-to-text <!--(@html-to/text)-->**
 
     [![npm](https://img.shields.io/npm/v/html-to-text?logo=npm)](https://www.npmjs.com/package/html-to-text)
 
@@ -34,7 +34,7 @@ This is a monorepo.
 
     Folder: [/packages/html-to-md](/packages/html-to-md)
 
-    Docs: [README.md](/packages/html-to-md/README.md), [CHANGELOG.md](/packages/html-to-md/CHANGELOG.md)
+    <!-- Docs: [README.md](/packages/html-to-md/README.md), [CHANGELOG.md](/packages/html-to-md/CHANGELOG.md) -->
 
 - **base**
 
