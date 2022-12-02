@@ -28,7 +28,7 @@ npm i -g @html-to/text-cli
 
 ## Usage
 
-- Use `html-to-text` command;
+- Use `html-to-text` command (`html-to-text.cmd` in PowerShell);
 - Pipe HTML to `stdin`;
 - Get plain text from `stdout`;
 - Pass converter options as command arguments.
@@ -38,6 +38,14 @@ npm i -g @html-to/text-cli
 ```shell
 > cat ./input.html | html-to-text [commands...] [keys and values...] > ./output.txt
   ```
+
+In PowerShell:
+
+```shell
+PS> Get-Content .\input.html | html-to-text.cmd [commands...] [keys and values...] > .\output.txt
+  ```
+
+`.ps1` wrapper installed by npm might not work with `stdin`, so use `.cmd` instead.
 
 ### Available commands
 
