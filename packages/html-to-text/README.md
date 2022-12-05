@@ -287,7 +287,7 @@ console.log(text); // Hello World!
 
 New in version 9: metadata object can be provided as the last optional argument of the `convert` function (or the function returned by `compile` function). It can be accessed by formatters as `builder.metadata`.
 
-Refer to [generic formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/formatter.js) of the base package and [text formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/src/text-formatters.js) of this package for more examples. The easiest way to write your own is to pick an existing one and customize.
+Refer to [generic formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/generic-formatters.js) of the base package and [text formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/src/text-formatters.js) of this package for more examples. The easiest way to write your own is to pick an existing one and customize.
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/block-text-builder.js) for available functions and arguments.
 
