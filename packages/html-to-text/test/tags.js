@@ -950,6 +950,32 @@ describe('tags', function () {
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
+    it('should allow to call existing formatters from other formatters', function () {
+      const html = '<div>Useful</div><div>Advertisement</div><article>Handy <section><div>info</div><div>Advertisement</div></section></article><article>ads galore</article>';
+      const options = {
+        formatters: {
+          adFreeBlock: function (elem, walk, builder, formatOptions) {
+            // domutils package has functions more suitable in similar situations. This is just a test.
+            const regExp = formatOptions.filterRegExp || /advertisement/i;
+            if (elem.children.some(ch => ch.type === 'text' && regExp.test(ch.data))) {
+              // do nothing
+            } else {
+              const blockFormatter = builder.options.formatters['block'];
+              if (blockFormatter) {
+                blockFormatter(elem, walk, builder, formatOptions);
+              }
+            }
+          }
+        },
+        selectors: [
+          { selector: 'div', format: 'adFreeBlock' },
+          { selector: 'article', format: 'adFreeBlock', options: { filterRegExp: /^ad/i, leadingLineBreaks: 4 } }
+        ]
+      };
+      const expected = 'Useful\n\n\n\nHandy\ninfo';
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
   });
 
   describe('selectors', function () {

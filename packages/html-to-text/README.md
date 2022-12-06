@@ -291,6 +291,35 @@ Refer to [generic formatters](https://github.com/html-to-text/node-html-to-text/
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/block-text-builder.js) for available functions and arguments.
 
+#### Call other formatters from a custom formatter
+
+Most of the times this is *not* what you actually need. Most practical problems can be solved with [selectors](#selectors).
+
+If you really need to inspect the node internals, not just attributes, then you can do it like this:
+
+```javascript
+const options = {
+  // ...
+  formatters: {
+    filterBlockFormatter: function (elem, walk, builder, formatOptions) {
+      // all built-in and custom formatters available by name
+      const blockFormatter = builder.options.formatters['block'];
+      if (blockFormatter && elem.children.some(/* predicate */)) {
+        blockFormatter(elem, walk, builder, formatOptions);
+      }
+    }
+  },
+  selectors: [
+    {
+      selector: 'div.questionable',
+      format: 'filterBlockFormatter',
+      options: { leadingLineBreaks: 1, trailingLineBreaks: 1 }
+    }
+  ],
+  // ...
+}
+```
+
 ## Example
 
 * Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/test/test.html)
