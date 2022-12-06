@@ -408,7 +408,7 @@ class BlockTextBuilder {
   /**
    * Finalize currently built table and add the rendered text to the parent block.
    *
-   * @param { object } [param0]
+   * @param { object } param0
    * Object holding the parameters of the table.
    *
    * @param { TablePrinter } param0.tableToString
@@ -420,7 +420,7 @@ class BlockTextBuilder {
    * @param { number } [param0.trailingLineBreaks]
    * This table should have at least this number of line breaks to separate it from any following block.
    */
-  closeTable ({ tableToString, leadingLineBreaks = 2, trailingLineBreaks = 2 } = {}) {
+  closeTable ({ tableToString, leadingLineBreaks = 2, trailingLineBreaks = 2 }) {
     const table = this._popStackItem();
     const output = tableToString(table.rows);
     if (output) {
