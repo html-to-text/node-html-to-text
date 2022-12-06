@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 9.0.1
+
+* fixed a broken link in readme: [#262](https://github.com/html-to-text/node-html-to-text/pull/262);
+* test and documented the usage of existing formatters from custom formatters in readme: [#263](https://github.com/html-to-text/node-html-to-text/issues/263);
+* fixed jsdoc comment for `BlockTextBuilder.closeTable`: [#264](https://github.com/html-to-text/node-html-to-text/issues/264);
+* added missing entry in the 9.0.0 changelog below regarding `BlockTextBuilder.closeTable`.
+
+All commits: [9.0.0...9.0.1](https://github.com/html-to-text/node-html-to-text/compare/9.0.0...9.0.1)
+
 ## Version 9.0.0
 
 All commits: [8.2.1...9.0.0](https://github.com/html-to-text/node-html-to-text/compare/8.2.1...9.0.0)
@@ -55,7 +64,8 @@ New generic formatters `blockString`, `blockTag`, `blockHtml`, `inlineString`, `
 * Some logic for making lists is moved to BlockTextBuilder and can be reused for custom lists (`openList`, `openListItem`, `closeListItem`, `closeList`). Addresses [#238](https://github.com/html-to-text/node-html-to-text/issues/238);
 * `startNoWrap`, `stopNoWrap` - allows to keep local inline content in a single line regardless of wrapping options;
 * `addLiteral` - it is like `addInline` but circumvents most of the text processing logic. This should be preferred when inserting markup elements;
-* It is now possible to provide a metadata object along with the HTML string to convert. Metadata object is available for custom formatters via `builder.metadata`. This allows to compile the converter once and still being able to supply per-document data. Metadata object is supplied as the last optional argument to `convert` function and the function returned by `compile` function.
+* It is now possible to provide a metadata object along with the HTML string to convert. Metadata object is available for custom formatters via `builder.metadata`. This allows to compile the converter once and still being able to supply per-document data. Metadata object is supplied as the last optional argument to `convert` function and the function returned by `compile` function;
+* Breaking change for those who dare to write their own table formatter (in case there is anyone) - `closeTable` function got a required property in the options object - `tableToString` function, and previously existed `colSpacing` and `rowSpacing` are removed (now a responsibility of the `tableToString` function).
 
 ### Other
 
