@@ -15,6 +15,12 @@ console.log();
 console.log('From file:');
 const filePath = new URL('test.html', import.meta.url);
 /** @type { Options } */
-const options = { tables: ['#invoice', '.address'] };
+const options = {
+  selectors: [
+    { selector: 'table', format: 'block' },
+    { selector: 'table#invoice', format: 'dataTable' },
+    { selector: 'table.address', format: 'dataTable' },
+  ]
+};
 const text2 = htmlToText(readFileSync(filePath, 'utf8'), options);
 console.log(text2);
