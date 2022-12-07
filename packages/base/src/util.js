@@ -57,6 +57,17 @@ function trimCharacterEnd (str, char) {
 }
 
 /**
+ * Return a new string will all characters replaced with unicode escape sequences.
+ * This extreme kind of escaping can used to be safely compose regular expressions.
+ *
+ * @param { string } str A string to escape.
+ * @returns { string } A string of unicode escape sequences.
+ */
+function unicodeEscape (str) {
+  return str.replace(/[\s\S]/g, c => '\\u' + c.charCodeAt().toString(16).padStart(4, '0'));
+}
+
+/**
  * Deduplicate an array by a given key callback.
  * Item properties are merged recursively and with the preference for last defined values.
  * Of items with the same key, merged item takes the place of the last item,
@@ -149,5 +160,6 @@ export {
   numberToLetterSequence,
   numberToRoman,
   trimCharacter,
-  trimCharacterEnd
+  trimCharacterEnd,
+  unicodeEscape
 };

@@ -4,7 +4,7 @@ import { parseDocument } from 'htmlparser2';
 import { DecisionTree } from 'selderee';
 
 import { BlockTextBuilder } from './block-text-builder';
-import { limitedDepthRecursive } from './util';
+import { limitedDepthRecursive, unicodeEscape } from './util';
 
 
 /**
@@ -162,9 +162,12 @@ function recursiveWalk (walk, dom, builder) {
 }
 
 /**
- * @param { Object<string,string> } dict
+ * @param { Object<string,string | false> } dict
  * A dictionary where keys are characters to replace
  * and values are replacement strings.
+ *
+ * First code point from dict keys is used.
+ * Compound emojis with ZWJ are not supported (not until Node 16).
  *
  * @returns { ((str: string) => string) | undefined }
  */
@@ -172,10 +175,11 @@ function makeReplacerFromDict (dict) {
   if (!dict || Object.keys(dict).length === 0) {
     return undefined;
   }
-  const entries = [...Object.entries(dict)];
+  /** @type { [string, string][] } */
+  const entries = Object.entries(dict).filter(([, v]) => v !== false);
   const regex = new RegExp(
     entries
-      .map(([c]) => `(\\u${(c.charCodeAt(0).toString(16).padStart(4, '0'))})`)
+      .map(([c]) => `(${unicodeEscape([...c][0])})`)
       .join('|'),
     'g'
   );

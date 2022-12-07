@@ -27,3 +27,17 @@ test(
   snapshotMacro,
   '<img src="test.png" alt="**alt text**" title="*title*">'
 );
+
+test(
+  'should allow to disable encoding of some characters encoded by default',
+  snapshotMacro,
+  '<p>!#[]()*+-.\\_`{}</p>',
+  { encodeCharacters: { '(': '(', ')': false } }
+);
+
+test(
+  'should allow to encode additional symbols (single code point)',
+  snapshotMacro,
+  '<p>!#[]()*+-.\\_`{}</p><p>👁️ - eye</p><p>👁️‍🗨️ - eye in a speech bubble</p><p>😀 - smiley</p>',
+  { encodeCharacters: { '👁️': ':eye:', '😀': ':smiley:' } }
+);

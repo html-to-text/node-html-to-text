@@ -9,8 +9,9 @@
  * @property { boolean } [decodeEntities]
  * Specify whether HTML entities should be decoded in the text output.
  *
- * @property { Object<string,string> | ((str: string) => string) | undefined } [encodeCharacters]
+ * @property { Object<string,string|false> | ((str: string) => string) | undefined } [encodeCharacters]
  * A dictionary mapping from input text characters to escape sequences
+ * (you can set values to false to disable escaping characters that are enabled by default)
  * or a function that does the replacement.
  *
  * @property { Object< string, FormatCallback > } [formatters = {}]
