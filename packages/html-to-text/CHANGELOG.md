@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 9.0.2
+
+* support multi-character code points in `encodeCharacters` option: [#267](https://github.com/html-to-text/node-html-to-text/issues/267).
+
+All commits: [9.0.0...9.0.1](https://github.com/html-to-text/node-html-to-text/compare/9.0.1...9.0.2)
+
 ## Version 9.0.1
 
 * fixed a broken link in readme: [#262](https://github.com/html-to-text/node-html-to-text/pull/262);
