@@ -50,7 +50,7 @@ const text = convert(html, {
 console.log(text); // Hello World
 ```
 
-Configure `html-to-text` once for batch processing:
+Configure `html-to-text` once for batch processing (recommended for good performance):
 
 ```js
 const { compile } = require('html-to-text');
@@ -290,6 +290,25 @@ New in version 9: metadata object can be provided as the last optional argument 
 Refer to [generic formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/generic-formatters.js) of the base package and [text formatters](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/src/text-formatters.js) of this package for more examples. The easiest way to write your own is to pick an existing one and customize.
 
 Refer to [BlockTextBuilder](https://github.com/html-to-text/node-html-to-text/blob/master/packages/base/src/block-text-builder.js) for available functions and arguments.
+
+#### Custom metadata
+
+If you need to supply extra information about your HTML documents to use in custom formatters - it can be done with the help of metadata object.
+
+It is supplied as an extra argument to the convert function:
+
+```javascript
+import { compile, convert } from 'html-to-text';
+
+// for batch use:
+const compiledConvert = compile(options);
+let text = compiledConvert(html, metadata);
+
+// for single use:
+let text = convert(html, options, metadata);
+```
+
+And it can be accessed within formatter functions as `builder.metadata`.
 
 #### Call other formatters from a custom formatter
 
