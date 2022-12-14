@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 9.0.3
+
+* document the usage of metadata object;
+* explicitly mention `dom-serializer` dependency: [#269](https://github.com/html-to-text/node-html-to-text/issues/269).
+
+All commits: [9.0.2...9.0.3](https://github.com/html-to-text/node-html-to-text/compare/9.0.2...9.0.3)
+
 ## Version 9.0.2
 
 * support multi-character code points in `encodeCharacters` option: [#267](https://github.com/html-to-text/node-html-to-text/issues/267).

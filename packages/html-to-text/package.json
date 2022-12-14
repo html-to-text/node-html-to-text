@@ -1,6 +1,6 @@
 {
   "name": "html-to-text",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "description": "Advanced html to plain text converter",
   "keywords": [
     "html",
@@ -50,6 +50,7 @@
   "dependencies": {
     "@selderee/plugin-htmlparser2": "^0.10.0",
     "deepmerge": "^4.2.2",
+    "dom-serializer": "^2.0.0",
     "htmlparser2": "^8.0.1",
     "selderee": "^0.10.0"
   },
