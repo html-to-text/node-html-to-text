@@ -43,33 +43,39 @@ Convert a single document:
 const { convert } = require('html-to-text');
 // There is also an alias to `convert` called `htmlToText`.
 
-const html = '<h1>Hello World</h1>';
-const text = convert(html, {
-  wordwrap: 130
-});
+const options = {
+  wordwrap: 130,
+  // ...
+};
+const html = '<div>Hello World</div>';
+const text = convert(html, options);
 console.log(text); // Hello World
 ```
 
-Configure `html-to-text` once for batch processing (recommended for good performance):
+Configure `html-to-text` once to convert many documents with the same options (recommended for [good performance](https://github.com/html-to-text/node-html-to-text/issues/265#issuecomment-1337470852) when processing big batches of documents):
 
 ```js
 const { compile } = require('html-to-text');
 
-const convert = compile({
-  wordwrap: 130
-});
+const options = {
+  wordwrap: 130,
+  // ...
+};
+const compiledConvert = compile(options); // options passed here
 
 const htmls = [
-  '<h1>Hello World!</h1>',
-  '<h1>こんにちは世界！</h1>',
-  '<h1>Привет, мир!</h1>'
+  '<div>Hello World!</div>',
+  '<div>こんにちは世界！</div>',
+  '<div>Привіт Світ!</div>'
 ];
-const texts = htmls.map(convert);
+const texts = htmls.map(compiledConvert);
 console.log(texts.join('\n'));
 // Hello World!
 // こんにちは世界！
-// Привет, мир!
+// Привіт Світ!
 ```
+
+Both `convert` and `compiledConvert` can take one more optional argument - [metadata object](#custom-metadata) that can be used by formatters.
 
 ### Options
 
