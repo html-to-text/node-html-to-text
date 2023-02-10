@@ -18,9 +18,11 @@ function transposeInPlace (matrix, maxSize) {
     const rowI = getRow(matrix, i);
     for (let j = 0; j < i; j++) {
       const rowJ = getRow(matrix, j);
-      const temp = rowI[j];
-      rowI[j] = rowJ[i];
-      rowJ[i] = temp;
+      if (rowI[j] || rowJ[i]) {
+        const temp = rowI[j];
+        rowI[j] = rowJ[i];
+        rowJ[i] = temp;
+      }
     }
   }
 }
@@ -34,10 +36,17 @@ function putCellIntoLayout (cell, layout, baseRow, baseCol) {
   }
 }
 
+function getOrInitOffset (offsets, index) {
+  if (offsets[index] === undefined) {
+    offsets[index] = (index === 0) ? 0 : 1 + getOrInitOffset(offsets, index - 1);
+  }
+  return offsets[index];
+}
+
 function updateOffset (offsets, base, span, value) {
   offsets[base + span] = Math.max(
-    offsets[base + span] || 0,
-    offsets[base] + value
+    getOrInitOffset(offsets, base + span),
+    getOrInitOffset(offsets, base) + value
   );
 }
 
@@ -82,19 +91,27 @@ function tableToString (tableRows, rowSpacing, colSpacing) {
   for (let x = 0; x < colNumber; x++) {
     let y = 0;
     let cell;
-    while (y < rowNumber && (cell = layout[x][y])) {
-      if (!cell.rendered) {
-        let cellWidth = 0;
-        for (let j = 0; j < cell.lines.length; j++) {
-          const line = cell.lines[j];
-          const lineOffset = rowOffsets[y] + j;
-          outputLines[lineOffset] = (outputLines[lineOffset] || '').padEnd(colOffsets[x]) + line;
-          cellWidth = (line.length > cellWidth) ? line.length : cellWidth;
+    const rowsInThisColumn = Math.min(rowNumber, layout[x].length);
+    while (y < rowsInThisColumn) {
+      cell = layout[x][y];
+      if (cell) {
+        if (!cell.rendered) {
+          let cellWidth = 0;
+          for (let j = 0; j < cell.lines.length; j++) {
+            const line = cell.lines[j];
+            const lineOffset = rowOffsets[y] + j;
+            outputLines[lineOffset] = (outputLines[lineOffset] || '').padEnd(colOffsets[x]) + line;
+            cellWidth = (line.length > cellWidth) ? line.length : cellWidth;
+          }
+          updateOffset(colOffsets, x, cell.colspan, cellWidth + colSpacing);
+          cell.rendered = true;
         }
-        updateOffset(colOffsets, x, cell.colspan, cellWidth + colSpacing);
-        cell.rendered = true;
+        y += cell.rowspan;
+      } else {
+        const lineOffset = rowOffsets[y];
+        outputLines[lineOffset] = (outputLines[lineOffset] || '');
+        y++;
       }
-      y += cell.rowspan;
     }
   }
 

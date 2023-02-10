@@ -869,6 +869,23 @@ describe('tags', function () {
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
+    it('should not miss content in tables with variable number of cells per row', function () {
+      const html = `
+      <table>
+      <tr><td>a</td></tr>
+      <tr><td>b</td><td>c</td></tr>
+      <tr></tr>
+      <tr><td>d</td></tr>
+      </table>`;
+      const expected = 'a\nb   c\n\nd';
+      const options = {
+        selectors: [
+          { selector: 'table', format: 'dataTable' }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
   });
 
   describe('custom formatting', function () {
