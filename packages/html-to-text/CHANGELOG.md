@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 9.0.4
+
+* fixed: `dataTable` formatter was missing some existing cells in incompletely defined tables: [#282](https://github.com/html-to-text/node-html-to-text/issues/282);
+* updated readme a bit to clarify the usage: [#281](https://github.com/html-to-text/node-html-to-text/issues/281).
+
+All commits: [9.0.3...9.0.4](https://github.com/html-to-text/node-html-to-text/compare/9.0.3...9.0.4)
+
 ## Version 9.0.3
 
 * document the usage of metadata object;

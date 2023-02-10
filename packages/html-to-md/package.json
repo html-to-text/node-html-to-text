@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@selderee/plugin-htmlparser2": "^0.10.0",
-    "deepmerge": "^4.2.2",
+    "deepmerge": "^4.3.0",
     "dom-serializer": "^2.0.0",
     "domutils": "^3.0.1",
     "htmlparser2": "^8.0.1",
