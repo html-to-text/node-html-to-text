@@ -40,10 +40,10 @@
     "copy:license": "copyfiles -f ../../LICENSE ."
   },
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.10.0",
+    "@selderee/plugin-htmlparser2": "^0.11.0",
     "aspargvs": "^0.6.0",
     "deepmerge": "^4.3.0",
     "htmlparser2": "^8.0.1",
-    "selderee": "^0.10.0"
+    "selderee": "^0.11.0"
   }
 }

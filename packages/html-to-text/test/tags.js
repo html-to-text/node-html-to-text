@@ -1040,6 +1040,18 @@ describe('tags', function () {
       expect(htmlToText(html, options)).to.equal(expected);
     });
 
+    it('should allow escape sequences in selectors', function () {
+      const html = '<hr id="sceneI_3.1"/><hr class="---"/>';
+      const expected = '---[ cut ]---\n\n---[ cut ]---';
+      const options = {
+        selectors: [
+          { selector: '#sceneI_3\\.1', format: 'blockString', options: { string: '---[ cut ]---' } },
+          { selector: '.\\2d -\\-', format: 'blockString', options: { string: '---[ cut ]---' } }
+        ]
+      };
+      expect(htmlToText(html, options)).to.equal(expected);
+    });
+
   });
 
 });
