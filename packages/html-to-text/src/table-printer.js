@@ -50,6 +50,20 @@ function updateOffset (offsets, base, span, value) {
   );
 }
 
+function isChineseChar(char) {
+  const code = char.charCodeAt(0);
+  return code >= 0x4e00 && code <= 0x9fa5;
+}
+
+function getCharsLength(str) {
+  let length = 0;
+  for (let char of str) {
+    const l = isChineseChar(char) ? 2 : 1;
+    length += l;
+  }
+  return length;
+}
+
 /**
  * Render a table into a string.
  * Cells can contain multiline text and span across multiple rows and columns.
@@ -87,12 +101,16 @@ function tableToString (tableRows, rowSpacing, colSpacing) {
 
   const outputLines = [];
   const colOffsets = [0];
+  const charOffsets = [];
   // Fill column offsets and output lines column-by-column.
   for (let x = 0; x < colNumber; x++) {
     let y = 0;
     let cell;
     const rowsInThisColumn = Math.min(rowNumber, layout[x].length);
     while (y < rowsInThisColumn) {
+      if (charOffsets[y] === undefined) {
+        charOffsets[y] = 0;
+      }
       cell = layout[x][y];
       if (cell) {
         if (!cell.rendered) {
@@ -100,8 +118,10 @@ function tableToString (tableRows, rowSpacing, colSpacing) {
           for (let j = 0; j < cell.lines.length; j++) {
             const line = cell.lines[j];
             const lineOffset = rowOffsets[y] + j;
-            outputLines[lineOffset] = (outputLines[lineOffset] || '').padEnd(colOffsets[x]) + line;
-            cellWidth = (line.length > cellWidth) ? line.length : cellWidth;
+            outputLines[lineOffset] = (outputLines[lineOffset] || '').padEnd(colOffsets[x] - charOffsets[y]) + line;
+            const charsLength = getCharsLength(line);
+            charOffsets[y] += charsLength - line.length;
+            cellWidth = (charsLength > cellWidth) ? charsLength : cellWidth;
           }
           updateOffset(colOffsets, x, cell.colspan, cellWidth + colSpacing);
           cell.rendered = true;
