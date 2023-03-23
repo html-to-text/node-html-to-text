@@ -168,7 +168,7 @@ Following selectors can be used in any combinations:
 * `.foo` - class name;
 * `#bar` - id;
 * `[baz]` - attribute presence;
-* `[baz=buzz]` - attribute value (with any operators and also quotes and case sensitivity modifiers);
+* `[baz=buzz]` - attribute value (with any operators and also quotes and case sensitivity modifiers - [syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors#syntax));
 * `+` and `>` combinators (other combinators are not supported).
 
 You can match `<p style="...; display:INLINE; ...">...</p>` with `p[style*="display:inline"i]` for example.
