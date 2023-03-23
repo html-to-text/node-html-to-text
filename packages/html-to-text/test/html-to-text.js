@@ -59,6 +59,11 @@ describe('html-to-text', function () {
       expect(defaultConvert(html)).to.equal('text');
     });
 
+    it('should not break after special tag followed by an entity', function () {
+      const html = /*html*/`<style>a{}</style>&apos;<br/><span>text</span>`;
+      expect(defaultConvert(html)).to.equal("'\ntext");
+    });
+
   });
 
   describe('wordwrap option', function () {

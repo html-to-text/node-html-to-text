@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 9.0.5
+
+* `htmlparser2` updated from 8.0.1 to 8.0.2 ([release notes](https://github.com/fb55/htmlparser2/releases)) - this fixes broken parsing in certain situations: [#285](https://github.com/html-to-text/node-html-to-text/issues/285);
+* `deepmerge` updated from 4.3.0 to 4.3.1 - no functional changes;
+* added a link to attribute selectors syntax to Readme.
+
+All commits: [9.0.4...9.0.5](https://github.com/html-to-text/node-html-to-text/compare/9.0.4...9.0.5)
+
 ## Version 9.0.4
 
 * fixed: `dataTable` formatter was missing some existing cells in incompletely defined tables: [#282](https://github.com/html-to-text/node-html-to-text/issues/282);
