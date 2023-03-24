@@ -2,6 +2,7 @@
 
 ## Version 9.0.5
 
+* `selderee` updated from 0.10.0 to 0.11.0 ([changelog](https://github.com/mxxii/selderee/blob/main/packages/selderee/CHANGELOG.md)) and `parseley` - from 0.11.0 to 0.12.0 ([changelog](https://github.com/mxxii/parseley/blob/main/CHANGELOG.md)) - support escape sequences in selectors according to specification, fixes [#273](https://github.com/html-to-text/node-html-to-text/issues/273);
 * `htmlparser2` updated from 8.0.1 to 8.0.2 ([release notes](https://github.com/fb55/htmlparser2/releases)) - this fixes broken parsing in certain situations: [#285](https://github.com/html-to-text/node-html-to-text/issues/285);
 * `deepmerge` updated from 4.3.0 to 4.3.1 - no functional changes;
 * added a link to attribute selectors syntax to Readme.
