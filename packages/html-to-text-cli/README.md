@@ -1,6 +1,8 @@
 # @html-to/text-cli
 
-Command line interface for `html-to-text` Node.js package.
+[![npm](https://img.shields.io/npm/v/@html-to/text-cli?logo=npm)](https://www.npmjs.com/package/@html-to/text-cli)
+
+Command line interface for [html-to-text](https://www.npmjs.com/package/html-to-text) Node.js package.
 
 
 ## Features
