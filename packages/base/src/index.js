@@ -162,7 +162,7 @@ function recursiveWalk (walk, dom, builder) {
 }
 
 /**
- * @param { Object<string,string | false> } dict
+ * @param { {[key: string]: string | false} } dict
  * A dictionary where keys are characters to replace
  * and values are replacement strings.
  *

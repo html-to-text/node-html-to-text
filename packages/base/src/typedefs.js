@@ -9,12 +9,12 @@
  * @property { boolean } [decodeEntities]
  * Specify whether HTML entities should be decoded in the text output.
  *
- * @property { Object<string,string|false> | ((str: string) => string) | undefined } [encodeCharacters]
+ * @property { {[key: string]: string | false} | ((str: string) => string) | undefined } [encodeCharacters]
  * A dictionary mapping from input text characters to escape sequences
  * (you can set values to false to disable escaping characters that are enabled by default)
  * or a function that does the replacement.
  *
- * @property { Object< string, FormatCallback > } [formatters = {}]
+ * @property { {[key: string]: FormatCallback} } [formatters = {}]
  * A dictionary with custom formatting functions for specific kinds of elements.
  *
  * Keys are custom string identifiers, values are callbacks.
@@ -229,12 +229,12 @@
  *
  * Makes no distinction between elements (tags) and data nodes (good enough for now).
  *
- * @property { string }                 type       Type of node - "text", "tag", "comment", "script", etc.
- * @property { string }                 [data]     Content of a data node.
- * @property { string }                 [name]     Tag name.
- * @property { Object<string,string> } [attribs]  Tag attributes dictionary.
- * @property { DomNode[] }              [children] Child nodes.
- * @property { DomNode }                [parent]   Parent node.
+ * @property { string }                  type       Type of node - "text", "tag", "comment", "script", etc.
+ * @property { string }                  [data]     Content of a data node.
+ * @property { string }                  [name]     Tag name.
+ * @property { {[key: string]: string} } [attribs]  Tag attributes dictionary.
+ * @property { DomNode[] }               [children] Child nodes.
+ * @property { DomNode }                 [parent]   Parent node.
  */
 
 /**
