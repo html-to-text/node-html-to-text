@@ -213,7 +213,7 @@ Format           | Description
 `dataTable`      | For visually-accurate tables. Note that this might be not search-friendly (output text will look like gibberish to a machine when there is any wrapped cell contents) and also better to be avoided for tables used as a page layout tool.
 `skip`           | Skips the given tag with it's contents without printing anything.
 `blockString`    | Insert a block with the given string literal (`formatOptions.string`) instead of the tag.
-`blockTag`       | Render an element as HTML block bag, convert it's contents to text.
+`blockTag`       | Render an element as HTML block tag, convert it's contents to text.
 `blockHtml`      | Render an element with all it's children as HTML block.
 `inlineString`   | Insert the given string literal (`formatOptions.string`) inline instead of the tag.
 `inlineSurround` | Render inline element wrapped with given strings (`formatOptions.prefix` and `formatOptions.suffix`).
