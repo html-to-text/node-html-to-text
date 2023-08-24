@@ -150,7 +150,7 @@ Selectors array is our loose approximation of a stylesheet.
 
 * highest [specificity](https://www.w3.org/TR/selectors/#specificity) selector is used when there are multiple matches;
 * the last selector is used when there are multiple matches of equal specificity;
-* all entries with the same selector value are merged (recursively) at the compile stage, in such way so the last defined properties a kept and the relative order of unique selectors is kept;
+* all entries with the same selector value are merged (recursively) at the compile stage, in such way so the last defined properties are kept and the relative order of unique selectors is kept;
 * user-defined entries are appended after [predefined entries](#predefined-formatters);
 * Every unique selector must have `format` value specified (at least once);
 * unlike in CSS, values from different matched selectors are NOT merged at the convert stage. Single best match is used instead (that is the last one of those with highest specificity).
