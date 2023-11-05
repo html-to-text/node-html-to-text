@@ -1,5 +1,5 @@
 
-import { render } from 'dom-serializer';
+import render from 'dom-serializer';
 
 // eslint-disable-next-line import/no-unassigned-import
 import './typedefs';
