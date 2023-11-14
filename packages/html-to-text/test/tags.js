@@ -427,6 +427,17 @@ describe('tags', function () {
         expect(htmlToText(html, options)).to.equal(expected);
       });
 
+      it('should handle an unordered list with an empty prefix option', function () {
+        const html = '<ul><li>foo</li><li>bar</li></ul>';
+        const options = {
+          selectors: [
+            { selector: 'ul', options: { itemPrefix: '' } }
+          ]
+        };
+        const expected = 'foo\nbar';
+        expect(htmlToText(html, options)).to.equal(expected);
+      });
+
       it('should handle nested ul correctly', function () {
         const html = /*html*/`<ul><li>foo<ul><li>bar<ul><li>baz.1</li><li>baz.2</li></ul></li></ul></li></ul>`;
         const expected = ' * foo\n   * bar\n     * baz.1\n     * baz.2';

@@ -231,7 +231,7 @@ function formatList (elem, walk, builder, formatOptions, nextPrefixCallback) {
  * @type { FormatCallback }
  */
 function formatUnorderedList (elem, walk, builder, formatOptions) {
-  const prefix = formatOptions.itemPrefix || ' * ';
+  const prefix = (typeof formatOptions.itemPrefix === 'string') ? formatOptions.itemPrefix : ' * ';
   return formatList(elem, walk, builder, formatOptions, () => prefix);
 }
 
