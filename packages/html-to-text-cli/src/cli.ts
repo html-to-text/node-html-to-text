@@ -8,10 +8,10 @@ import { version as httVersion } from '../../html-to-text/package.json';
 import { version as cliVersion } from '../package.json';
 
 
-const kebabToCamelCase = (str) => str
-  .replace(/-./g, x => x[1].toUpperCase());
+const kebabToCamelCase = (str: string): string => str
+  .replace(/-./g, (x: string) => x[1].toUpperCase());
 
-const camelToKebabCase = (str) => str
+const camelToKebabCase = (str: string): string => str
   .replace(/\B([A-Z])(?=[a-z])/g, '-$1')
   .replace(/\B([a-z0-9])([A-Z])/g, '$1-$2')
   .toLowerCase();
@@ -37,15 +37,15 @@ Usage:
 
 handleArgv({
   handlers: {
-    help: (text) => helpHeader + text,
+    help: (text: string): string => helpHeader + text,
     unparse: true,
     inspect: { depth: 5, },
     json: businessLogic,
-    merge: (acc, next) => deepmerge(acc, next),
+    merge: (acc: object, next: object): object => deepmerge(acc, next),
     key: kebabToCamelCase,
     unkey: camelToKebabCase,
-    bin: () => 'html-to-text',
-    version: () => versionText,
+    bin: (): string => 'html-to-text',
+    version: (): string => versionText,
   },
   presets: {
     'human': {
@@ -74,14 +74,14 @@ handleArgv({
   }
 });
 
-function businessLogic (optionsObject) {
+function businessLogic (optionsObject: object): void {
   let text = '';
 
   process.title = 'html-to-text';
 
   process.stdin.resume();
   process.stdin.setEncoding('utf8');
-  process.stdin.on('data', data => { text += data; });
+  process.stdin.on('data', (data: string) => { text += data; });
   process.stdin.on('end', () => {
     text = htmlToText(text, optionsObject);
     process.stdout.write(text + '\n', 'utf-8');

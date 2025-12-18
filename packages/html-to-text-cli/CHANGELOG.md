@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.6.0
+
+- Requires Node.js version >= 18
+- Based on `html-to-text` version 10.0.0 ([changelog](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/CHANGELOG.md))
+
 ## Version 0.5.4
 
 - Based on `html-to-text` version 9.0.5 ([changelog](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/CHANGELOG.md))

@@ -1,6 +1,6 @@
 {
   "name": "@html-to/text-cli",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "CLI html to plain text converter",
   "keywords": [
     "html",
@@ -31,19 +31,20 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=14.13.1"
+    "node": ">=18"
   },
   "scripts": {
     "build:rollup": "rollup -c",
     "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf bin",
-    "copy:license": "copyfiles -f ../../LICENSE ."
+    "copy:license": "copyfiles -f ../../LICENSE .",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@selderee/plugin-htmlparser2": "^0.11.0",
     "aspargvs": "^0.6.0",
     "deepmerge": "^4.3.1",
-    "htmlparser2": "^8.0.2",
+    "htmlparser2": "^10.0.0",
     "selderee": "^0.11.0"
   }
 }

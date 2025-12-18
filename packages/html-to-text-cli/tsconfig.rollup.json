@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts", "../html-to-text/src/**/*.ts", "../base/src/**/*.ts"]
+}
+

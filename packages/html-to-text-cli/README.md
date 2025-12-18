@@ -4,6 +4,8 @@
 
 Command line interface for [html-to-text](https://www.npmjs.com/package/html-to-text) Node.js package.
 
+Requires Node.js >= 18.
+
 
 ## Features
 
