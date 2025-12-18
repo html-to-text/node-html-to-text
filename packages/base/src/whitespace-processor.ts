@@ -1,12 +1,9 @@
 
-// eslint-disable-next-line no-unused-vars
 import { InlineTextBuilder } from './inline-text-builder';
-
-// eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
+import type { Options } from './typedefs';
 
 
-function charactersToCodes (str) {
+function charactersToCodes (str: string): string {
   return [...str]
     .map(c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'))
     .join('');
@@ -18,6 +15,18 @@ function charactersToCodes (str) {
  * @class WhitespaceProcessor
  */
 class WhitespaceProcessor {
+  whitespaceChars: string;
+  leadingWhitespaceRe: RegExp;
+  trailingWhitespaceRe: RegExp;
+  allWhitespaceOrEmptyRe: RegExp;
+  newlineOrNonWhitespaceRe: RegExp;
+  newlineOrNonNewlineStringRe: RegExp;
+  shrinkWrapAdd: (
+    text: string,
+    inlineTextBuilder: InlineTextBuilder,
+    transform?: (str: string) => string,
+    noWrap?: boolean
+  ) => void;
 
   /**
    * Creates an instance of WhitespaceProcessor.
@@ -25,7 +34,8 @@ class WhitespaceProcessor {
    * @param { Options } options    HtmlToText options.
    * @memberof WhitespaceProcessor
    */
-  constructor (options) {
+  // eslint-disable-next-line max-lines-per-function
+  constructor (options: Options) {
     this.whitespaceChars = (options.preserveNewlines)
       ? options.whitespaceCharacters.replace(/\n/g, '')
       : options.whitespaceCharacters;
@@ -48,7 +58,13 @@ class WhitespaceProcessor {
        * @param { (str: string) => string } [ transform ]     A transform to be applied to words.
        * @param { boolean }                 [noWrap] Don't wrap text even if the line is too long.
        */
-      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str), noWrap = false) {
+      this.shrinkWrapAdd = function (
+        this: WhitespaceProcessor,
+        text: string,
+        inlineTextBuilder: InlineTextBuilder,
+        transform: (str: string) => string = (str => str),
+        noWrap = false
+      ) {
         if (!text) { return; }
         const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
         let anyMatch = false;
@@ -79,7 +95,13 @@ class WhitespaceProcessor {
 
       const wordRe = new RegExp(`[^${whitespaceCodes}]+`, 'g');
 
-      this.shrinkWrapAdd = function (text, inlineTextBuilder, transform = (str => str), noWrap = false) {
+      this.shrinkWrapAdd = function (
+        this: WhitespaceProcessor,
+        text: string,
+        inlineTextBuilder: InlineTextBuilder,
+        transform: (str: string) => string = (str => str),
+        noWrap = false
+      ) {
         if (!text) { return; }
         const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
         let anyMatch = false;
@@ -114,7 +136,7 @@ class WhitespaceProcessor {
    * @param { InlineTextBuilder } inlineTextBuilder A builder to receive processed text.
    * @param { boolean }           [noWrap] Don't wrap text even if the line is too long.
    */
-  addLiteral (text, inlineTextBuilder, noWrap = true) {
+  addLiteral (text: string, inlineTextBuilder: InlineTextBuilder, noWrap = true): void {
     if (!text) { return; }
     const previouslyStashedSpace = inlineTextBuilder.stashedSpace;
     let anyMatch = false;
@@ -145,7 +167,7 @@ class WhitespaceProcessor {
    * @param   { string }  text  The string to test.
    * @returns { boolean }
    */
-  testLeadingWhitespace (text) {
+  testLeadingWhitespace (text: string): boolean {
     return this.leadingWhitespaceRe.test(text);
   }
 
@@ -155,7 +177,7 @@ class WhitespaceProcessor {
    * @param   { string }  text  The string to test.
    * @returns { boolean }
    */
-  testTrailingWhitespace (text) {
+  testTrailingWhitespace (text: string): boolean {
     return this.trailingWhitespaceRe.test(text);
   }
 
@@ -165,7 +187,7 @@ class WhitespaceProcessor {
    * @param   { string }  text  The string to test.
    * @returns { boolean }
    */
-  testContainsWords (text) {
+  testContainsWords (text: string): boolean {
     return !this.allWhitespaceOrEmptyRe.test(text);
   }
 
@@ -177,7 +199,7 @@ class WhitespaceProcessor {
    * @param   { string }  text  Input string.
    * @returns { number }
    */
-  countNewlinesNoWords (text) {
+  countNewlinesNoWords (text: string): number {
     this.newlineOrNonWhitespaceRe.lastIndex = 0;
     let counter = 0;
     let match;

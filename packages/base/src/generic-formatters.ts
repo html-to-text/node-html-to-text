@@ -1,8 +1,8 @@
 
 import { render } from 'dom-serializer';
 
-// eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
+import type { BlockTextBuilder } from './block-text-builder';
+import type { DomNode, FormatOptions, RecursiveCallback } from './typedefs';
 
 
 /**
@@ -10,7 +10,12 @@ import './typedefs';
  *
  * @type { FormatCallback }
  */
-function formatSkip (elem, walk, builder, formatOptions) {
+function formatSkip (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   /* do nothing */
 }
 
@@ -19,7 +24,12 @@ function formatSkip (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatInlineString (elem, walk, builder, formatOptions) {
+function formatInlineString (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.addLiteral(formatOptions.string || '');
 }
 
@@ -28,7 +38,12 @@ function formatInlineString (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatBlockString (elem, walk, builder, formatOptions) {
+function formatBlockString (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   builder.addLiteral(formatOptions.string || '');
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
@@ -39,7 +54,12 @@ function formatBlockString (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatInline (elem, walk, builder, formatOptions) {
+function formatInline (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   walk(elem.children, builder);
 }
 
@@ -48,22 +68,27 @@ function formatInline (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatBlock (elem, walk, builder, formatOptions) {
+function formatBlock (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   walk(elem.children, builder);
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
-function renderOpenTag (elem) {
+function renderOpenTag (elem: any): string {
   const attrs = (elem.attribs && elem.attribs.length)
     ? ' ' + Object.entries(elem.attribs)
-      .map(([k, v]) => ((v === '') ? k : `${k}=${v.replace(/"/g, '&quot;')}`))
+      .map(([k, v]) => ((v === '') ? k : `${k}=${String(v).replace(/"/g, '&quot;')}`))
       .join(' ')
     : '';
   return `<${elem.name}${attrs}>`;
 }
 
-function renderCloseTag (elem) {
+function renderCloseTag (elem: any): string {
   return `</${elem.name}>`;
 }
 
@@ -72,7 +97,12 @@ function renderCloseTag (elem) {
  *
  * @type { FormatCallback }
  */
-function formatInlineTag (elem, walk, builder, formatOptions) {
+function formatInlineTag (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.startNoWrap();
   builder.addLiteral(renderOpenTag(elem));
   builder.stopNoWrap();
@@ -87,7 +117,12 @@ function formatInlineTag (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatBlockTag (elem, walk, builder, formatOptions) {
+function formatBlockTag (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   builder.startNoWrap();
   builder.addLiteral(renderOpenTag(elem));
@@ -104,7 +139,12 @@ function formatBlockTag (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatInlineHtml (elem, walk, builder, formatOptions) {
+function formatInlineHtml (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.startNoWrap();
   builder.addLiteral(
     render(elem, { decodeEntities: builder.options.decodeEntities })
@@ -117,7 +157,12 @@ function formatInlineHtml (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatBlockHtml (elem, walk, builder, formatOptions) {
+function formatBlockHtml (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   builder.startNoWrap();
   builder.addLiteral(
@@ -132,7 +177,12 @@ function formatBlockHtml (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatInlineSurround (elem, walk, builder, formatOptions) {
+function formatInlineSurround (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.addLiteral(formatOptions.prefix || '');
   walk(elem.children, builder);
   builder.addLiteral(formatOptions.suffix || '');

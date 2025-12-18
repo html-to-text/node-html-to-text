@@ -1,16 +1,63 @@
-
+import type { AnyNode } from 'domhandler';
+import type { Picker } from 'selderee';
 import {
-  // eslint-disable-next-line no-unused-vars
-  StackItem, BlockStackItem,
+  BlockStackItem,
+  type WrapStateStackItem,
   TableCellStackItem, TableRowStackItem, TableStackItem,
   TransformerStackItem, ListStackItem, ListItemStackItem
 } from './stack-item';
+import type { Options, TablePrinter, TagDefinition } from './typedefs';
 import { trimCharacter } from './util';
 import { WhitespaceProcessor } from './whitespace-processor';
 
-// eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
 
+type TagPicker = Picker<AnyNode, TagDefinition>;
+
+interface CloseBlockOptions {
+  trailingLineBreaks?: number;
+  blockTransform?: (str: string) => string;
+}
+
+interface OpenListOptions {
+  maxPrefixLength?: number;
+  prefixAlign?: 'left' | 'right';
+  interRowLineBreaks?: number;
+  leadingLineBreaks?: number;
+}
+
+interface OpenListItemOptions {
+  prefix?: string;
+}
+
+interface OpenTableCellOptions {
+  maxColumnWidth?: number;
+}
+
+interface CloseTableOptions {
+  tableToString: TablePrinter;
+  leadingLineBreaks?: number;
+  trailingLineBreaks?: number;
+}
+
+function assertWrapStateStackItem (item: unknown): asserts item is WrapStateStackItem {
+  if (
+    !item
+    || typeof item !== 'object'
+    || !('isPre' in item)
+    || !('isNoWrap' in item)
+    || !('next' in item)
+  ) {
+    throw new Error('Stack underflow: unexpected stack item type.');
+  }
+}
+
+type TextContainerStackItem = BlockStackItem | ListItemStackItem | TableCellStackItem;
+
+function assertTextContainerStackItem (item: WrapStateStackItem): asserts item is TextContainerStackItem {
+  if (!(item instanceof BlockStackItem || item instanceof TableCellStackItem)) {
+    throw new Error('Unexpected stack item type for text container.');
+  }
+}
 
 /**
  * Helps to build text from inline and block elements.
@@ -18,23 +65,27 @@ import './typedefs';
  * @class BlockTextBuilder
  */
 class BlockTextBuilder {
+  options: Options;
+  picker: TagPicker;
+  metadata: unknown;
+  whitespaceProcessor: WhitespaceProcessor;
+  _stackItem: WrapStateStackItem;
+  _wordTransformer: TransformerStackItem | null;
 
   /**
    * Creates an instance of BlockTextBuilder.
    *
    * @param { Options } options HtmlToText options.
-   * @param { import('selderee').Picker<DomNode, TagDefinition> } picker Selectors decision tree picker.
-   * @param { any} [metadata] Optional metadata for HTML document, for use in formatters.
+   * @param { TagPicker } picker Selectors decision tree picker.
+   * @param { unknown } [metadata] Optional metadata for HTML document, for use in formatters.
    */
-  constructor (options, picker, metadata = undefined) {
+  constructor (options: Options, picker: TagPicker, metadata: unknown = undefined) {
     this.options = options;
     this.picker = picker;
     this.metadata = metadata;
     this.whitespaceProcessor = new WhitespaceProcessor(options);
-    /** @type { StackItem } */
     this._stackItem = new BlockStackItem(options);
-    /** @type { TransformerStackItem } */
-    this._wordTransformer = undefined;
+    this._wordTransformer = null;
   }
 
   /**
@@ -46,7 +97,7 @@ class BlockTextBuilder {
    *
    * @param { (str: string) => string } wordTransform Word transformation function.
    */
-  pushWordTransform (wordTransform) {
+  pushWordTransform (wordTransform: (str: string) => string): void {
     this._wordTransformer = new TransformerStackItem(this._wordTransformer, wordTransform);
   }
 
@@ -55,7 +106,7 @@ class BlockTextBuilder {
    *
    * @returns { (str: string) => string } A function that was removed.
    */
-  popWordTransform () {
+  popWordTransform (): ((str: string) => string) | undefined {
     if (!this._wordTransformer) { return undefined; }
     const transform = this._wordTransformer.transform;
     this._wordTransformer = this._wordTransformer.next;
@@ -65,38 +116,41 @@ class BlockTextBuilder {
   /**
    * Ignore wordwrap option in followup inline additions and disable automatic wrapping.
    */
-  startNoWrap () {
+  startNoWrap (): void {
     this._stackItem.isNoWrap = true;
   }
 
   /**
    * Return automatic wrapping to behavior defined by options.
    */
-  stopNoWrap () {
+  stopNoWrap (): void {
     this._stackItem.isNoWrap = false;
   }
 
   /** @returns { (str: string) => string } */
-  _getCombinedWordTransformer () {
+  _getCombinedWordTransformer (): ((str: string) => string) | undefined {
     const wt = (this._wordTransformer)
-      ? ((str) => applyTransformer(str, this._wordTransformer))
+      ? ((str: string) => applyTransformer(str, this._wordTransformer))
       : undefined;
     const ce = this.options.encodeCharacters;
+    const ceFn = (typeof ce === 'function') ? ce : undefined;
     return (wt)
-      ? ((ce) ? (str) => ce(wt(str)) : wt)
-      : ce;
+      ? ((ceFn) ? (str: string) => ceFn(wt(str)) : wt)
+      : (ceFn || undefined);
   }
 
-  _popStackItem () {
+  _popStackItem (): WrapStateStackItem {
     const item = this._stackItem;
-    this._stackItem = item.next;
+    const next = item.next;
+    assertWrapStateStackItem(next);
+    this._stackItem = next;
     return item;
   }
 
   /**
    * Add a line break into currently built block.
    */
-  addLineBreak () {
+  addLineBreak (): void {
     if (!(
       this._stackItem instanceof BlockStackItem
       || this._stackItem instanceof ListItemStackItem
@@ -112,7 +166,7 @@ class BlockTextBuilder {
   /**
    * Allow to break line in case directly following text will not fit.
    */
-  addWordBreakOpportunity () {
+  addWordBreakOpportunity (): void {
     if (
       this._stackItem instanceof BlockStackItem
       || this._stackItem instanceof ListItemStackItem
@@ -136,7 +190,7 @@ class BlockTextBuilder {
    * Don't encode characters as well.
    * (Use this for things like URL addresses).
    */
-  addInline (str, { noWordTransform = false } = {}) {
+  addInline (str: string, { noWordTransform = false }: { noWordTransform?: boolean; } = {}): void {
     if (!(
       this._stackItem instanceof BlockStackItem
       || this._stackItem instanceof ListItemStackItem
@@ -185,7 +239,7 @@ class BlockTextBuilder {
    *
    * @param { string } str Text to add.
    */
-  addLiteral (str) {
+  addLiteral (str: string): void {
     if (!(
       this._stackItem instanceof BlockStackItem
       || this._stackItem instanceof ListItemStackItem
@@ -225,7 +279,8 @@ class BlockTextBuilder {
    * @param { boolean } [param0.isPre]
    * Should HTML whitespace be preserved inside this block.
    */
-  openBlock ({ leadingLineBreaks = 1, reservedLineLength = 0, isPre = false } = {}) {
+  openBlock ({ leadingLineBreaks = 1, reservedLineLength = 0, isPre = false } = {}): void {
+    assertTextContainerStackItem(this._stackItem);
     const maxLineLength = Math.max(20, this._stackItem.inlineTextBuilder.maxLineLength - reservedLineLength);
     this._stackItem = new BlockStackItem(
       this.options,
@@ -251,8 +306,10 @@ class BlockTextBuilder {
    * in order to keep line lengths correct.
    * Used for whole block markup.
    */
-  closeBlock ({ trailingLineBreaks = 1, blockTransform = undefined } = {}) {
+  closeBlock ({ trailingLineBreaks = 1, blockTransform }: CloseBlockOptions = {}): void {
     const block = this._popStackItem();
+    assertTextContainerStackItem(block);
+    assertTextContainerStackItem(this._stackItem);
     const blockText = (blockTransform) ? blockTransform(getText(block)) : getText(block);
     addText(this._stackItem, blockText, block.leadingLineBreaks, Math.max(block.stashedLineBreaks, trailingLineBreaks));
   }
@@ -277,7 +334,10 @@ class BlockTextBuilder {
    * @param { number } [param0.leadingLineBreaks]
    * This list should have at least this number of line breaks to separate it from any preceding block.
    */
-  openList ({ maxPrefixLength = 0, prefixAlign = 'left', interRowLineBreaks = 1, leadingLineBreaks = 2 } = {}) {
+  openList (
+    { maxPrefixLength = 0, prefixAlign = 'left', interRowLineBreaks = 1, leadingLineBreaks = 2 }: OpenListOptions = {}
+  ): void {
+    assertTextContainerStackItem(this._stackItem);
     this._stackItem = new ListStackItem(this.options, this._stackItem, {
       interRowLineBreaks: interRowLineBreaks,
       leadingLineBreaks: leadingLineBreaks,
@@ -296,7 +356,7 @@ class BlockTextBuilder {
    * @param { string } [param0.prefix]
    * Prefix for this list item (item number, bullet point, etc).
    */
-  openListItem ({ prefix = '' } = {}) {
+  openListItem ({ prefix = '' }: OpenListItemOptions = {}): void {
     if (!(this._stackItem instanceof ListStackItem)) {
       throw new Error('Can\'t add a list item to something that is not a list! Check the formatter.');
     }
@@ -313,9 +373,15 @@ class BlockTextBuilder {
   /**
    * Finalize currently built list item, add it's content to the parent list.
    */
-  closeListItem () {
+  closeListItem (): void {
     const listItem = this._popStackItem();
+    if (!(listItem instanceof ListItemStackItem)) {
+      throw new Error('Can\'t close a list item outside of a list item.');
+    }
     const list = listItem.next;
+    if (!(list instanceof ListStackItem)) {
+      throw new Error('Can\'t close a list item without a parent list.');
+    }
 
     const prefixLength = Math.max(listItem.prefix.length, list.maxPrefixLength);
     const spacing = '\n' + ' '.repeat(prefixLength);
@@ -341,8 +407,12 @@ class BlockTextBuilder {
    * @param { number } [param0.trailingLineBreaks]
    * This list should have at least this number of line breaks to separate it from any following block.
    */
-  closeList ({ trailingLineBreaks = 2 } = {}) {
+  closeList ({ trailingLineBreaks = 2 } = {}): void {
     const list = this._popStackItem();
+    if (!(list instanceof ListStackItem)) {
+      throw new Error('Can\'t close a list outside of a list.');
+    }
+    assertTextContainerStackItem(this._stackItem);
     const text = getText(list);
     if (text) {
       addText(this._stackItem, text, list.leadingLineBreaks, trailingLineBreaks);
@@ -352,14 +422,15 @@ class BlockTextBuilder {
   /**
    * Start building a table.
    */
-  openTable () {
+  openTable (): void {
+    assertTextContainerStackItem(this._stackItem);
     this._stackItem = new TableStackItem(this._stackItem);
   }
 
   /**
    * Start building a table row.
    */
-  openTableRow () {
+  openTableRow (): void {
     if (!(this._stackItem instanceof TableStackItem)) {
       throw new Error('Can\'t add a table row to something that is not a table! Check the formatter.');
     }
@@ -375,7 +446,7 @@ class BlockTextBuilder {
    * @param { number } [param0.maxColumnWidth]
    * Wrap cell content to this width. Fall back to global wordwrap value if undefined.
    */
-  openTableCell ({ maxColumnWidth = undefined } = {}) {
+  openTableCell ({ maxColumnWidth }: OpenTableCellOptions = {}): void {
     if (!(this._stackItem instanceof TableRowStackItem)) {
       throw new Error('Can\'t add a table cell to something that is not a table row! Check the formatter.');
     }
@@ -391,17 +462,29 @@ class BlockTextBuilder {
    * @param { number } [param0.colspan] How many columns this cell should occupy.
    * @param { number } [param0.rowspan] How many rows this cell should occupy.
    */
-  closeTableCell ({ colspan = 1, rowspan = 1 } = {}) {
+  closeTableCell ({ colspan = 1, rowspan = 1 } = {}): void {
     const cell = this._popStackItem();
+    if (!(cell instanceof TableCellStackItem)) {
+      throw new Error('Can\'t close a table cell outside of a table cell.');
+    }
     const text = trimCharacter(getText(cell), '\n');
+    if (!(cell.next instanceof TableRowStackItem)) {
+      throw new Error('Can\'t close a table cell without a parent table row.');
+    }
     cell.next.cells.push({ colspan: colspan, rowspan: rowspan, text: text });
   }
 
   /**
    * Finalize currently built table row and add it to parent table's rows.
    */
-  closeTableRow () {
+  closeTableRow (): void {
     const row = this._popStackItem();
+    if (!(row instanceof TableRowStackItem)) {
+      throw new Error('Can\'t close a table row outside of a table row.');
+    }
+    if (!(row.next instanceof TableStackItem)) {
+      throw new Error('Can\'t close a table row without a parent table.');
+    }
     row.next.rows.push(row.cells);
   }
 
@@ -420,8 +503,12 @@ class BlockTextBuilder {
    * @param { number } [param0.trailingLineBreaks]
    * This table should have at least this number of line breaks to separate it from any following block.
    */
-  closeTable ({ tableToString, leadingLineBreaks = 2, trailingLineBreaks = 2 }) {
+  closeTable ({ tableToString, leadingLineBreaks = 2, trailingLineBreaks = 2 }: CloseTableOptions): void {
     const table = this._popStackItem();
+    if (!(table instanceof TableStackItem)) {
+      throw new Error('Can\'t close a table outside of a table.');
+    }
+    assertTextContainerStackItem(this._stackItem);
     const output = tableToString(table.rows);
     if (output) {
       addText(this._stackItem, output, leadingLineBreaks, trailingLineBreaks);
@@ -433,14 +520,18 @@ class BlockTextBuilder {
    *
    * @returns { string }
    */
-  toString () {
-    return getText(this._stackItem.getRoot());
+  toString (): string {
+    const root = this._stackItem.getRoot();
+    if (!(root instanceof BlockStackItem)) {
+      throw new Error('Invalid stack root item type.');
+    }
+    return getText(root);
     // There should only be the root item if everything is closed properly.
   }
 
 }
 
-function getText (stackItem) {
+function getText (stackItem: TextContainerStackItem): string {
   if (!(
     stackItem instanceof BlockStackItem
     || stackItem instanceof ListItemStackItem
@@ -453,7 +544,12 @@ function getText (stackItem) {
     : stackItem.rawText + stackItem.inlineTextBuilder.toString();
 }
 
-function addText (stackItem, text, leadingLineBreaks, trailingLineBreaks) {
+function addText (
+  stackItem: TextContainerStackItem,
+  text: string,
+  leadingLineBreaks: number,
+  trailingLineBreaks: number
+): void {
   if (!(
     stackItem instanceof BlockStackItem
     || stackItem instanceof ListItemStackItem
@@ -478,7 +574,7 @@ function addText (stackItem, text, leadingLineBreaks, trailingLineBreaks) {
  * @param { TransformerStackItem } transformer A transformer item (with possible continuation).
  * @returns { string }
  */
-function applyTransformer (str, transformer) {
+function applyTransformer (str: string, transformer: TransformerStackItem | null): string {
   return ((transformer) ? applyTransformer(transformer.transform(str), transformer.next) : str);
 }
 

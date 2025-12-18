@@ -1,13 +1,20 @@
 
+import type { Options } from './typedefs';
 import { get } from './util';
-
-// eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
 
 /**
  * Helps to build text from words.
  */
 class InlineTextBuilder {
+  lines: string[][];
+  nextLineWords: string[];
+  maxLineLength: number;
+  nextLineAvailableChars: number;
+  wrapCharacters: string[];
+  forceWrapOnLimit: boolean;
+  stashedSpace: boolean;
+  wordBreakOpportunity: boolean;
+
   /**
    * Creates an instance of InlineTextBuilder.
    *
@@ -16,15 +23,13 @@ class InlineTextBuilder {
    * @param { Options } options           HtmlToText options.
    * @param { number }  [ maxLineLength ] This builder will try to wrap text to fit this line length.
    */
-  constructor (options, maxLineLength = undefined) {
-    /** @type { string[][] } */
+  constructor (options: Options, maxLineLength: number | undefined = undefined) {
     this.lines = [];
-    /** @type { string[] }   */
     this.nextLineWords = [];
-    this.maxLineLength = maxLineLength || options.wordwrap || Number.MAX_VALUE;
+    this.maxLineLength = maxLineLength || (typeof options.wordwrap === 'number' ? options.wordwrap : Number.MAX_VALUE);
     this.nextLineAvailableChars = this.maxLineLength;
-    this.wrapCharacters = get(options, ['longWordSplit', 'wrapCharacters']) || [];
-    this.forceWrapOnLimit = get(options, ['longWordSplit', 'forceWrapOnLimit']) || false;
+    this.wrapCharacters = (get(options, ['longWordSplit', 'wrapCharacters']) as string[] | undefined) || [];
+    this.forceWrapOnLimit = (get(options, ['longWordSplit', 'forceWrapOnLimit']) as boolean | undefined) || false;
 
     this.stashedSpace = false;
     this.wordBreakOpportunity = false;
@@ -36,7 +41,7 @@ class InlineTextBuilder {
    * @param { string } word A word to add.
    * @param { boolean } [noWrap] Don't wrap text even if the line is too long.
    */
-  pushWord (word, noWrap = false) {
+  pushWord (word: string, noWrap = false): void {
     if (this.nextLineAvailableChars <= 0 && !noWrap) {
       this.startNewLine();
     }
@@ -69,7 +74,7 @@ class InlineTextBuilder {
    *
    * @returns { string }
    */
-  popWord () {
+  popWord (): string | undefined {
     const lastWord = this.nextLineWords.pop();
     if (lastWord !== undefined) {
       const isLineStart = this.nextLineWords.length === 0;
@@ -86,7 +91,7 @@ class InlineTextBuilder {
    * @param { string } word A word to be concatenated.
    * @param { boolean } [noWrap] Don't wrap text even if the line is too long.
    */
-  concatWord (word, noWrap = false) {
+  concatWord (word: string, noWrap = false): void {
     if (this.wordBreakOpportunity && word.length > this.nextLineAvailableChars) {
       this.pushWord(word, noWrap);
       this.wordBreakOpportunity = false;
@@ -101,7 +106,7 @@ class InlineTextBuilder {
    *
    * @param { number } n Number of line breaks that will be added to the resulting string.
    */
-  startNewLine (n = 1) {
+  startNewLine (n = 1): void {
     this.lines.push(this.nextLineWords);
     if (n > 1) {
       this.lines.push(...Array.from({ length: n - 1 }, () => []));
@@ -115,12 +120,12 @@ class InlineTextBuilder {
    *
    * @returns { boolean }
    */
-  isEmpty () {
+  isEmpty (): boolean {
     return this.lines.length === 0
         && this.nextLineWords.length === 0;
   }
 
-  clear () {
+  clear (): void {
     this.lines.length = 0;
     this.nextLineWords.length = 0;
     this.nextLineAvailableChars = this.maxLineLength;
@@ -131,7 +136,7 @@ class InlineTextBuilder {
    *
    * @returns { string }
    */
-  toString () {
+  toString (): string {
     return [...this.lines, this.nextLineWords]
       .map(words => words.join(' '))
       .join('\n');
@@ -145,7 +150,7 @@ class InlineTextBuilder {
    * @param   { string }   word Input word.
    * @returns { string[] }      Parts of the word.
    */
-  splitLongWord (word) {
+  splitLongWord (word: string): string[] {
     const parts = [];
     let idx = 0;
     while (word.length > this.maxLineLength) {

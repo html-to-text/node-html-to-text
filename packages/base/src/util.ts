@@ -1,6 +1,9 @@
 
 import merge from 'deepmerge'; // default
 
+
+type RecursiveFunction = (...args: unknown[]) => unknown;
+
 /**
  * Make a recursive function that will only run to a given depth
  * and switches to an alternative function at that depth. \
@@ -11,13 +14,17 @@ import merge from 'deepmerge'; // default
  * @param   { Function }           [g] Function to run instead, when maximum depth was reached. Do nothing by default.
  * @returns { Function }
  */
-function limitedDepthRecursive (n, f, g = () => undefined) {
+function limitedDepthRecursive (
+  n: number | undefined,
+  f: (recurse: RecursiveFunction, ...args: unknown[]) => unknown,
+  g: RecursiveFunction = () => undefined
+): RecursiveFunction {
   if (n === undefined) {
-    const f1 = function (...args) { return f(f1, ...args); };
+    const f1: RecursiveFunction = function (...args: unknown[]) { return f(f1, ...args); };
     return f1;
   }
   if (n >= 0) {
-    return function (...args) { return f(limitedDepthRecursive(n - 1, f, g), ...args); };
+    return function (...args: unknown[]) { return f(limitedDepthRecursive(n - 1, f, g), ...args); };
   }
   return g;
 }
@@ -30,7 +37,7 @@ function limitedDepthRecursive (n, f, g = () => undefined) {
  * @param   { string } char A character to be trimmed.
  * @returns { string }
  */
-function trimCharacter (str, char) {
+function trimCharacter (str: string, char: string): string {
   let start = 0;
   let end = str.length;
   while (start < end && str[start] === char) { ++start; }
@@ -48,7 +55,7 @@ function trimCharacter (str, char) {
  * @param   { string } char A character to be trimmed.
  * @returns { string }
  */
-function trimCharacterEnd (str, char) {
+function trimCharacterEnd (str: string, char: string): string {
   let end = str.length;
   while (end > 0 && str[end - 1] === char) { --end; }
   return (end < str.length)
@@ -63,8 +70,8 @@ function trimCharacterEnd (str, char) {
  * @param { string } str A string to escape.
  * @returns { string } A string of unicode escape sequences.
  */
-function unicodeEscape (str) {
-  return str.replace(/[\s\S]/g, c => '\\u' + c.charCodeAt().toString(16).padStart(4, '0'));
+function unicodeEscape (str: string): string {
+  return str.replace(/[\s\S]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
 }
 
 /**
@@ -73,11 +80,11 @@ function unicodeEscape (str) {
  * Of items with the same key, merged item takes the place of the last item,
  * others are omitted.
  *
- * @param { any[] } items An array to deduplicate.
- * @param { (x: any) => string } getKey Callback to get a value that distinguishes unique items.
- * @returns { any[] }
+ * @param { T[] } items An array to deduplicate.
+ * @param { (x: T) => string } getKey Callback to get a value that distinguishes unique items.
+ * @returns { T[] }
  */
-function mergeDuplicatesPreferLast (items, getKey) {
+function mergeDuplicatesPreferLast<T> (items: T[], getKey: (x: T) => string): T[] {
   const map = new Map();
   for (let i = items.length; i-- > 0;) {
     const item = items[i];
@@ -92,16 +99,16 @@ function mergeDuplicatesPreferLast (items, getKey) {
   return [...map.values()].reverse();
 }
 
-const overwriteMerge = (acc, src, options) => [...src];
+const overwriteMerge = (_acc: unknown, src: unknown[]): unknown[] => [...src];
 
 /**
  * Get a nested property from an object.
  *
  * @param   { object }   obj  The object to query for the value.
  * @param   { string[] } path The path to the property.
- * @returns { any }
+ * @returns { unknown }
  */
-function get (obj, path) {
+function get (obj: any, path: string[]): unknown {
   for (const key of path) {
     if (!obj) { return undefined; }
     obj = obj[key];
@@ -119,7 +126,7 @@ function get (obj, path) {
  * @param   { number } [base = 26]      Number of characters in the sequence.
  * @returns { string }
  */
-function numberToLetterSequence (num, baseChar = 'a', base = 26) {
+function numberToLetterSequence (num: number, baseChar: string = 'a', base: number = 26): string {
   const digits = [];
   do {
     num -= 1;
@@ -142,7 +149,7 @@ const V = ['V', 'L', 'D'];
  * @param   { number } num Number to convert. `0 < num <= 3999`.
  * @returns { string }
  */
-function numberToRoman (num) {
+function numberToRoman (num: number): string {
   return [...(num) + '']
     .map(n => +n)
     .reverse()
