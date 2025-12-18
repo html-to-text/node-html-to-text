@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { htmlToMarkdown } from '../packages/html-to-md/src/html-to-md';
-// const { htmlToMarkdown } = require('../packages/html-to-md/lib/html-to-md'); // build it first
+import { htmlToMarkdown, type Options } from '../packages/html-to-md/lib/html-to-md.mjs';
 
 
 console.log('From string:');
@@ -14,8 +13,7 @@ console.log();
 
 console.log('From file:');
 const filePath = new URL('test.html', import.meta.url);
-/** @type { Options } */
-const options = {
+const options: Options = {
   selectors: [
     { selector: 'table', format: 'block' },
     { selector: 'table#invoice', format: 'dataTable' },

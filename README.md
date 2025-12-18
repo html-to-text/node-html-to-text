@@ -44,6 +44,6 @@ This is a monorepo.
 
 ## Development
 
-Targeting Node.js version >=14.
+Targeting Node.js version >=18.
 
-Monorepo uses NPM v7 workspaces (make sure v7 is installed when used with Node.js v14.)
+Monorepo uses NPM workspaces.

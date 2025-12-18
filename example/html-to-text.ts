@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { htmlToText } from '../packages/html-to-text/src/html-to-text';
-// const { htmlToText } = require('../packages/html-to-text/lib/html-to-text'); // build it first
+import { htmlToText, type HtmlToTextOptions } from '../packages/html-to-text/lib/html-to-text.mjs';
 
 
 console.log('From string:');
@@ -14,8 +13,7 @@ console.log();
 
 console.log('From file:');
 const filePath = new URL('test.html', import.meta.url);
-/** @type { Options } */
-const options = {
+const options: HtmlToTextOptions = {
   selectors: [
     { selector: 'table', format: 'block' },
     { selector: 'table#invoice', format: 'dataTable' },

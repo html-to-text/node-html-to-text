@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@html-to-text/base": ["packages/base/src/index.ts"],
+      "@html-to-text/base/src/*": ["packages/base/src/*"],
+      "html-to-text": ["packages/html-to-text/src/html-to-text.ts"],
+      "@html-to/md": ["packages/html-to-md/src/html-to-md.ts"]
+    }
+  }
+}
