@@ -1,12 +1,13 @@
-
 import { hp2Builder } from '@selderee/plugin-htmlparser2';
 import type { AnyNode } from 'domhandler';
 import { parseDocument } from 'htmlparser2';
 import { DecisionTree } from 'selderee';
 import type { Picker } from 'selderee';
+
 import { BlockTextBuilder } from './block-text-builder';
 import type { Options, RecursiveCallback, TagDefinition } from './typedefs';
 import { limitedDepthRecursive, unicodeEscape } from './util';
+
 
 type TagPicker = Picker<AnyNode, TagDefinition>;
 

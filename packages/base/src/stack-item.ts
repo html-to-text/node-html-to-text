@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-
 import { InlineTextBuilder } from './inline-text-builder';
 import type { Options } from './typedefs';
 

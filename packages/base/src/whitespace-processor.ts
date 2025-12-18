@@ -34,7 +34,6 @@ class WhitespaceProcessor {
    * @param { Options } options    HtmlToText options.
    * @memberof WhitespaceProcessor
    */
-  // eslint-disable-next-line max-lines-per-function
   constructor (options: Options) {
     this.whitespaceChars = (options.preserveNewlines)
       ? options.whitespaceCharacters.replace(/\n/g, '')

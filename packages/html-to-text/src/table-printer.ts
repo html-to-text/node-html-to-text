@@ -70,7 +70,6 @@ function updateOffset (offsets: number[], base: number, span: number, value: num
  * @param { number } colSpacing Number of empty lines between rows.
  * @returns { string }
  */
-// eslint-disable-next-line complexity
 function tableToString (tableRows: TablePrinterCell[][], rowSpacing: number, colSpacing: number): string {
   const layout: Layout = [];
   let colNumber = 0;

@@ -1,5 +1,6 @@
 import type { AnyNode } from 'domhandler';
 import type { Picker } from 'selderee';
+
 import {
   BlockStackItem,
   type WrapStateStackItem,
