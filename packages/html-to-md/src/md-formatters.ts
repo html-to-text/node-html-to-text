@@ -1,12 +1,11 @@
 
+import type { BlockTextBuilder } from '@html-to-text/base/src/block-text-builder';
+import type { DomNode, FormatOptions, RecursiveCallback } from '@html-to-text/base/src/typedefs';
 import { get, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util';
 import { render } from 'dom-serializer';
 import { existsOne, innerText } from 'domutils';
 
 import { tableToString } from './table-printer';
-
-// eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -14,7 +13,12 @@ import '@html-to-text/base/src/typedefs';
  *
  * @type { FormatCallback }
  */
-function formatWbr (elem, walk, builder, formatOptions) {
+function formatWbr (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.addWordBreakOpportunity();
 }
 
@@ -23,7 +27,12 @@ function formatWbr (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatPre (elem, walk, builder, formatOptions) {
+function formatPre (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({
     isPre: true,
     leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
@@ -44,7 +53,12 @@ function formatPre (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatHeading (elem, walk, builder, formatOptions) {
+function formatHeading (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   builder.addLiteral('#'.repeat(formatOptions.level || 1) + ' ');
   walk(elem.children, builder);
@@ -56,7 +70,12 @@ function formatHeading (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatBlockquote (elem, walk, builder, formatOptions) {
+function formatBlockquote (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({
     leadingLineBreaks: formatOptions.leadingLineBreaks || 2,
     reservedLineLength: 2
@@ -76,7 +95,12 @@ function formatBlockquote (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatCodeBlock (elem, walk, builder, formatOptions) {
+function formatCodeBlock (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openBlock({ leadingLineBreaks: formatOptions.leadingLineBreaks || 2 });
   builder.addLiteral('```' + (formatOptions.language || '') + '\n');
   walk(elem.children, builder);
@@ -84,7 +108,13 @@ function formatCodeBlock (elem, walk, builder, formatOptions) {
   builder.closeBlock({ trailingLineBreaks: formatOptions.trailingLineBreaks || 2 });
 }
 
-function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
+function pathRewrite (
+  path: string,
+  rewriter: ((path: string, metadata: unknown, elem: DomNode) => string) | undefined,
+  baseUrl: string | null | undefined,
+  metadata: unknown,
+  elem: DomNode
+): string {
   const modifiedPath = (typeof rewriter === 'function')
     ? rewriter(path, metadata, elem)
     : path;
@@ -98,7 +128,12 @@ function pathRewrite (path, rewriter, baseUrl, metadata, elem) {
  *
  * @type { FormatCallback }
  */
-function formatImage (elem, walk, builder, formatOptions) {
+function formatImage (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   const attribs = elem.attribs || {};
   if (attribs.src && attribs.src.startsWith('data:')) {
     builder.startNoWrap();
@@ -131,7 +166,12 @@ function formatImage (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatAnchor (elem, walk, builder, formatOptions) {
+function formatAnchor (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   const attribs = elem.attribs || {};
   if (attribs.name && !attribs.href) {
     builder.startNoWrap();
@@ -171,7 +211,13 @@ function formatAnchor (elem, walk, builder, formatOptions) {
  * @param { FormatOptions }     formatOptions      Options specific to a formatter.
  * @param { () => string }      nextPrefixCallback Function that returns increasing index each time it is called.
  */
-function formatList (elem, walk, builder, formatOptions, nextPrefixCallback) {
+function formatList (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions,
+  nextPrefixCallback: () => string
+): void {
   const isNestedList = get(elem, ['parent', 'name']) === 'li';
 
   // With Roman numbers, index length is not as straightforward as with Arabic numbers or letters,
@@ -213,7 +259,12 @@ function formatList (elem, walk, builder, formatOptions, nextPrefixCallback) {
  *
  * @type { FormatCallback }
  */
-function formatUnorderedList (elem, walk, builder, formatOptions) {
+function formatUnorderedList (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   const prefix = (formatOptions.marker || '-') + ' '; // can be any of [-*+]
   return formatList(elem, walk, builder, formatOptions, () => prefix);
 }
@@ -223,15 +274,20 @@ function formatUnorderedList (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatOrderedList (elem, walk, builder, formatOptions) {
+function formatOrderedList (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   let nextIndex = Number(formatOptions.start || elem.attribs.start || '1');
   const nextPrefixCallback = () => `${nextIndex++}. `;
   return formatList(elem, walk, builder, formatOptions, nextPrefixCallback);
 }
 
-function collectDefinitionGroups (elem) {
-  const defItems = [];
-  function handleDtDd (el) {
+function collectDefinitionGroups (elem: DomNode): Array<{ titleItems: DomNode[]; definitions: DomNode[] }> {
+  const defItems: DomNode[] = [];
+  function handleDtDd (el: DomNode) {
     if (el.name === 'dt' || el.name === 'dd') {
       defItems.push(el);
     }
@@ -243,8 +299,8 @@ function collectDefinitionGroups (elem) {
       handleDtDd(child);
     }
   }
-  const groups = [];
-  let group = null;
+  const groups: Array<{ titleItems: DomNode[]; definitions: DomNode[] }> = [];
+  let group: { titleItems: DomNode[]; definitions: DomNode[] } | null = null;
   for (const item of defItems) {
     if (item.name === 'dt') {
       if (group && group.definitions.length === 0) {
@@ -254,7 +310,7 @@ function collectDefinitionGroups (elem) {
         groups.push(group);
       }
     } else { // dd
-      group.definitions.push(item);
+      group?.definitions.push(item);
     }
   }
   return groups;
@@ -266,7 +322,12 @@ function collectDefinitionGroups (elem) {
  *
  * @type { FormatCallback }
  */
-function formatDefinitionList (elem, walk, builder, formatOptions) {
+function formatDefinitionList (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   const groups = collectDefinitionGroups(elem);
   for (const group of groups) {
     builder.openList({
@@ -298,7 +359,12 @@ function formatDefinitionList (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
+function formatDefinitionListCompatible (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   const definitionPrefix = (formatOptions.marker || '-') + ' '; // can be any of [-*+]
   const groups = collectDefinitionGroups(elem);
   for (const group of groups) {
@@ -335,20 +401,34 @@ function formatDefinitionListCompatible (elem, walk, builder, formatOptions) {
  *
  * @type { FormatCallback }
  */
-function formatDataTable (elem, walk, builder, formatOptions) {
+function formatDataTable (
+  elem: DomNode,
+  walk: RecursiveCallback,
+  builder: BlockTextBuilder,
+  formatOptions: FormatOptions
+): void {
   builder.openTable();
   elem.children.forEach(walkTable);
   const hasHeader = existsOne(
-    (el) => el.name === 'thead' || el.name === 'th',
+    (el: any) => el.name === 'thead' || el.name === 'th',
     elem.children
   );
+  const spanMode = (
+    formatOptions.spanMode === 'first' ||
+    formatOptions.spanMode === 'firstCol' ||
+    formatOptions.spanMode === 'firstRow' ||
+    formatOptions.spanMode === 'repeat' ||
+    formatOptions.spanMode === 'tag'
+  )
+    ? formatOptions.spanMode
+    : 'repeat';
   builder.closeTable({
-    tableToString: (rows) => tableToString(rows, hasHeader, formatOptions.spanMode || 'repeat') || render(elem),
+    tableToString: (rows) => tableToString(rows, hasHeader, spanMode) || render(elem),
     leadingLineBreaks: formatOptions.leadingLineBreaks,
     trailingLineBreaks: formatOptions.trailingLineBreaks,
   });
 
-  function formatCell (cellNode) {
+  function formatCell (cellNode: DomNode): void {
     const colspan = +get(cellNode, ['attribs', 'colspan']) || 1;
     const rowspan = +get(cellNode, ['attribs', 'rowspan']) || 1;
     builder.openTableCell({ maxColumnWidth: formatOptions.maxColumnWidth });
@@ -356,7 +436,7 @@ function formatDataTable (elem, walk, builder, formatOptions) {
     builder.closeTableCell({ colspan: colspan, rowspan: rowspan });
   }
 
-  function walkTable (elem) {
+  function walkTable (elem: DomNode): void {
     if (elem.type !== 'tag') { return; }
 
     switch (elem.name) {

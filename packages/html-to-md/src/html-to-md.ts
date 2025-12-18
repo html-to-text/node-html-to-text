@@ -1,13 +1,11 @@
 
 import { compile as compile_ } from '@html-to-text/base';
 import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
+import type { Options } from '@html-to-text/base/src/typedefs';
 import { mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
 import merge from 'deepmerge'; // default
 
 import * as markdownFormatters from './md-formatters';
-
-// eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -18,7 +16,7 @@ import '@html-to-text/base/src/typedefs';
  * @default
  * @private
  */
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Options = {
   baseElements: {
     selectors: [ 'body' ],
     orderBy: 'selectors', // 'selectors' | 'occurrence'
@@ -99,43 +97,43 @@ const DEFAULT_OPTIONS = {
 };
 
 
-const concatMerge = (acc, src, options) => [...acc, ...src];
-const overwriteMerge = (acc, src, options) => [...src];
-const selectorsMerge = (acc, src, options) => (
+const concatMerge = <T>(acc: T[], src: T[]): T[] => [...acc, ...src];
+const overwriteMerge = <T>(_acc: T[], src: T[]): T[] => [...src];
+const selectorsMerge = <T>(acc: T[], src: T[]): T[] => (
   (acc.some(s => typeof s === 'object'))
-    ? concatMerge(acc, src, options) // selectors
-    : overwriteMerge(acc, src, options) // baseElements.selectors
+    ? concatMerge(acc, src) // selectors
+    : overwriteMerge(acc, src) // baseElements.selectors
 );
 
 /**
  * Preprocess options, compile selectors into a decision tree,
  * return a function intended for batch processing.
  *
- * @param   { Options } [options = {}]   HtmlToText options.
+ * @param   { Partial<Options> } [options = {}]   HtmlToText options.
  * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
-function compile (options = {}) {
-  options = merge(
+function compile (options: Partial<Options> = {}): (html: string, metadata?: any) => string {
+  const mergedOptions = merge(
     DEFAULT_OPTIONS,
-    options,
+    options as Options,
     {
       arrayMerge: overwriteMerge,
-      customMerge: (key) => ((key === 'selectors') ? selectorsMerge : undefined)
+      customMerge: (key: string) => ((key === 'selectors') ? selectorsMerge : undefined)
     }
-  );
-  options.formatters = Object.assign({}, genericFormatters, markdownFormatters, options.formatters);
-  options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
+  ) as Options;
+  mergedOptions.formatters = Object.assign({}, genericFormatters, markdownFormatters, mergedOptions.formatters);
+  mergedOptions.selectors = mergeDuplicatesPreferLast(mergedOptions.selectors, (s => s.selector));
 
-  return compile_(options);
+  return compile_(mergedOptions);
 }
 
 /**
  * Convert given HTML content to a markdown string.
  *
  * @param   { string }  html           HTML content to convert.
- * @param   { Options } [options = {}] HtmlToText options.
- * @param   { any }     [metadata]     Optional metadata for HTML document, for use in formatters.
+ * @param   { Partial<Options> } [options = {}] HtmlToText options.
+ * @param   { unknown }     [metadata]     Optional metadata for HTML document, for use in formatters.
  * @returns { string }                 Plain text string.
  * @static
  *
@@ -144,7 +142,7 @@ function compile (options = {}) {
  * const text = convert('<h1>Hello World</h1>', {});
  * console.log(text); // # Hello World
  */
-function convert (html, options = {}, metadata = undefined) {
+function convert (html: string, options: Partial<Options> = {}, metadata?: any): string {
   return compile(options)(html, metadata);
 }
 

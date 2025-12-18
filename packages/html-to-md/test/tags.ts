@@ -1,7 +1,7 @@
 
 import test from 'ava';
 
-import { htmlToMarkdown } from '../src/html-to-md';
+import { htmlToMarkdown } from '../lib/html-to-md.mjs';
 
 
 const snapshotMacro = test.macro({
