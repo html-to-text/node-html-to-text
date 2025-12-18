@@ -1,19 +1,28 @@
+interface TablePrinterCell {
+  colspan: number;
+  rowspan: number;
+  text: string;
+  lines?: string[];
+  rendered?: boolean;
+}
 
-// eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
+type Layout = Array<Array<TablePrinterCell | undefined>>;
 
-
-function getRow (matrix, j) {
-  if (!matrix[j]) { matrix[j] = []; }
+function getRow<T> (matrix: T[][], j: number): T[] {
+  if (!matrix[j]) {
+    matrix[j] = [];
+  }
   return matrix[j];
 }
 
-function findFirstVacantIndex (row, x = 0) {
-  while (row[x]) { x++; }
+function findFirstVacantIndex<T> (row: Array<T | undefined>, x = 0): number {
+  while (row[x]) {
+    x++;
+  }
   return x;
 }
 
-function transposeInPlace (matrix, maxSize) {
+function transposeInPlace (matrix: Layout, maxSize: number): void {
   for (let i = 0; i < maxSize; i++) {
     const rowI = getRow(matrix, i);
     for (let j = 0; j < i; j++) {
@@ -27,7 +36,7 @@ function transposeInPlace (matrix, maxSize) {
   }
 }
 
-function putCellIntoLayout (cell, layout, baseRow, baseCol) {
+function putCellIntoLayout (cell: TablePrinterCell, layout: Layout, baseRow: number, baseCol: number): void {
   for (let r = 0; r < cell.rowspan; r++) {
     const layoutRow = getRow(layout, baseRow + r);
     for (let c = 0; c < cell.colspan; c++) {
@@ -36,14 +45,14 @@ function putCellIntoLayout (cell, layout, baseRow, baseCol) {
   }
 }
 
-function getOrInitOffset (offsets, index) {
+function getOrInitOffset (offsets: number[], index: number): number {
   if (offsets[index] === undefined) {
     offsets[index] = (index === 0) ? 0 : 1 + getOrInitOffset(offsets, index - 1);
   }
   return offsets[index];
 }
 
-function updateOffset (offsets, base, span, value) {
+function updateOffset (offsets: number[], base: number, span: number, value: number): void {
   offsets[base + span] = Math.max(
     getOrInitOffset(offsets, base + span),
     getOrInitOffset(offsets, base) + value
@@ -61,8 +70,9 @@ function updateOffset (offsets, base, span, value) {
  * @param { number } colSpacing Number of empty lines between rows.
  * @returns { string }
  */
-function tableToString (tableRows, rowSpacing, colSpacing) {
-  const layout = [];
+// eslint-disable-next-line complexity
+function tableToString (tableRows: TablePrinterCell[][], rowSpacing: number, colSpacing: number): string {
+  const layout: Layout = [];
   let colNumber = 0;
   const rowNumber = tableRows.length;
   const rowOffsets = [0];
@@ -90,15 +100,15 @@ function tableToString (tableRows, rowSpacing, colSpacing) {
   // Fill column offsets and output lines column-by-column.
   for (let x = 0; x < colNumber; x++) {
     let y = 0;
-    let cell;
+    let cell: TablePrinterCell | undefined;
     const rowsInThisColumn = Math.min(rowNumber, layout[x].length);
     while (y < rowsInThisColumn) {
       cell = layout[x][y];
       if (cell) {
         if (!cell.rendered) {
           let cellWidth = 0;
-          for (let j = 0; j < cell.lines.length; j++) {
-            const line = cell.lines[j];
+          for (let j = 0; j < (cell.lines ?? []).length; j++) {
+            const line = cell.lines?.[j] ?? '';
             const lineOffset = rowOffsets[y] + j;
             outputLines[lineOffset] = (outputLines[lineOffset] || '').padEnd(colOffsets[x]) + line;
             cellWidth = (line.length > cellWidth) ? line.length : cellWidth;

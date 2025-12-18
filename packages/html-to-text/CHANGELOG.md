@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 10.0.0
+
+* TypeScript support: package is now authored in TypeScript and ships generated type declarations.
+* Dropped support for Node.js 14/16 (engines now require Node.js >= 18).
+
+All commits: (fill in compare link on release)
+
 ## Version 9.0.5
 
 * `selderee` updated from 0.10.0 to 0.11.0 ([changelog](https://github.com/mxxii/selderee/blob/main/packages/selderee/CHANGELOG.md)) and `parseley` - from 0.11.0 to 0.12.0 ([changelog](https://github.com/mxxii/parseley/blob/main/CHANGELOG.md)) - support escape sequences in selectors according to specification, fixes [#273](https://github.com/html-to-text/node-html-to-text/issues/273);

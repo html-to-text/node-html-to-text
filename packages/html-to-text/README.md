@@ -29,6 +29,8 @@ Version 8 brings the selectors support to greatly increase the flexibility but t
 
 Version 9 drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters. Now a dual-mode package (cjs and esm). CLI is moved to a [separate package](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/).
 
+Version 10 adds TypeScript support (this package ships generated type declarations) and requires Node.js >= 18.
+
 ## Installation
 
 ```
@@ -50,6 +52,15 @@ const options = {
 const html = '<div>Hello World</div>';
 const text = convert(html, options);
 console.log(text); // Hello World
+```
+
+TypeScript:
+
+```ts
+import { convert, type HtmlToTextOptions } from 'html-to-text';
+
+const options: HtmlToTextOptions = { wordwrap: 130 };
+const text = convert('<div>Hello World</div>', options);
 ```
 
 Configure `html-to-text` once to convert many documents with the same options (recommended for [good performance](https://github.com/html-to-text/node-html-to-text/issues/265#issuecomment-1337470852) when processing big batches of documents):

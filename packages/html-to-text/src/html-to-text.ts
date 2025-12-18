@@ -1,14 +1,11 @@
 
 import { compile as compile_ } from '@html-to-text/base';
 import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
+import type { Options } from '@html-to-text/base/src/typedefs';
 import { get, mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
 import merge from 'deepmerge'; // default
 
 import * as textFormatters from './text-formatters';
-
-
-// eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
 
 
 /**
@@ -19,7 +16,7 @@ import '@html-to-text/base/src/typedefs';
  * @default
  * @private
  */
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Options = {
   baseElements: {
     selectors: [ 'body' ],
     orderBy: 'selectors', // 'selectors' | 'occurrence'
@@ -115,37 +112,37 @@ const DEFAULT_OPTIONS = {
   wordwrap: 80
 };
 
-const concatMerge = (acc, src, options) => [...acc, ...src];
-const overwriteMerge = (acc, src, options) => [...src];
-const selectorsMerge = (acc, src, options) => (
+const concatMerge = <T>(acc: T[], src: T[]): T[] => [...acc, ...src];
+const overwriteMerge = <T>(_acc: T[], src: T[]): T[] => [...src];
+const selectorsMerge = <T>(acc: T[], src: T[]): T[] => (
   (acc.some(s => typeof s === 'object'))
-    ? concatMerge(acc, src, options) // selectors
-    : overwriteMerge(acc, src, options) // baseElements.selectors
+    ? concatMerge(acc, src) // selectors
+    : overwriteMerge(acc, src) // baseElements.selectors
 );
 
 /**
  * Preprocess options, compile selectors into a decision tree,
  * return a function intended for batch processing.
  *
- * @param   { Options } [options = {}]   HtmlToText options.
+ * @param   { Partial<Options> } [options = {}]   HtmlToText options.
  * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
-function compile (options = {}) {
-  options = merge(
+function compile (options: Partial<Options> = {}): (html: string, metadata?: any) => string {
+  const mergedOptions = merge(
     DEFAULT_OPTIONS,
     options,
     {
       arrayMerge: overwriteMerge,
-      customMerge: (key) => ((key === 'selectors') ? selectorsMerge : undefined)
+      customMerge: (key: string) => ((key === 'selectors') ? selectorsMerge : undefined)
     }
   );
-  options.formatters = Object.assign({}, genericFormatters, textFormatters, options.formatters);
-  options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
+  mergedOptions.formatters = Object.assign({}, genericFormatters, textFormatters, mergedOptions.formatters);
+  mergedOptions.selectors = mergeDuplicatesPreferLast(mergedOptions.selectors, (s => s.selector));
 
-  handleDeprecatedOptions(options);
+  handleDeprecatedOptions(mergedOptions);
 
-  return compile_(options);
+  return compile_(mergedOptions);
 }
 
 /**
@@ -164,7 +161,7 @@ function compile (options = {}) {
  * });
  * console.log(text); // HELLO WORLD
  */
-function convert (html, options = {}, metadata = undefined) {
+function convert (html: string, options: Partial<Options> = {}, metadata?: any): string {
   return compile(options)(html, metadata);
 }
 
@@ -174,16 +171,17 @@ function convert (html, options = {}, metadata = undefined) {
  *
  * @param { Options } options HtmlToText options.
  */
-function handleDeprecatedOptions (options) {
-  if (options.tags) {
-    const tagDefinitions = Object.entries(options.tags).map(
-      ([selector, definition]) => ({ ...definition, selector: selector || '*' })
+function handleDeprecatedOptions (options: Options): void {
+  const anyOptions = options as any;
+  if (anyOptions.tags) {
+    const tagDefinitions = Object.entries(anyOptions.tags).map(
+      ([selector, definition]) => ({ ...(definition as any), selector: selector || '*' })
     );
     options.selectors.push(...tagDefinitions);
     options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
   }
 
-  function set (obj, path, value) {
+  function set (obj: Record<string, any>, path: string[], value: unknown): void {
     const valueKey = path.pop();
     for (const key of path) {
       let nested = obj[key];
