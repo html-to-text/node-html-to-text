@@ -1,14 +1,14 @@
 
 import { compile as compile_ } from '@html-to-text/base';
-import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
-import { get, mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
+import * as genericFormatters from '@html-to-text/base/src/generic-formatters.js';
+import { get, mergeDuplicatesPreferLast } from '@html-to-text/base/src/util.js';
 import merge from 'deepmerge'; // default
 
-import * as textFormatters from './text-formatters';
+import * as textFormatters from './text-formatters.js';
 
 
 // eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
+import '@html-to-text/base/src/typedefs.js';
 
 
 /**

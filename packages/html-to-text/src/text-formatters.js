@@ -1,10 +1,10 @@
 
-import { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util';
+import { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util.js';
 
-import { tableToString } from './table-printer';
+import { tableToString } from './table-printer.js';
 
 // eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
+import '@html-to-text/base/src/typedefs.js';
 
 
 /**

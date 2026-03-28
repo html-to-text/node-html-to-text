@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { htmlToText } from '../packages/html-to-text/src/html-to-text';
+import { htmlToText } from '../packages/html-to-text/src/html-to-text.js';
 // const { htmlToText } = require('../packages/html-to-text/lib/html-to-text'); // build it first
 
 

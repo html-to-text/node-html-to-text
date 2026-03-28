@@ -1,13 +1,13 @@
 
 import { compile as compile_ } from '@html-to-text/base';
-import * as genericFormatters from '@html-to-text/base/src/generic-formatters';
-import { mergeDuplicatesPreferLast } from '@html-to-text/base/src/util';
+import * as genericFormatters from '@html-to-text/base/src/generic-formatters.js';
+import { mergeDuplicatesPreferLast } from '@html-to-text/base/src/util.js';
 import merge from 'deepmerge'; // default
 
-import * as markdownFormatters from './md-formatters';
+import * as markdownFormatters from './md-formatters.js';
 
 // eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
+import '@html-to-text/base/src/typedefs.js';
 
 
 /**

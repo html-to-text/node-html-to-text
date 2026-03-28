@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import { InlineTextBuilder } from './inline-text-builder';
+import { InlineTextBuilder } from './inline-text-builder.js';
 
 
 class StackItem {

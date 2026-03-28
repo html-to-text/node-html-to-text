@@ -1,7 +1,7 @@
 
 import { expect } from 'chai';
 
-import { htmlToText } from '../src/html-to-text';
+import { htmlToText } from '../src/html-to-text.js';
 
 
 describe('tags', function () {

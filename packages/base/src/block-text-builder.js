@@ -4,12 +4,12 @@ import {
   StackItem, BlockStackItem,
   TableCellStackItem, TableRowStackItem, TableStackItem,
   TransformerStackItem, ListStackItem, ListItemStackItem
-} from './stack-item';
-import { trimCharacter } from './util';
-import { WhitespaceProcessor } from './whitespace-processor';
+} from './stack-item.js';
+import { trimCharacter } from './util.js';
+import { WhitespaceProcessor } from './whitespace-processor.js';
 
 // eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
+import './typedefs.js';
 
 
 /**

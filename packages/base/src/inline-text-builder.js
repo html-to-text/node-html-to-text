@@ -1,8 +1,8 @@
 
-import { get } from './util';
+import { get } from './util.js';
 
 // eslint-disable-next-line import/no-unassigned-import
-import './typedefs';
+import './typedefs.js';
 
 /**
  * Helps to build text from words.

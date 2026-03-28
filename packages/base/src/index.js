@@ -3,8 +3,8 @@ import { hp2Builder } from '@selderee/plugin-htmlparser2';
 import { parseDocument } from 'htmlparser2';
 import { DecisionTree } from 'selderee';
 
-import { BlockTextBuilder } from './block-text-builder';
-import { limitedDepthRecursive, unicodeEscape } from './util';
+import { BlockTextBuilder } from './block-text-builder.js';
+import { limitedDepthRecursive, unicodeEscape } from './util.js';
 
 
 /**

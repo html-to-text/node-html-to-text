@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 
 import { expect } from 'chai';
 
-import { compile, convert } from '../src/html-to-text';
+import { compile, convert } from '../src/html-to-text.js';
 
 
 const defaultConvert = compile();

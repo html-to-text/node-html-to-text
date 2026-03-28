@@ -1,12 +1,12 @@
 
-import { get, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util';
+import { get, trimCharacter, trimCharacterEnd } from '@html-to-text/base/src/util.js';
 import { render } from 'dom-serializer';
 import { existsOne, innerText } from 'domutils';
 
-import { tableToString } from './table-printer';
+import { tableToString } from './table-printer.js';
 
 // eslint-disable-next-line import/no-unassigned-import
-import '@html-to-text/base/src/typedefs';
+import '@html-to-text/base/src/typedefs.js';
 
 
 /**

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-import { htmlToMarkdown } from '../packages/html-to-md/src/html-to-md';
+import { htmlToMarkdown } from '../packages/html-to-md/src/html-to-md.js';
 // const { htmlToMarkdown } = require('../packages/html-to-md/lib/html-to-md'); // build it first
 
 
