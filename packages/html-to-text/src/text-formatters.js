@@ -3,7 +3,6 @@ import { get, numberToLetterSequence, numberToRoman, trimCharacter, trimCharacte
 
 import { tableToString } from './table-printer.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import '@html-to-text/base/src/typedefs.js';
 
 
@@ -250,7 +249,7 @@ function formatOrderedList (elem, walk, builder, formatOptions) {
 /**
  * Return a function that can be used to generate index markers of a specified format.
  *
- * @param   { string } [olType='1'] Marker type.
+ * @param   { string } [olType] Marker type.
  * @returns { (i: number) => string }
  */
 function getOrderedListIndexFunction (olType = '1') {

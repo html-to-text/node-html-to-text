@@ -5,7 +5,6 @@ import { existsOne, innerText } from 'domutils';
 
 import { tableToString } from './table-printer.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import '@html-to-text/base/src/typedefs.js';
 
 

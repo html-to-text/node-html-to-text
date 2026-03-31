@@ -1,11 +1,11 @@
 
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 
 /**
  * @type {import('rollup').RollupOptions}
  */
-module.exports = {
+export default {
   input: 'src/html-to-md.js',
   output: [
     { file: 'lib/html-to-md.mjs', format: 'es' },

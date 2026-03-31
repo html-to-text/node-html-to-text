@@ -8,7 +8,6 @@ import {
 import { trimCharacter } from './util.js';
 import { WhitespaceProcessor } from './whitespace-processor.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import './typedefs.js';
 
 

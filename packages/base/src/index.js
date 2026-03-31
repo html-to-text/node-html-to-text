@@ -11,7 +11,7 @@ import { limitedDepthRecursive, unicodeEscape } from './util.js';
  * Compile selectors into a decision tree,
  * return a function intended for batch processing.
  *
- * @param   { Options } [options = {}]   HtmlToText options (defaults, formatters, user options merged, deduplicated).
+ * @param   { Options } [options]   HtmlToText options (defaults, formatters, user options merged, deduplicated).
  * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */

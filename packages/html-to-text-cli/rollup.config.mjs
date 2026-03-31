@@ -1,11 +1,11 @@
 
-const json = require('@rollup/plugin-json');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
+import json from '@rollup/plugin-json';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 /**
  * @type {import('rollup').RollupOptions}
  */
-module.exports = {
+export default {
   input: 'src/cli.js',
   output: [
     {

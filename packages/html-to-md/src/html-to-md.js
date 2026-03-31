@@ -6,7 +6,6 @@ import merge from 'deepmerge'; // default
 
 import * as markdownFormatters from './md-formatters.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import '@html-to-text/base/src/typedefs.js';
 
 
@@ -111,7 +110,7 @@ const selectorsMerge = (acc, src, options) => (
  * Preprocess options, compile selectors into a decision tree,
  * return a function intended for batch processing.
  *
- * @param   { Options } [options = {}]   HtmlToText options.
+ * @param   { Options } [options]   HtmlToText options.
  * @returns { (html: string, metadata?: any) => string } Pre-configured converter function.
  * @static
  */
@@ -134,7 +133,7 @@ function compile (options = {}) {
  * Convert given HTML content to a markdown string.
  *
  * @param   { string }  html           HTML content to convert.
- * @param   { Options } [options = {}] HtmlToText options.
+ * @param   { Options } [options]      HtmlToText options.
  * @param   { any }     [metadata]     Optional metadata for HTML document, for use in formatters.
  * @returns { string }                 Plain text string.
  * @static

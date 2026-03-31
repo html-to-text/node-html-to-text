@@ -114,9 +114,9 @@ function get (obj, path) {
  *
  * For example: `a, ..., z, aa, ..., zz, aaa, ...`.
  *
- * @param   { number } num              Number to convert. Must be >= 1.
- * @param   { string } [baseChar = 'a'] Character for 1 in the sequence.
- * @param   { number } [base = 26]      Number of characters in the sequence.
+ * @param   { number } num         Number to convert. Must be >= 1.
+ * @param   { string } [baseChar]  Character for 1 in the sequence.
+ * @param   { number } [base]      Number of characters in the sequence.
  * @returns { string }
  */
 function numberToLetterSequence (num, baseChar = 'a', base = 26) {

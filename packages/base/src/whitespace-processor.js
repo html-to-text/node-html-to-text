@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import { InlineTextBuilder } from './inline-text-builder.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import './typedefs.js';
 
 

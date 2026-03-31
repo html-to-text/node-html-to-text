@@ -1,5 +1,4 @@
 
-// eslint-disable-next-line import/no-unassigned-import
 import '@html-to-text/base/src/typedefs.js';
 
 
@@ -192,7 +191,7 @@ function tableToString (tableRows, firstRowIsHeader, spanMode) {
 
   transposeInPlace(layout, (rowNumber > colNumber) ? rowNumber : colNumber);
 
-  let outputLines = [];
+  let outputLines;
   switch (spanMode) {
     case 'repeat': {
       outputLines = renderRowsRepeat(layout, colNumber, rowNumber);

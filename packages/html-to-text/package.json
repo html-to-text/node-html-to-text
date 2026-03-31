@@ -37,7 +37,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=20.19.0"
   },
   "scripts": {
     "build:rollup": "rollup -c",
@@ -48,11 +48,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@selderee/plugin-htmlparser2": "^0.11.0",
+    "@selderee/plugin-htmlparser2": "~0.12.0",
     "deepmerge": "^4.3.1",
     "dom-serializer": "^2.0.0",
-    "htmlparser2": "^8.0.2",
-    "selderee": "^0.11.0"
+    "htmlparser2": "^10.1.0",
+    "selderee": "~0.12.0"
   },
   "mocha": {
     "node-option": [

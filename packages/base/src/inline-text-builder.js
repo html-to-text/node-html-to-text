@@ -1,7 +1,6 @@
 
 import { get } from './util.js';
 
-// eslint-disable-next-line import/no-unassigned-import
 import './typedefs.js';
 
 /**

@@ -1,5 +1,4 @@
 
-// eslint-disable-next-line import/no-unassigned-import
 import '@html-to-text/base/src/typedefs.js';
 
 
