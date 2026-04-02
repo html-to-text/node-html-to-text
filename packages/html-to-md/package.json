@@ -41,7 +41,7 @@
     "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf lib",
     "copy:license": "copyfiles -f ../../LICENSE .",
-    "cover": "c8 --reporter=lcov --reporter=text-summary ava -t 20000",
+    "cover": "c8 --reporter=lcov --reporter=text-summary ava --timeout=20000",
     "test": "ava"
   },
   "dependencies": {
@@ -54,8 +54,6 @@
   },
   "ava": {
     "files": ["test/**/*.js"],
-    "nodeArguments": [
-      "--experimental-specifier-resolution=node"
-    ]
+    "snapshotDir": "."
   }
 }

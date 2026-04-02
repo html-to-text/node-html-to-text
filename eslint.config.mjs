@@ -272,19 +272,19 @@ export default defineConfig([
   },
 
   {
-    files: ["**/test/*.js"],
+    files: ["**/test/**/*.js"],
 
     languageOptions: {
       globals: {
-        ...globals.mocha,
         ...globals.node,
       },
     },
 
     rules: {
-      "import-x/no-nodejs-modules": "off",
       "max-len": "off",
-      "max-lines-per-function": "off",
+      "import-x/no-nodejs-modules": "off",
+      "import-x/group-exports": "off",
+      "jsdoc/require-jsdoc": "off",
     },
   },
 
