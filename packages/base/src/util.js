@@ -1,6 +1,4 @@
 
-import merge from 'deepmerge'; // default
-
 /**
  * Make a recursive function that will only run to a given depth
  * and switches to an alternative function at that depth. \
@@ -68,33 +66,6 @@ function unicodeEscape (str) {
 }
 
 /**
- * Deduplicate an array by a given key callback.
- * Item properties are merged recursively and with the preference for last defined values.
- * Of items with the same key, merged item takes the place of the last item,
- * others are omitted.
- *
- * @param { any[] } items An array to deduplicate.
- * @param { (x: any) => string } getKey Callback to get a value that distinguishes unique items.
- * @returns { any[] }
- */
-function mergeDuplicatesPreferLast (items, getKey) {
-  const map = new Map();
-  for (let i = items.length; i-- > 0;) {
-    const item = items[i];
-    const key = getKey(item);
-    map.set(
-      key,
-      (map.has(key))
-        ? merge(item, map.get(key), { arrayMerge: overwriteMerge })
-        : item
-    );
-  }
-  return [...map.values()].reverse();
-}
-
-const overwriteMerge = (acc, src, options) => [...src];
-
-/**
  * Get a nested property from an object.
  *
  * @param   { object }   obj  The object to query for the value.
@@ -156,7 +127,6 @@ function numberToRoman (num) {
 export {
   get,
   limitedDepthRecursive,
-  mergeDuplicatesPreferLast,
   numberToLetterSequence,
   numberToRoman,
   trimCharacter,

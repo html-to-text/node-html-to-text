@@ -1,8 +1,7 @@
 
 import { compile as compile_ } from '@html-to-text/base';
 import * as genericFormatters from '@html-to-text/base/src/generic-formatters.js';
-import { mergeDuplicatesPreferLast } from '@html-to-text/base/src/util.js';
-import merge from 'deepmerge'; // default
+import { composeOptions } from '@html-to-text/base/src/options-composer.js';
 
 import * as markdownFormatters from './md-formatters.js';
 
@@ -97,15 +96,6 @@ const DEFAULT_OPTIONS = {
   wordwrap: 80
 };
 
-
-const concatMerge = (acc, src, options) => [...acc, ...src];
-const overwriteMerge = (acc, src, options) => [...src];
-const selectorsMerge = (acc, src, options) => (
-  (acc.some(s => typeof s === 'object'))
-    ? concatMerge(acc, src, options) // selectors
-    : overwriteMerge(acc, src, options) // baseElements.selectors
-);
-
 /**
  * Preprocess options, compile selectors into a decision tree,
  * return a function intended for batch processing.
@@ -115,16 +105,12 @@ const selectorsMerge = (acc, src, options) => (
  * @static
  */
 function compile (options = {}) {
-  options = merge(
-    DEFAULT_OPTIONS,
-    options,
-    {
-      arrayMerge: overwriteMerge,
-      customMerge: (key) => ((key === 'selectors') ? selectorsMerge : undefined)
-    }
-  );
-  options.formatters = Object.assign({}, genericFormatters, markdownFormatters, options.formatters);
-  options.selectors = mergeDuplicatesPreferLast(options.selectors, (s => s.selector));
+  options = composeOptions({
+    defaultOptions: DEFAULT_OPTIONS,
+    genericFormatters: genericFormatters,
+    packageFormatters: markdownFormatters,
+    userOptions: options
+  });
 
   return compile_(options);
 }

@@ -22,6 +22,7 @@
     "example:md": "node ./example/html-to-md.js",
     "example:text": "node ./example/html-to-text.js",
     "lint": "eslint .",
+    "test:base": "npm run test -w ./packages/base",
     "test:html-to-text": "npm run test -w ./packages/html-to-text",
     "test:html-to-md": "npm run test -w ./packages/html-to-md",
     "test": "concurrently npm:test:*"
