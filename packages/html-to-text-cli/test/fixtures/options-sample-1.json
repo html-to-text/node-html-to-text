@@ -1,0 +1,19 @@
+{
+  "selectors": [
+    {
+      "selector": "tr",
+      "format": "paragraph"
+    },
+    {
+      "selector": "p",
+      "format": "paragraph"
+    }
+  ],
+  "longWordSplit": {
+    "wrapCharacters": [
+      ".",
+      ","
+    ]
+  },
+  "wordwrap": 99
+}

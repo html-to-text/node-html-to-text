@@ -88,7 +88,30 @@ function composeOptions ({
   return options;
 }
 
+/**
+ * Merge partial option objects coming from CLI args, presets and/or JSON files,
+ * deduplicate selectors, ignore (remove) formatters.
+ *
+ * @param { object } acc Accumulated options.
+ * @param { object } next Next partial options to merge.
+ * @returns { object }
+ */
+function composeCliOptions (acc = {}, next = {}) {
+  const merged = deepMergeWithOptionsComposeRules(acc, next);
+
+  if (Array.isArray(merged.selectors)) {
+    merged.selectors = mergeDuplicatesPreferLast(merged.selectors, (s) => s.selector);
+  }
+
+  if ('formatters' in merged) {
+    delete merged.formatters;
+  }
+
+  return merged;
+}
+
 export {
   composeOptions,
+  composeCliOptions,
   mergeDuplicatesPreferLast,
 };

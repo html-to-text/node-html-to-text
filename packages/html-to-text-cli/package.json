@@ -12,6 +12,7 @@
   ],
   "license": "MIT",
   "author": "KillyMXI <killy@mxii.eu.org>",
+  "funding": "https://github.com/sponsors/KillyMXI",
   "homepage": "https://github.com/html-to-text/node-html-to-text",
   "repository": {
     "type": "git",
@@ -37,13 +38,20 @@
     "build:rollup": "rollup -c",
     "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf bin",
-    "copy:license": "copyfiles -f ../../LICENSE ."
+    "copy:license": "copyfiles -f ../../LICENSE .",
+    "test": "ava"
   },
   "dependencies": {
     "@selderee/plugin-htmlparser2": "~0.12.0",
-    "aspargvs": "^0.6.0",
-    "deepmerge": "^4.3.1",
+    "aspargvs": "~0.7.0",
+    "deepmerge-ts": "^7.1.5",
     "htmlparser2": "^10.1.0",
     "selderee": "~0.12.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/cli-*.js"
+    ],
+    "snapshotDir": "."
   }
 }

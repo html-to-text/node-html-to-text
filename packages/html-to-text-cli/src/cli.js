@@ -1,12 +1,12 @@
 import process from 'node:process';
 
+import { composeCliOptions } from '@html-to-text/base/src/options-composer.js';
 import { handleArgv } from 'aspargvs';
-import deepmerge from 'deepmerge';
 import { htmlToText } from 'html-to-text';
 
-import { version as httVersion } from '../../html-to-text/package.json';
-import { version as cliVersion } from '../package.json';
 
+const cliVersion = '__CLI_VERSION__';
+const httVersion = '__HTT_VERSION__';
 
 const kebabToCamelCase = (str) => str
   .replace(/-./g, x => x[1].toUpperCase());
@@ -41,7 +41,7 @@ handleArgv({
     unparse: true,
     inspect: { depth: 5, },
     json: businessLogic,
-    merge: (acc, next) => deepmerge(acc, next),
+    merge: composeCliOptions,
     key: kebabToCamelCase,
     unkey: camelToKebabCase,
     bin: () => 'html-to-text',

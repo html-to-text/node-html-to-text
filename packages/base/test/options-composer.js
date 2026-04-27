@@ -1,6 +1,10 @@
 import test from 'ava';
 
-import { composeOptions, mergeDuplicatesPreferLast } from '../src/options-composer.js';
+import {
+  composeOptions,
+  composeCliOptions,
+  mergeDuplicatesPreferLast
+} from '../src/options-composer.js';
 
 
 test('composeOptions should concat root selectors and overwrite baseElements.selectors', (t) => {
@@ -176,6 +180,115 @@ test('composeOptions should run handleMergedOptions hook after preprocessing', (
       { format: 'inline', selector: '*' },
       { format: 'block', selector: 'article' },
       { format: 'inline', selector: 'custom' }
+    ]
+  );
+});
+
+test('composeCliOptions should concat root selectors and overwrite baseElements.selectors', (t) => {
+  const a = {
+    baseElements: { selectors: [ 'foo', 'bar' ] },
+    selectors: [
+      { format: 'inline', selector: 'foo' },
+      { format: 'block', selector: 'bar' }
+    ]
+  };
+  const b = {
+    baseElements: { selectors: [ 'foo', 'baz' ] },
+    selectors: [
+      { format: 'skip', selector: 'foo' },
+      { format: 'paragraph', selector: 'baz' }
+    ]
+  };
+  const c = {
+    baseElements: { selectors: [ 'bar', 'baz' ] },
+    selectors: [
+      { format: 'anchor', selector: 'bar' },
+      { format: 'heading', selector: 'baz' }
+    ]
+  };
+
+  const merged = composeCliOptions(composeCliOptions(a, b), c);
+
+  t.deepEqual(merged.baseElements.selectors, [ 'bar', 'baz' ]);
+  t.deepEqual(
+    merged.selectors,
+    [
+      { format: 'skip', selector: 'foo' },
+      { format: 'anchor', selector: 'bar' },
+      { format: 'heading', selector: 'baz' }
+    ]
+  );
+});
+
+test('composeCliOptions should overwrite arrays in non-selectors properties', (t) => {
+  const a = { longWordSplit: { wrapCharacters: [ '-', '/' ] } };
+  const b = { longWordSplit: { wrapCharacters: [ '.', ',' ] } };
+  const c = { longWordSplit: { wrapCharacters: [ '+', '=' ] } };
+
+  const merged = composeCliOptions(composeCliOptions(a, b), c);
+
+  t.deepEqual(merged.longWordSplit.wrapCharacters, [ '+', '=' ]);
+});
+
+test('composeCliOptions should remove formatters', (t) => {
+  const a = { formatters: '' };
+  const b = { formatters: '() => "b"' };
+
+  const merged = composeCliOptions(a, b);
+
+  t.false('formatters' in merged);
+});
+
+test('composeCliOptions should deduplicate selectors preferring last item values', (t) => {
+  const a = {
+    selectors: [
+      {
+        format: 'anchor',
+        options: {
+          linkBrackets: [ '[', ']' ],
+          nested: {
+            one: true,
+            two: true
+          }
+        },
+        selector: 'a'
+      }
+    ]
+  };
+  const b = {
+    selectors: [
+      {
+        options: { nested: { two: false } },
+        selector: 'a'
+      }
+    ]
+  };
+  const c = {
+    selectors: [
+      {
+        options: { nested: { three: true } },
+        selector: 'a'
+      }
+    ]
+  };
+
+  const merged = composeCliOptions(composeCliOptions(a, b), c);
+
+  t.deepEqual(
+    merged.selectors,
+    [
+      {
+        format: 'anchor',
+        options: {
+          linkBrackets: [ '[', ']' ],
+          nested: {
+            one: true,
+            two: false,
+            three: true
+          }
+        },
+        selector: 'a'
+      }
     ]
   );
 });

@@ -1,0 +1,20 @@
+{
+  "selectors": [
+    {
+      "selector": "tr",
+      "format": "inline"
+    },
+    {
+      "selector": "td",
+      "format": "inline"
+    }
+  ],
+  "longWordSplit": {
+    "wrapCharacters": [
+      "/"
+    ]
+  },
+  "formatters": {
+    "custom": "() => 'not supported in CLI'"
+  }
+}

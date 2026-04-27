@@ -252,11 +252,6 @@ export default defineConfig([
 
     rules: {
       "sort-keys": "off",
-
-      "import-x/extensions": ["error", "never", {
-        "json": "always",
-      }],
-
       "import-x/no-nodejs-modules": ["error", {
         "allow": ["node:process"],
       }],
@@ -296,6 +291,26 @@ export default defineConfig([
       "object-curly-newline": "off",
       "sort-keys": "off",
     },
+  },
+
+  {
+    files: ["**/rollup.config.mjs"],
+
+    languageOptions: {
+      ecmaVersion: 2025,
+    },
+
+    rules: {
+      "quote-props": ["error", "as-needed", {
+        "unnecessary": false
+      }],
+      "import-x/no-nodejs-modules": ["error", {
+        "allow": ["node:module"],
+      }],
+      "import-x/order": ["error", {
+        "newlines-between": "ignore",
+      }],
+    }
   }
 
 ]);
