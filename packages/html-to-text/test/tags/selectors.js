@@ -54,3 +54,28 @@ test('should allow escape sequences in selectors', snapshotMacro, {
     ]
   }
 });
+
+test('should support certain pseudo-classes', snapshotMacro, {
+  convert: htmlToText,
+  input: '<foo>foo1</foo> <foo>foo2</foo> <foo><foo>foo3</foo></foo> <foo><!-- foo4 --></foo> <foo id="foo5"></foo> <foo>foo6</foo> <foo>foo7</foo>',
+  options: {
+    selectors: [
+      { selector: 'foo', format: 'inline' },
+      { selector: 'foo:empty', format: 'inlineString', options: { string: 'empty' } },
+      { selector: 'foo:first-child', format: 'inlineString', options: { string: 'first-child' } },
+      { selector: 'foo:last-child', format: 'inlineString', options: { string: 'last-child' } },
+      { selector: 'foo:only-child', format: 'inlineString', options: { string: 'only-child' } },
+    ]
+  }
+});
+
+test('should support the :any-link pseudo-class', snapshotMacro, {
+  convert: htmlToText,
+  input: '<foo href="#foo">foo</foo> <a href="#a">a1</a> <a>a2</a> <area href="#area" alt="area1"/> <area alt="area2"/>',
+  options: {
+    selectors: [
+      { selector: 'area', format: 'inlineString', options: { string: 'area' } },
+      { selector: ':any-link', format: 'inlineString', options: { string: 'any-link' } }
+    ]
+  }
+});
