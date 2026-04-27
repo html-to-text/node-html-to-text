@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [20.x, 24.x]
         os: [ubuntu-latest, windows-latest]
         include:
           - os: windows-latest
@@ -19,30 +19,16 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Setup NPM v7
-        run: npm i -g npm@7
-
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: ${{ matrix.get-cache-path }}
-
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: 'npm'
 
       - name: Touch cli file to prevent npm ci from freaking out
-        uses: DamianReeves/write-file-action@v1.2
+        uses: DamianReeves/write-file-action@v1.3
         with:
           path: packages/html-to-text-cli/bin/cli.js
           contents: '// placeholder'

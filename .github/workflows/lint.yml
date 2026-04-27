@@ -9,30 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v6
         with:
-          node-version: 16.x
-
-      - name: Setup NPM v7
-        run: npm i -g npm@7
-
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        id: npm-cache
-        with:
-          path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+          node-version: 24.x
+          cache: 'npm'
 
       - name: Touch cli file to prevent npm ci from freaking out
-        uses: DamianReeves/write-file-action@v1.2
+        uses: DamianReeves/write-file-action@v1.3
         with:
           path: packages/html-to-text-cli/bin/cli.js
           contents: '// placeholder'
