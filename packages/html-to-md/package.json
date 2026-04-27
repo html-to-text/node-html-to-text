@@ -24,8 +24,11 @@
   "main": "./lib/html-to-md.cjs",
   "module": "./lib/html-to-md.mjs",
   "exports": {
-    "import": "./lib/html-to-md.mjs",
-    "require": "./lib/html-to-md.cjs"
+    ".": {
+      "import": "./lib/html-to-md.mjs",
+      "require": "./lib/html-to-md.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "lib",

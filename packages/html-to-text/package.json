@@ -27,8 +27,11 @@
   "main": "./lib/html-to-text.cjs",
   "module": "./lib/html-to-text.mjs",
   "exports": {
-    "import": "./lib/html-to-text.mjs",
-    "require": "./lib/html-to-text.cjs"
+    ".": {
+      "import": "./lib/html-to-text.mjs",
+      "require": "./lib/html-to-text.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "lib",
