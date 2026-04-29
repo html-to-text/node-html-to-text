@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 import test from 'ava';
 
 
+export default { require: ['./_force-exit.ts'] };
+
 function runCliWithInput (args, input) {
   const cliPath = resolve(dirname(fileURLToPath(import.meta.url)), '../src/cli.js');
   const result = spawnSync(

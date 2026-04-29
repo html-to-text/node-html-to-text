@@ -7,6 +7,8 @@ import test from 'ava';
 import { snapshotMacro } from './test-helpers.js';
 
 
+export default { require: ['./_force-exit.ts'] };
+
 const testDir = dirname(fileURLToPath(import.meta.url));
 const fixture1 = relative(
   process.cwd(),
