@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 
-import { htmlToText } from '../packages/html-to-text/src/html-to-text.js';
-// const { htmlToText } = require('../packages/html-to-text/lib/html-to-text'); // build it first
+import { htmlToText, compile } from '../packages/html-to-text/src/html-to-text.js';
+// import { htmlToText, compile } from '../packages/html-to-text/lib/html-to-text.mjs'; // build it first
 
 
 console.log('From string:');
@@ -24,3 +24,16 @@ const options = {
 };
 const text2 = htmlToText(readFileSync(filePath, 'utf8'), options);
 console.log(text2);
+console.log();
+
+console.log('Batch processing:');
+const compiledConvert = compile(options);
+const inputPaths = [
+  new URL('test.html', import.meta.url),
+  // ...
+];
+for (const path of inputPaths) {
+  const html = readFileSync(path, 'utf8');
+  const text3 = compiledConvert(html);
+  console.log(text3);
+}
