@@ -39,6 +39,7 @@
     "build": "npm run clean && npm run build:rollup && npm run copy:license",
     "clean": "rimraf bin",
     "copy:license": "copyfiles -f ../../LICENSE .",
+    "pretest": "npm run build -w html-to-text",
     "test": "ava"
   },
   "dependencies": {
