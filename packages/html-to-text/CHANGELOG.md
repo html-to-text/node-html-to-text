@@ -1,9 +1,45 @@
 # Changelog
 
+## Version 10.0.0
+
+All commits: [9.0.5...10.0.0](https://github.com/html-to-text/node-html-to-text/compare/9.0.5...10.0.0)
+
+This is mostly a maintenance release - to bring it up to date with current ecosystem and resolve some compatibility issues.
+
+- No new features are added here, but some are available from upstream dependencies.
+- No deprecated features are removed in this version - to ease the transition.
+  - Requirement changes and minor behavior changes from upstream dependencies are the main source of breaking changes here.
+
+### Requirements
+
+* Node.js >= 20.19.0;
+* Language version >= ES2022.
+
+### Dependency updates
+
+* `selderee` updated from 0.11.0 to 0.12.0 ([changelog](https://github.com/mxxii/selderee/blob/main/packages/selderee/CHANGELOG.md)) and `parseley` - from 0.12.0 to 0.13.1 ([changelog](https://github.com/mxxii/parseley/blob/main/CHANGELOG.md))
+  * selectors tree normalization improvements;
+  * added `:empty`, `:first-child`, `:last-child`, `:only-child` and `:any-link` pseudo-classes support;
+* `htmlparser2` updated from 8.0.2 to 10.1.0 ([release notes](https://github.com/fb55/htmlparser2/releases))
+  * more spec-compliant parsing of entities, `textarea` and `xmp` tags;
+* replaced `deepmerge` with `deepmerge-ts`;
+  * all dependencies are now ESM/CJS dual packages;
+  * _Note: future versions of `htmlparser2` are ESM-only, so `html-to-text` v11 will follow suit_;
+
+### Other
+
+* adjusted `package.json` exports;
+* replaced test framework from Chai/Mocha to AVA, refined tests structure and using snapshots more extensively.
+
+
+----
+
 ## Version 9.0.5
 
-* `selderee` updated from 0.10.0 to 0.11.0 ([changelog](https://github.com/mxxii/selderee/blob/main/packages/selderee/CHANGELOG.md)) and `parseley` - from 0.11.0 to 0.12.0 ([changelog](https://github.com/mxxii/parseley/blob/main/CHANGELOG.md)) - support escape sequences in selectors according to specification, fixes [#273](https://github.com/html-to-text/node-html-to-text/issues/273);
-* `htmlparser2` updated from 8.0.1 to 8.0.2 ([release notes](https://github.com/fb55/htmlparser2/releases)) - this fixes broken parsing in certain situations: [#285](https://github.com/html-to-text/node-html-to-text/issues/285);
+* `selderee` updated from 0.10.0 to 0.11.0 ([changelog](https://github.com/mxxii/selderee/blob/main/packages/selderee/CHANGELOG.md)) and `parseley` - from 0.11.0 to 0.12.0 ([changelog](https://github.com/mxxii/parseley/blob/main/CHANGELOG.md))
+  * support escape sequences in selectors according to specification, fixes [#273](https://github.com/html-to-text/node-html-to-text/issues/273);
+* `htmlparser2` updated from 8.0.1 to 8.0.2 ([release notes](https://github.com/fb55/htmlparser2/releases))
+  * this fixes broken parsing in certain situations: [#285](https://github.com/html-to-text/node-html-to-text/issues/285);
 * `deepmerge` updated from 4.3.0 to 4.3.1 - no functional changes;
 * added a link to attribute selectors syntax to Readme.
 

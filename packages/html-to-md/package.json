@@ -12,6 +12,7 @@
   ],
   "license": "MIT",
   "author": "KillyMXI <killy@mxii.eu.org>",
+  "funding": "https://github.com/sponsors/KillyMXI",
   "homepage": "https://github.com/html-to-text/node-html-to-text",
   "repository": {
     "type": "git",

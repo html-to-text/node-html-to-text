@@ -53,12 +53,14 @@ PS> Get-Content .\input.html | html-to-text.cmd [commands...] [keys and values..
 
 | Command   | Alias | Argument       | Description
 | --------- | ----- | -------------- | -----------
-| `json`    | `-j`  | \<file_name>   | Merge given json file contents with the parsed options object. This way you can provide all or some options from a file rather than explicitly from CLI.
-| `preset`  | `-p`  | \<preset_name> | Merge given preset into the parsed options object. Available presets listed below.
+| `json`    | `-j`  | \<file_name>   | Load contents of given JSON file. This way you can provide all or some options from a file rather than or in addition to explicitly from CLI.
+| `preset`  | `-p`  | \<preset_name> | Load a predefined preset. Available presets listed below.
 | `inspect` | `-i`  |                | Pretty print the parsed options object and exit. Useful as a dry run to check how options are parsed.
 | `unparse` | `-u`  |                | Print the parsed options object back as args string and exit. Can be used to check what arguments produce the result equivalent to a given json file.
 | `help`    | `-h`  |                | Print help message end exit.
 | `version` | `-v`  |                | Print version number and exit.
+
+Note: JSON files and presets are composed in the order they are provided. Explicit command line arguments are applied last and override values from files and presets. (This was different in old versions.)
 
 Note: short aliases cannot be merged.
 

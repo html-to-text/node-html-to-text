@@ -41,9 +41,3 @@ This is a monorepo.
     Shared code. Only exists in the monorepo and bundled into published packages.
 
     Folder: [/packages/base](/packages/base)
-
-## Development
-
-Targeting Node.js version >=14.
-
-Monorepo uses NPM v7 workspaces (make sure v7 is installed when used with Node.js v14.)

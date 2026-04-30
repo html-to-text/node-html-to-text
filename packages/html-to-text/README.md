@@ -16,18 +16,19 @@ Advanced converter that parses HTML and returns beautiful text.
 * Word wrapping.
 * Unicode support.
 * Plenty of customization options.
+* CLI - as `@html-to/text-cli` ([Readme](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/)).
 
 ## Changelog
 
 Available here: [CHANGELOG.md](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/CHANGELOG.md)
 
-Version 6 contains a ton of changes, so it worth to take a look at the full changelog.
-
-Version 7 contains an important change for custom formatters.
-
-Version 8 brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
-
-Version 9 drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters. Now a dual-mode package (cjs and esm). CLI is moved to a [separate package](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/).
+Version | Most important changes
+------- | ----------------------
+6 | Contains a ton of changes, so it worth to take a look at the full changelog.
+7 | Contains an important change for custom formatters.
+8 | Brings the selectors support to greatly increase the flexibility but that also changes some things introduced in version 6. Base element(s) selection also got important changes.
+9 | Drops a lot of previously deprecated options, introduces some new formatters and new capabilities for custom formatters. Now a dual-mode package (cjs and esm). CLI is moved to a [separate package](https://github.com/html-to-text/node-html-to-text/tree/master/packages/html-to-text-cli/).
+10 | Maintenance release, should resolve some compatibility issues. Requirements upped to Node.js 20.19.0 and ES2022.
 
 ## Installation
 
@@ -52,7 +53,7 @@ const text = convert(html, options);
 console.log(text); // Hello World
 ```
 
-Configure `html-to-text` once to convert many documents with the same options (recommended for [good performance](https://github.com/html-to-text/node-html-to-text/issues/265#issuecomment-1337470852) when processing big batches of documents):
+Configure `html-to-text` once to convert many documents with the same options (highly recommended for [good performance](https://github.com/html-to-text/node-html-to-text/issues/265#issuecomment-1337470852) when processing batches of documents):
 
 ```js
 const { compile } = require('html-to-text');
@@ -86,7 +87,7 @@ Option                  | Default      | Description
 `baseElements`          |              | Describes which parts of the input document have to be converted and present in the output text, and in what order.
 `baseElements.selectors` | `['body']`  | Elements matching any of provided selectors will be processed and included in the output text, with all inner content.<br/>Refer to [Supported selectors](#supported-selectors) section below.
 `baseElements.orderBy`  | `'selectors'` | `'selectors'` - arrange base elements in the same order as `baseElements.selectors` array;<br/>`'occurrence'` - arrange base elements in the order they are found in the input document.
-`baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.
+`baseElements.returnDomByDefault` | `true` | Convert the entire document if none of provided selectors match.<br/>Note: to always return entire DOM, you might also want to set `baseElements.selectors` to `[]`.
 `decodeEntities`        | `true`       | Decode HTML entities found in the input HTML if `true`. Otherwise preserve in output text.
 `encodeCharacters`      | `{}`         | A dictionary with characters that should be replaced in the output text and corresponding escape sequences.
 `formatters`            | `{}`         | An object with custom formatting functions for specific elements (see [Override formatting](#override-formatting) section below).
@@ -106,28 +107,30 @@ Option                  | Default      | Description
 
 #### Deprecated or removed options
 
-Old&nbsp;option          | Depr. | Rem.  | Instead&nbsp;use
--------------------------- | --- | ----- | -----------------
-`baseElement`              | 8.0 |       | `baseElements: { selectors: [ 'body' ] }`
-`decodeOptions`            |     |  9.0  | Entity decoding is now handled by [htmlparser2](https://github.com/fb55/htmlparser2) itself and [entities](https://github.com/fb55/entities) internally. No user-configurable parts compared to [he](https://github.com/mathiasbynens/he) besides boolean `decodeEntities`.
-`format`                   |     |  6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
-`hideLinkHrefIfSameAsText` | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
-`ignoreHref`               | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
-`ignoreImage`              | 6.0 |  9.0  | `selectors: [ { selector: 'img', format: 'skip' } ]`
-`linkHrefBaseUrl`          | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
-`noAnchorUrl`              | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
-`noLinkBrackets`           | 6.0 |  9.0  | `selectors: [ { selector: 'a', options: { linkBrackets: false } } ]`
-`returnDomByDefault`       | 8.0 |       | `baseElements: { returnDomByDefault: true }`
-`singleNewLineParagraphs`  | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
-`tables`                   | 8.0 |       | `selectors: [ { selector: 'table.class#id', format: 'dataTable' } ]`
-`tags`                     | 8.0 |       | See [Selectors](#selectors) section below.
-`unorderedListItemPrefix`  | 6.0 |  9.0  | `selectors: [ { selector: 'ul', options: { itemPrefix: ' * ' } } ]`
-`uppercaseHeadings`        | 6.0 |  9.0  | `selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`...`<br/>`{ selector: 'table', options: { uppercaseHeaderCells: false } }`<br/>`]`
+Old&nbsp;option          | Depr. | Rem.   | Instead&nbsp;use
+-------------------------- | --- | ------ | -----------------
+`baseElement`              | 8.0 | _11.0_ | `baseElements: { selectors: [ 'body' ] }`
+`decodeOptions`            |     |   9.0  | Entity decoding is now handled by [htmlparser2](https://github.com/fb55/htmlparser2) itself and [entities](https://github.com/fb55/entities) internally. No user-configurable parts compared to [he](https://github.com/mathiasbynens/he) besides boolean `decodeEntities`.
+`format`                   |     |   6.0  | The way formatters are written has changed completely. New formatters have to be added to the `formatters` option, old ones can not be reused without rewrite. See [new instructions](#override-formatting) below.
+`hideLinkHrefIfSameAsText` | 6.0 |   9.0  | `selectors: [ { selector: 'a', options: { hideLinkHrefIfSameAsText: true } } ]`
+`ignoreHref`               | 6.0 |   9.0  | `selectors: [ { selector: 'a', options: { ignoreHref: true } } ]`
+`ignoreImage`              | 6.0 |   9.0  | `selectors: [ { selector: 'img', format: 'skip' } ]`
+`linkHrefBaseUrl`          | 6.0 |   9.0  | `selectors: [`<br/>`{ selector: 'a', options: { baseUrl: 'https://example.com' } },`<br/>`{ selector: 'img', options: { baseUrl: 'https://example.com' } }`<br/>`]`
+`noAnchorUrl`              | 6.0 |   9.0  | `selectors: [ { selector: 'a', options: { noAnchorUrl: true } } ]`
+`noLinkBrackets`           | 6.0 |   9.0  | `selectors: [ { selector: 'a', options: { linkBrackets: false } } ]`
+`returnDomByDefault`       | 8.0 | _11.0_ | `baseElements: { returnDomByDefault: true }`
+`singleNewLineParagraphs`  | 6.0 |   9.0  | `selectors: [`<br/>`{ selector: 'p', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } },`<br/>`{ selector: 'pre', options: { leadingLineBreaks: 1, trailingLineBreaks: 1 } }`<br/>`]`
+`tables`                   | 8.0 | _11.0_ | `selectors: [ { selector: 'table.class#id', format: 'dataTable' } ]`
+`tags`                     | 8.0 | _11.0_ | See [Selectors](#selectors) section below.
+`unorderedListItemPrefix`  | 6.0 |   9.0  | `selectors: [ { selector: 'ul', options: { itemPrefix: ' * ' } } ]`
+`uppercaseHeadings`        | 6.0 |   9.0  | `selectors: [`<br/>`{ selector: 'h1', options: { uppercase: false } },`<br/>`...`<br/>`{ selector: 'table', options: { uppercaseHeaderCells: false } }`<br/>`]`
 
 Other things removed:
 
 * `fromString` method - use `convert` or `htmlToText` instead;
 * positional arguments in `BlockTextBuilder` methods - pass option objects instead.
+
+CommonJS export will be removed in version 11.
 
 #### Selectors
 
@@ -169,9 +172,9 @@ Following selectors can be used in any combinations:
 * `#bar` - id;
 * `[baz]` - attribute presence;
 * `[baz=buzz]` - attribute value (with any operators and also quotes and case sensitivity modifiers - [syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors#syntax));
-* `+` and `>` combinators (other combinators are not supported).
-
-You can match `<p style="...; display:INLINE; ...">...</p>` with `p[style*="display:inline"i]` for example.
+  * for example, you can match `<p style="...; display:INLINE; ...">...</p>` with `p[style*="display:inline"i]` selector;
+* `+` and `>` combinators (other combinators are not supported);
+* some pseudo-classes - `:empty`, `:first-child`, `:last-child`, `:only-child`, `:any-link`.
 
 ##### Predefined formatters
 
@@ -248,9 +251,9 @@ Option              | Default     | Applies&nbsp;to    | Description
 
 ##### Deprecated format options
 
-Old option          | Applies&nbsp;to    | Depr. | Rem. | Instead use
-------------------- | ------------------ | ----- | ---- | ---------------------
-`noLinkBrackets`    | `anchor`           | 8.1   |      | `linkBrackets: false`
+Old option          | Applies&nbsp;to    | Depr. | Rem.   | Instead use
+------------------- | ------------------ | ----- | ------ | ---------------------
+`noLinkBrackets`    | `anchor`           | 8.1   | _11.0_ | `linkBrackets: false`
 
 ### Override formatting
 
@@ -345,16 +348,21 @@ const options = {
 }
 ```
 
-## Example
-
-* Input text: [test.html](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/test/test.html)
-* Output text: [test.txt](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/test/test.txt)
-
 ## Contributors
 
 * [@mlegenhausen](https://github.com/mlegenhausen) - creator;
 * [@KillyMXI](https://github.com/KillyMXI) - maintainer since 2020;
 * Everyone else who [added something](https://github.com/html-to-text/node-html-to-text/graphs/contributors) to the tool or helped us shaping it via [issues](https://github.com/html-to-text/node-html-to-text/issues) and [PRs](https://github.com/html-to-text/node-html-to-text/pulls).
+
+See [CONTRIBUTING.md](https://github.com/html-to-text/node-html-to-text/blob/master/CONTRIBUTING.md) if you want to contribute as well.
+
+## Level of support
+
+> [@KillyMXI](https://github.com/KillyMXI), 2026:
+>
+> - This remains my pet project. I am under no obligation to anyone and only act according to available time and energy.
+> - If you want some stronger commitment - I'm available for hire as a freelance developer and consultant.
+> - Sponsorship, even if available, is not equivalent to a contract.
 
 ## License
 
