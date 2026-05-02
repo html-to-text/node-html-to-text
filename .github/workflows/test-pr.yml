@@ -23,10 +23,14 @@ jobs:
           cache: 'npm'
 
       - name: Touch cli file to prevent npm ci from freaking out
-        uses: DamianReeves/write-file-action@v1.3
-        with:
-          path: packages/html-to-text-cli/bin/cli.js
-          contents: '// placeholder'
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const path = require("node:path");
+            const file = "packages/html-to-text-cli/bin/cli.js";
+            fs.mkdirSync(path.dirname(file), { recursive: true });
+            fs.writeFileSync(file, "// placeholder\n");
+          '
 
       - run: npm ci
 
