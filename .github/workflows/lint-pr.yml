@@ -1,27 +1,20 @@
-name: test
+name: lint-pr
 
-on:
-  push:
-    branches: ["main", "master"]
+on: [pull_request]
 
 jobs:
-  test:
-    name: Run tests
+  lint:
+    name: Run linters on PR
 
-    strategy:
-      matrix:
-        node-version: [20.x, 24.x]
-        os: [ubuntu-latest, windows-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24.x
           cache: 'npm'
 
       - name: Touch cli file to prevent npm ci from freaking out
@@ -32,4 +25,4 @@ jobs:
 
       - run: npm ci
 
-      - run: npm test
+      - run: npm run lint

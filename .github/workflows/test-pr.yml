@@ -1,12 +1,10 @@
-name: test
+name: test-pr
 
-on:
-  push:
-    branches: ["main", "master"]
+on: [pull_request]
 
 jobs:
   test:
-    name: Run tests
+    name: Run tests on PR
 
     strategy:
       matrix:
