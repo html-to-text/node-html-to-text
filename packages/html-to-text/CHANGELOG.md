@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 10.0.1
+
+All commits: [10.0.0...10.0.1](https://github.com/html-to-text/node-html-to-text/compare/10.0.0...10.0.1)
+
+This addresses a security vulnerability in `deepmerge-ts` dependency - recommended to update from `html-to-text` 10.0.0. Older versions of `html-to-text` don't have this dependency.
+
+- `deepmerge-ts` updated from 7.1.5 to 8.0.1 ([release notes](https://github.com/RebeccaStevens/deepmerge-ts/releases), [changelog](https://github.com/RebeccaStevens/deepmerge-ts/blob/main/CHANGELOG.md))
+
 ## Version 10.0.0
 
 All commits: [9.0.5...10.0.0](https://github.com/html-to-text/node-html-to-text/compare/9.0.5...10.0.0)

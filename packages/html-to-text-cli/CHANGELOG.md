@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.6.1
+
+This addresses a security vulnerability in `deepmerge-ts` dependency - recommended to update from `html-to-text-cli` 0.6.0. Older versions of `html-to-text-cli` don't have this dependency.
+
+- `deepmerge-ts` updated from 7.1.5 to 8.0.1 ([release notes](https://github.com/RebeccaStevens/deepmerge-ts/releases), [changelog](https://github.com/RebeccaStevens/deepmerge-ts/blob/main/CHANGELOG.md))
+
 ## Version 0.6.0
 
 - Based on `html-to-text` version 10.0.0 ([changelog](https://github.com/html-to-text/node-html-to-text/blob/master/packages/html-to-text/CHANGELOG.md))
